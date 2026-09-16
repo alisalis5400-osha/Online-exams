@@ -1,27 +1,33 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
+# 1. إعدادات الصفحة الأساسية
 st.set_page_config(
-    page_title="منصة الاختبارات الإلكترونية", layout="wide"
+    page_title="منصة الاختبارات التفاعلية",
+    page_icon="🎓",
+    layout="wide"
 )
 
-st.title("📱 مركز الاختبارات الإلكترونية التفاعلية")
-st.write(
-    "اختر الامتحان المطلوب للبدء، وسيتم فتح الامتحان في صفحة مستقلة ذات تصحيح فوري."
+# 2. قاموس الامتحانات المتاحة (تقدري تضيفي أي امتحان جديد هنا بسهولة)
+EXAMS = {
+    "🌍 دراسات اجتماعية - الصف السادس": "https://alisalis5400-osha.github.io/Online-exams/Social-G6.html",
+    # "🔬 علوم - الصف السادس": "https://alisalis5400-osha.github.io/Online-exams/Science-G6.html",
+    # "🇬🇧 إنجليزي - الصف الخامس": "https://alisalis5400-osha.github.io/Online-exams/English-G5.html",
+}
+
+# 3. القائمة الجانبية لتصفح واختيار الامتحانات
+st.sidebar.title("📌 قائمة الامتحانات")
+st.sidebar.markdown("اختر الامتحان الذي تريد تأديته:")
+
+selected_exam_name = st.sidebar.radio(
+    "الامتحانات المتاحة:",
+    list(EXAMS.keys())
 )
 
+# 4. عرض الامتحان المختار في منتصف الشاشة
+st.title(f"📚 {selected_exam_name}")
 st.markdown("---")
 
-# عرض بطاقة الامتحان الجديد
-with st.container():
-    st.subheader("📑 اختبار الدراسات الاجتماعية - الصف السادس الابتدائي")
-    st.write(
-        "بنك أسئلة شامل يتضمن أسئلة الخرائط والأجزاء المقالية مع التصحيح الفوري والأجوبة النموذجية."
-    )
-
-    # زر يفتح اللينك الثابت للملف الجديد
-    st.link_button(
-        "🚀 ابدأ الاختبار الآن",
-        "https://alisalis5400-osha.github.io/Online-exams/G6-social.html.",
-    )
-
-st.markdown("---")
+# جلب رابط الامتحان المختار وعرضه داخل المنصة
+current_quiz_url = EXAMS[selected_exam_name]
+components.iframe(current_quiz_url, height=800, scrolling=True)
