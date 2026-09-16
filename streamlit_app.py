@@ -9,13 +9,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# هيدر شيك للمنصة
+# هيدر للمنصة
 st.markdown("""
     <div style="background-color: #1e293b; padding: 20px; border-radius: 12px; text-align: center; color: white; margin-bottom: 25px;">
         <h1 style="margin:0; font-size: 2.2rem;">🎓 منصة الامتحانات الإلكترونية</h1>
         <p style="margin:5px 0 0 0; color: #94a3b8; font-size: 1.05rem;">بنك التدريبات التفاعلي الشامل لجميع المراحل الدراسية</p>
     </div>
-""", unsafe_allow_unsafe_cap=True)
+""", unsafe_allow_html=True)
 
 # 2. هيكل نظام الامتحانات (المواد -> المرحلتين -> الصفوف -> رابط الامتحان)
 EXAMS_DATABASE = {
