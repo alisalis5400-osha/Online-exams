@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنك التدريبات الإلكتروني التفاعلي - الدراسات الاجتماعية</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f0f4f8; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .quiz-card { background: #ffffff; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); width: 100%; max-width: 750px; padding: 25px; }
+        .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
+        .header h2 { color: #1e293b; margin: 0 0 5px 0; font-size: 1.5rem; }
+        .header p { color: #64748b; margin: 0; font-size: 0.95rem; }
+        .controls { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 18px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; }
+        .timer-box { color: #e11d48; font-size: 1.1rem; }
+        .map-container { text-align: center; margin-bottom: 15px; }
+        .map-img { max-width: 100%; height: auto; border-radius: 10px; border: 2px solid #cbd5e1; }
+        .question-title { font-size: 1.2rem; font-weight: bold; color: #0f172a; margin-bottom: 15px; line-height: 1.6; }
+        textarea { width: 100%; height: 90px; padding: 12px; border: 2px solid #cbd5e1; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; resize: none; }
+        textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+        .btn-submit { background-color: #2563eb; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; transition: 0.2s; }
+        .btn-submit:hover { background-color: #1d4ed8; }
+        .feedback-box { display: none; margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 1rem; line-height: 1.6; }
+        .feedback-correct { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .feedback-incorrect { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .btn-next { background-color: #0d9488; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; display: none; }
+        .btn-next:hover { background-color: #0f766e; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-card">
+    <div class="header">
+        <h2>📑 بنك التدريبات التفاعلي الشامل</h2>
+        <p>تدريب مكثف وتصحيح فوري لأسئلة الخرائط والمقالي</p>
+    </div>
+
+    <div class="controls">
+        <span id="q-counter">السؤال 1 من 150</span>
+        <span class="timer-box" id="timer">⏱️ المتبقي: 45 ثانية</span>
+    </div>
+
+    <div id="map-area" class="map-container" style="display: none;">
+        <img id="map-image" class="map-img" src="" alt="خريطة صماء">
+    </div>
+
+    <div class="question-title" id="question-text">جاري تحميل السؤال...</div>
+    
+    <textarea id="user-answer" placeholder="اكتب إجابتك المقالية هنا بوضوح وسرعة..."></textarea>
+    
+    <button class="btn-submit" id="submit-btn" onclick="checkAnswer()">إرسال الإجابة للتصحيح</button>
+    
+    <div class="feedback-box" id="feedback"></div>
+    
+    <button class="btn-next" id="next-btn" onclick="nextQuestion()">السؤال التالي ➔</button>
+</div>
+
+<script>
+    // مصفوفة بنك الأسئلة الشاملة (تتسع لـ 150 سؤالاً)
+    const questionBank = [
+        // --- أسئلة الخرائط ---
+        {
+            q: "أمامك خريطة للوطن العربي، حدد الرقم (1) يشير إلى جبال: ........",
+            type: "map",
+            mapUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Arab_World_location_map.svg/600px-Arab_World_location_map.svg.png",
+            modelAnswer: "جبال أطلس",
+            keywords: ["أطلس", "اطلس"],
+            easyTip: "💡 تذكر: جبال أطلس تقع في أقصى شمال غرب الوطن العربي."
+        },
+        {
+            q: "على الخريطة، الرقم (2) يشير إلى مضيق إستراتيجي هام هو مضيق: ........",
+            type: "map",
+            mapUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Arab_World_location_map.svg/600px-Arab_World_location_map.svg.png",
+            modelAnswer: "مضيق باب المندب",
+            keywords: ["باب المندب", "المندب"],
+            easyTip: "💡 تذكر: مضيق باب المندب عربي خالص تحت إشراف جيبوتي واليمن."
+        },
+        // --- أسئلة بم تفسر ---
+        {
+            q: "بم تفسر: الأهمية الإستراتيجية والعسكرية لموقع الوطن العربي؟",
+            type: "text",
+            modelAnswer: "بسبب تحكمه في بحار مهمة، وسيطرته على 4 ممرات مائية وإستراتيجية مهمة تحكمت في طرق التجارة العالمية.",
+            keywords: ["ممرات", "مائية", "تجارة", "بحار", "سيطرة"],
+            easyTip: "💡 ملخص الإجابة: تحكمه في الممرات المائية والملاحة العالمية."
+        },
+        {
+            q: "بم تفسر: تكوّن الثلوج على قمم الجبال العالية في الوطن العربي مثل جبال لبنان؟",
+            type: "text",
+            modelAnswer: "لأنه كلما ارتفعنا 150 متراً عن مستوى سطح البحر تنخفض درجة الحرارة بمقدار درجة واحدة مئوية.",
+            keywords: ["ارتفعنا", "150", "تنخفض", "حرارة"],
+            easyTip: "💡 ملخص الإجابة: الارتفاع الشديد (كل 150م تنقص الحرارة 1 مئوية)."
+        },
+        // --- أسئلة ما النتائج المترتبة على ---
+        {
+            q: "ما النتائج المترتبة على: امتداد حدود الوطن العربي مع ظواهر طبيعية؟",
+            type: "text",
+            modelAnswer: "ساعد ذلك على احتفاظ الوطن العربي بشخصيته العربية المستقلة، وسهولة اتصاله بالعالم الخارجي.",
+            keywords: ["احتفاظ", "شخصيته", "اتصال", "مستقلة"],
+            easyTip: "💡 ملخص الإجابة: حفظ شخصيته المستقلة وسهولة اتصاله بالعالم."
+        },
+        {
+            q: "ما النتائج المترتبة على: تنوع المناخ في الوطن العربي؟",
+            type: "text",
+            modelAnswer: "أدى إلى تنوع النبات الطبيعي وتنوع المحاصيل الزراعية وتبادلها بين الدول العربية.",
+            keywords: ["تنوع", "نبات", "محاصيل", "تبادل"],
+            easyTip: "💡 ملخص الإجابة: تنوع المحاصيل الزراعية والتبادل بين الدول."
+        },
+        // --- أسئلة ماذا يحدث إذا ---
+        {
+            q: "ماذا يحدث إذا: لم ينفق الممر المائي لقناة السويس في الوطن العربي؟",
+            type: "text",
+            modelAnswer: "لم يتم الربط بين البحر الأحمر والبحر المتوسط وقلت الأهمية التجارية والإستراتيجية لمصر والوطن العربي.",
+            keywords: ["ربط", "أحمر", "متوسط", "تجارة", "أهمية"],
+            easyTip: "💡 ملخص الإجابة: صعوبة التجارة وعدم الربط بين البحرين الأحمر والمتوسط."
+        }
+        // يمكن إضافة بقية الأسئلة الـ 150 بداخل هذه المصفوفة بنفس النمط تماماً
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let timeLeft = 45;
+    let timerInterval;
+
+    function normalizeText(text) {
+        return text.trim()
+            .replace(/[أإآء]/g, "ا")
+            .replace(/ة/g, "ه")
+            .replace(/ى/g, "ي")
+            .replace(/[^\w\sع-ي]/gi, '');
+    }
+
+    function loadQuestion() {
+        clearInterval(timerInterval);
+        timeLeft = 45;
+        document.getElementById("timer").innerText = `⏱️ المتبقي: ${timeLeft} ثانية`;
+        document.getElementById("feedback").style.display = "none";
+        document.getElementById("next-btn").style.display = "none";
+        document.getElementById("submit-btn").style.display = "block";
+        document.getElementById("user-answer").value = "";
+        document.getElementById("user-answer").disabled = false;
+
+        const qData = questionBank[currentQ];
+        document.getElementById("q-counter").innerText = `السؤال ${currentQ + 1} من ${questionBank.length}`;
+        document.getElementById("question-text").innerText = `س: ${qData.q}`;
+
+        // إظهار الخريطة إذا كان السؤال خريطة
+        const mapArea = document.getElementById("map-area");
+        if (qData.type === "map" && qData.mapUrl) {
+            document.getElementById("map-image").src = qData.mapUrl;
+            mapArea.style.display = "block";
+        } else {
+            mapArea.style.display = "none";
+        }
+
+        // المؤقت الزمني للسرعة
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById("timer").innerText = `⏱️ المتبقي: ${timeLeft} ثانية`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                checkAnswer(true);
+            }
+        }, 1000);
+    }
+
+    function checkAnswer(isTimeOut = false) {
+        clearInterval(timerInterval);
+        const userText = document.getElementById("user-answer").value;
+        const normalizedUser = normalizeText(userText);
+        const qData = questionBank[currentQ];
+        const feedbackEl = document.getElementById("feedback");
+
+        document.getElementById("user-answer").disabled = true;
+        document.getElementById("submit-btn").style.display = "none";
+        feedbackEl.style.display = "block";
+
+        // التحقق من وجود الكلمات المفتاحية في الإجابة المقالية
+        let matchedCount = 0;
+        qData.keywords.forEach(kw => {
+            if (normalizedUser.includes(normalizeText(kw))) {
+                matchedCount++;
+            }
+        });
+
+        const isCorrect = matchedCount >= Math.min(2, qData.keywords.length);
+
+        if (isCorrect && !isTimeOut) {
+            score++;
+            feedbackEl.className = "feedback-box feedback-correct";
+            feedbackEl.innerHTML = `
+                🌟 <strong>ممتاز جداً! إجابة رائعة وتفكير سريع.</strong><br>
+                📌 <strong>الصياغة المثالية النموذجية:</strong> ${qData.modelAnswer}<br>
+                <small>${qData.easyTip}</small>
+            `;
+        } else if (isTimeOut) {
+            feedbackEl.className = "feedback-box feedback-incorrect";
+            feedbackEl.innerHTML = `
+                ⏰ <strong>انتهى الوقت المحدد للإجابة!</strong><br>
+                📌 <strong>الإجابة النموذجية:</strong> ${qData.modelAnswer}<br>
+                <small>${qData.easyTip}</small>
+            `;
+        } else {
+            feedbackEl.className = "feedback-box feedback-incorrect";
+            feedbackEl.innerHTML = `
+                💡 <strong>محاولة جيدة! تحتاجي للتركيز على النقاط الرئيسية.</strong><br>
+                📌 <strong>الإجابة النموذجية الكاملة:</strong> ${qData.modelAnswer}<br>
+                <small>${qData.easyTip}</small>
+            `;
+        }
+
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        currentQ++;
+        if (currentQ < questionBank.length) {
+            loadQuestion();
+        } else {
+            document.getElementById("question-text").innerText = `🎉 أحسنت! أكملت الاختبار التفاعلي بنجاح. درجتك النهائية: ${score} من ${questionBank.length}`;
+            document.getElementById("map-area").style.display = "none";
+            document.getElementById("user-answer").style.display = "none";
+            document.getElementById("submit-btn").style.display = "none";
+            document.getElementById("next-btn").style.display = "none";
+            document.getElementById("timer").style.display = "none";
+        }
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
