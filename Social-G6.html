@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بنك التدريبات الإلكتروني التفاعلي - الدراسات الاجتماعية</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f0f4f8; margin: 0; padding: 15px; display: flex; justify-content: center; }
+    .quiz-card { background: #ffffff; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); width: 100%; max-width: 750px; padding: 25px; }
+    .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
+    .header h2 { color: #1e293b; margin: 0 0 5px 0; font-size: 1.5rem; }
+    .header p { color: #64748b; margin: 0; font-size: 0.95rem; }
+    .controls { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 10px; border-radius: 10px; margin-bottom: 15px; }
+    .timer-box { color: #e11d48; font-size: 1.1rem; }
+    .map-container { text-align: center; margin-bottom: 15px; }
+    .map-img { max-width: 100%; height: auto; border-radius: 10px; border: 2px solid #cbd5e1; }
+    .question-title { font-size: 1.2rem; font-weight: bold; color: #0f172a; margin-bottom: 15px; line-height: 1.6; }
+    textarea { width: 100%; height: 90px; padding: 12px; border: 2px solid #cbd5e1; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; }
+    textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+    .submit-btn { background-color: #2563eb; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+    .submit-btn:hover { background-color: #1d4ed8; }
+    .feedback-box { display: none; margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 1rem; line-height: 1.6; }
+    .feedback-correct { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .feedback-incorrect { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .next-btn { background-color: #059669; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 15px; display: none; }
+    .next-btn:hover { background-color: #047857; }
+  </style>
+</head>
+<body>
+
+<div class="quiz-card">
+  <div class="header">
+    <h2>🎯 بنك التدريبات التفاعلي الشامل</h2>
+    <p>تدريب مكثف وتصحيح فوري لأسئلة الخرائط والأجزاء المقالية</p>
+  </div>
+
+  <div class="controls">
+    <span id="q-counter">السؤال 1 من 150</span>
+    <span class="timer-box" id="timer">⏱️ المتبقي: 45 ثانية</span>
+  </div>
+
+  <div id="map-area" class="map-container" style="display: none;">
+    <img id="map-image" class="map-img" src="" alt="خريطة صماء">
+  </div>
+
+  <div class="question-title" id="question-text">جاري تحميل السؤال...</div>
+
+  <textarea id="user-answer" placeholder="اكتب إجابتك المقالية هنا بوضوح وسرعة..."></textarea>
+  
+  <br><br>
+  <button class="submit-btn" id="submit-btn" onclick="checkAnswer()">إرسال الإجابة للتصحيح 🚀</button>
+
+  <div class="feedback-box" id="feedback"></div>
+
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
+</div>
+
+<script>
+  const questionBank = [
+    {
+      type: "map",
+      question: "أمامك خريطة للوطن العربي، حدد الرقم (1) يشير إلى جبال: ............",
+      mapUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Arab_World_location_map.svg/600px-Arab_World_location_map.svg.png",
+      modelAnswer: "جبال أطلس",
+      keywords: ["أطلس"],
+      easyTip: "تذكر: جبال أطلس تقع في أقصى شمال غرب الوطن العربي."
+    },
+    {
+      type: "map",
+      question: "على الخريطة، الرقم (2) يشير إلى مضيق إستراتيجي هام هو مضيق: ............",
+      mapUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Arab_World_location_map.svg/600px-Arab_World_location_map.svg.png",
+      modelAnswer: "مضيق باب المندب",
+      keywords: ["باب المندب"],
+      easyTip: "تذكر: مضيق باب المندب يقع خالص تحت إشراف عربي خالص."
+    },
+    {
+      type: "text",
+      question: "بم تفسر: أجهزة الدولة تهتم بتطوير وسائل النواحي الاقتصادية والخدمية؟",
+      modelAnswer: "لرفع مستوى معيشة المواطنين وتوفير فرص عمل جيدة وتحقيق التنمية المستدامة.",
+      keywords: ["معيشة", "تنمية", "فرص عمل", "المواطنين"],
+      easyTip: "ركز على كلمات: مستوى المعيشة - التنمية - توفير الفرص."
+    }
+  ];
+
+  let currentQ = 0;
+  let timeLeft = 45;
+  let timerInterval;
+
+  function loadQuestion() {
+    clearInterval(timerInterval);
+    timeLeft = 45;
+    document.getElementById("timer").innerText = `⏱️ المتبقي: ${timeLeft} ثانية`;
+    
+    document.getElementById("user-answer").value = "";
+    document.getElementById("feedback").style.display = "none";
+    document.getElementById("next-btn").style.display = "none";
+    document.getElementById("submit-btn").style.display = "inline-block";
+    document.getElementById("user-answer").disabled = false;
+
+    let qData = questionBank[currentQ];
+    document.getElementById("q-counter").innerText = `السؤال ${currentQ + 1} من ${questionBank.length}`;
+    document.getElementById("question-text").innerText = qData.question;
+
+    if (qData.type === "map") {
+      document.getElementById("map-area").style.display = "block";
+      document.getElementById("map-image").src = qData.mapUrl;
+    } else {
+      document.getElementById("map-area").style.display = "none";
+    }
+
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      document.getElementById("timer").innerText = `⏱️ المتبقي: ${timeLeft} ثانية`;
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        checkAnswer(true);
+      }
+    }, 1000);
+  }
+
+  function checkAnswer(isTimeOut = false) {
+    clearInterval(timerInterval);
+    document.getElementById("user-answer").disabled = true;
+    document.getElementById("submit-btn").style.display = "none";
+    document.getElementById("next-btn").style.display = "inline-block";
+
+    let uAns = document.getElementById("user-answer").value.trim();
+    let qData = questionBank[currentQ];
+    let feedbackEl = document.getElementById("feedback");
+
+    let isCorrect = qData.keywords.some(kw => uAns.includes(kw));
+
+    feedbackEl.style.display = "block";
+
+    if (isTimeOut) {
+      feedbackEl.className = "feedback-box feedback-incorrect";
+      feedbackEl.innerHTML = `⏰ <strong>انتهى الوقت المحدد!</strong><br>📌 <strong>الإجابة النموذجية:</strong> ${qData.modelAnswer}<br>💡 <small>${qData.easyTip}</small>`;
+    } else if (isCorrect) {
+      feedbackEl.className = "feedback-box feedback-correct";
+      feedbackEl.innerHTML = `🎉 <strong>إجابة ممتازة وصحيحة!</strong><br>📌 <strong>الإجابة النموذجية الكاملة:</strong> ${qData.modelAnswer}`;
+    } else {
+      feedbackEl.className = "feedback-box feedback-incorrect";
+      feedbackEl.innerHTML = `❌ <strong>حاول مرة أخرى! الإجابة غير كاملة.</strong><br>📌 <strong>الإجابة النموذجية الصحيحة:</strong> ${qData.modelAnswer}<br>💡 <strong>التركيز على النقاط الرئيسية:</strong> <small>${qData.easyTip}</small>`;
+    }
+  }
+
+  function nextQuestion() {
+    currentQ++;
+    if (currentQ < questionBank.length) {
+      loadQuestion();
+    } else {
+      document.getElementById("question-text").innerText = "🎉 ألف مبروك! أتممت جميع أسئلة الاختبار بنجاح.";
+      document.getElementById("map-area").style.display = "none";
+      document.getElementById("user-answer").style.display = "none";
+      document.getElementById("submit-btn").style.display = "none";
+      document.getElementById("next-btn").style.display = "none";
+      document.getElementById("timer").style.display = "none";
+      document.getElementById("feedback").style.display = "none";
+    }
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>
