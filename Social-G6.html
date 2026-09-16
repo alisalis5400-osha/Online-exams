@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بنك التدريبات الإلكتروني التفاعلي - الدراسات الاجتماعية</title>
+  <title>بنك التدريبات التفاعلي الشامل - الدراسات الاجتماعية</title>
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: #f0f4f8; margin: 0; padding: 15px; display: flex; justify-content: center; }
@@ -11,20 +11,31 @@
     .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
     .header h2 { color: #1e293b; margin: 0 0 5px 0; font-size: 1.5rem; }
     .header p { color: #64748b; margin: 0; font-size: 0.95rem; }
-    .controls { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 10px; border-radius: 10px; margin-bottom: 15px; }
+    
+    .student-info-box { background: #f8fafc; padding: 20px; border-radius: 10px; border: 1px solid #cbd5e1; text-align: center; }
+    .student-info-box label { font-size: 1.1rem; font-weight: bold; color: #1e293b; display: block; margin-bottom: 10px; }
+    .student-info-box input { width: 80%; max-width: 350px; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 1rem; text-align: center; outline: none; }
+    .start-btn { background-color: #2563eb; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 15px; }
+
+    .quiz-body { display: none; }
+    .controls { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 15px; border-radius: 10px; margin-bottom: 15px; font-weight: bold; }
     .timer-box { color: #e11d48; font-size: 1.1rem; }
     .map-container { text-align: center; margin-bottom: 15px; }
-    .map-img { max-width: 100%; height: auto; border-radius: 10px; border: 2px solid #cbd5e1; }
+    .map-img { max-width: 100%; height: auto; max-height: 280px; border-radius: 10px; border: 2px solid #cbd5e1; }
     .question-title { font-size: 1.2rem; font-weight: bold; color: #0f172a; margin-bottom: 15px; line-height: 1.6; }
     textarea { width: 100%; height: 90px; padding: 12px; border: 2px solid #cbd5e1; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; }
     textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
     .submit-btn { background-color: #2563eb; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
-    .submit-btn:hover { background-color: #1d4ed8; }
     .feedback-box { display: none; margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 1rem; line-height: 1.6; }
     .feedback-correct { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     .feedback-incorrect { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     .next-btn { background-color: #059669; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 15px; display: none; }
-    .next-btn:hover { background-color: #047857; }
+
+    /* تقرير النتيجة النهائي */
+    .result-card { display: none; background: #f8fafc; border-radius: 12px; padding: 20px; border: 2px solid #e2e8f0; line-height: 1.8; }
+    .score-badge { font-size: 1.4rem; font-weight: bold; color: #2563eb; text-align: center; margin-bottom: 15px; }
+    .weakness-list { background: #fff; padding: 15px; border-radius: 8px; border-right: 4px solid #ef4444; margin-top: 15px; }
+    .weakness-list ul { margin: 5px 0 0 0; padding-right: 20px; }
   </style>
 </head>
 <body>
@@ -32,60 +43,317 @@
 <div class="quiz-card">
   <div class="header">
     <h2>🎯 بنك التدريبات التفاعلي الشامل</h2>
-    <p>تدريب مكثف وتصحيح فوري لأسئلة الخرائط والأجزاء المقالية</p>
+    <p>الصف السادس الابتدائي - الدراسات الاجتماعية (30 سؤالاً)</p>
   </div>
 
-  <div class="controls">
-    <span id="q-counter">السؤال 1 من 150</span>
-    <span class="timer-box" id="timer">⏱️ المتبقي: 45 ثانية</span>
+  <!-- مرحلة إدخال اسم الطالب -->
+  <div id="student-section" class="student-info-box">
+    <label for="student-name">أدخل اسم الطالب / الطالبة للبدء:</label>
+    <input type="text" id="student-name" placeholder="اكتب اسمك الثلاثي هنا..." />
+    <br>
+    <button class="start-btn" onclick="startQuiz()">ابدأ الاختبار الآن 🚀</button>
   </div>
 
-  <div id="map-area" class="map-container" style="display: none;">
-    <img id="map-image" class="map-img" src="" alt="خريطة صماء">
+  <!-- جسم الامتحان -->
+  <div id="quiz-section" class="quiz-body">
+    <div class="controls">
+      <span id="student-display" style="color: #1e293b;"></span>
+      <span id="q-counter"></span>
+      <span class="timer-box" id="timer">⏱️ المتبقي: 45 ثانية</span>
+    </div>
+
+    <div id="map-area" class="map-container" style="display: none;">
+      <img id="map-image" class="map-img" src="" alt="خريطة صماء">
+    </div>
+
+    <div class="question-title" id="question-text">جاري تحميل السؤال...</div>
+
+    <textarea id="user-answer" placeholder="اكتب إجابتك هنا بوضوح..."></textarea>
+    
+    <br><br>
+    <button class="submit-btn" id="submit-btn" onclick="checkAnswer()">إرسال الإجابة للتصحيح 🚀</button>
+
+    <div class="feedback-box" id="feedback"></div>
+
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
   </div>
 
-  <div class="question-title" id="question-text">جاري تحميل السؤال...</div>
-
-  <textarea id="user-answer" placeholder="اكتب إجابتك المقالية هنا بوضوح وسرعة..."></textarea>
-  
-  <br><br>
-  <button class="submit-btn" id="submit-btn" onclick="checkAnswer()">إرسال الإجابة للتصحيح 🚀</button>
-
-  <div class="feedback-box" id="feedback"></div>
-
-  <button class="next-btn" id="next-btn" onclick="nextQuestion()">السؤال التالي ⬅️</button>
+  <!-- صفحة النتيجة النهائية والتقرير -->
+  <div id="result-section" class="result-card">
+    <div id="score-header" class="score-badge"></div>
+    <div id="score-details"></div>
+    <div id="weakness-report" class="weakness-list" style="display: none;">
+      <strong>⚠️ أجزاء تحتاج إلى إعادة مراجعة وزيادة تركيز:</strong>
+      <ul id="weakness-items"></ul>
+    </div>
+  </div>
 </div>
 
 <script>
+  let studentName = "";
+  let score = 0;
+  let wrongTopics = [];
+
+  // بنك الأسئلة - 30 سؤالاً شاملاً
   const questionBank = [
     {
       type: "map",
-      question: "أمامك خريطة للوطن العربي، حدد الرقم (1) يشير إلى جبال: ............",
-      mapUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Arab_World_location_map.svg/600px-Arab_World_location_map.svg.png",
+      topic: "أسئلة الخرائط (جبال الوطن العربي)",
+      question: "س1: أمامك خريطة للوطن العربي، يشير رقم (1) في أقصى الشمال الغربي إلى جبال: ............",
       modelAnswer: "جبال أطلس",
       keywords: ["أطلس"],
-      easyTip: "تذكر: جبال أطلس تقع في أقصى شمال غرب الوطن العربي."
+      easyTip: "تذكر: جبال أطلس تمتد في المغرب والجزائر وتونس."
     },
     {
       type: "map",
-      question: "على الخريطة، الرقم (2) يشير إلى مضيق إستراتيجي هام هو مضيق: ............",
-      mapUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Arab_World_location_map.svg/600px-Arab_World_location_map.svg.png",
+      topic: "أسئلة الخرائط (المضايق البحرية)",
+      question: "س2: تشير الخريطة للرقم (2) عند الممر المائي بين البحر الأحمر وخليج أعدن، وهو مضيق: ............",
       modelAnswer: "مضيق باب المندب",
       keywords: ["باب المندب"],
-      easyTip: "تذكر: مضيق باب المندب يقع خالص تحت إشراف عربي خالص."
+      easyTip: "تذكر: مضيق باب المندب يشرف عليه جيبوتي واليمن."
+    },
+    {
+      type: "map",
+      topic: "أسئلة الخرائط (المحيطات والبحار)",
+      question: "س3: يحد الوطن العربي من جهة الغرب محيط هام جداً وهو المحيط: ............",
+      modelAnswer: "المحيط الأطلنطي",
+      keywords: ["الأطلنطي", "الاطلنطي"],
+      easyTip: "تذكر: المحيط الأطلنطي يحد الوطن العربي غرباً."
+    },
+    {
+      type: "map",
+      topic: "أسئلة الخرائط (الهضاب)",
+      question: "س4: أكبر هضاب الوطن العربي مساحة في الجناح الأفريقي هي هضبة: ............",
+      modelAnswer: "هضبة إفريقيا الشمالية (أو هضبة الصحراء الكبرى)",
+      keywords: ["إفريقيا الشمالية", "افريقيا الشمالية", "الصحراء الكبرى"],
+      easyTip: "تذكر: تمتد من البحر الأحمر شرقاً حتى المحيط الأطلنطي غرباً."
+    },
+    {
+      type: "map",
+      topic: "أسئلة الخرائط (الممرات الملاحية)",
+      question: "س5: قناة مائية مصرية هامة تربط بين البحر المتوسط والبحر الأحمر هي: ............",
+      modelAnswer: "قناة السويس",
+      keywords: ["السويس"],
+      easyTip: "تذكر: قناة السويس ممر ملاحي عالمي يقع بالكامل في مصر."
     },
     {
       type: "text",
-      question: "بم تفسر: أجهزة الدولة تهتم بتطوير وسائل النواحي الاقتصادية والخدمية؟",
-      modelAnswer: "لرفع مستوى معيشة المواطنين وتوفير فرص عمل جيدة وتحقيق التنمية المستدامة.",
-      keywords: ["معيشة", "تنمية", "فرص عمل", "المواطنين"],
-      easyTip: "ركز على كلمات: مستوى المعيشة - التنمية - توفير الفرص."
+      topic: "الأهمية الإستراتيجية والدينية للوطن العربي",
+      question: "س6: بم تفسر: للأراضي العربية أهمية دينية كبيرة لجميع سكان العالم؟",
+      modelAnswer: "لأنه مهد الديانات السماوية الثلاث، ويضم أماكن مقدسة مثل الكعبة المشرفة وكنيسة القيامة والمسجد الأقصى.",
+      keywords: ["الديانات", "مقدسة", "الكعبة", "القيامة", "الأقصى"],
+      easyTip: "اربط الإجابة بوجود الأماكن المقدسة والديانات السماوية."
+    },
+    {
+      type: "text",
+      topic: "التضاريس (الجبال الإلتوائية والانكسارية)",
+      question: "س7: صنف جبال البحر الأحمر من حيث سبب النشأة (هل هي جبال التوائية أم انكسارية؟)",
+      modelAnswer: "جبال انكسارية (نتجت عن انكسار في القشرة الأرضية).",
+      keywords: ["انكسارية", "انكسار"],
+      easyTip: "جبال البحر الأحمر وجبال الشام هي جبال انكسارية."
+    },
+    {
+      type: "text",
+      topic: "الأقاليم المناخية في الوطن العربي",
+      question: "س8: بم تفسر: يسود المناخ الصحراوي معظم مساحة الوطن العربي؟",
+      modelAnswer: "لأن الوطن العربي يقعظظظظظ معظمه بين دائرتي عرض 18 و 30 شمالاً ضمن النطاق المداري الحار.",
+      keywords: ["مداري", "صحراوي", "الموقع"],
+      easyTip: "المناخ الصحراوي يشغل حوالي 80% من مساحة الوطن العربي."
+    },
+    {
+      type: "text",
+      topic: "المناخ والنبات الطبيعي",
+      question: "س9: ما النتائج المترتبة على: تنوع المناخ في الوطن العربي؟",
+      modelAnswer: "تنوع المحاصيل الزراعية وتنوع النبات الطبيعي وتحقيق التبادل بين الدول العربية.",
+      keywords: ["المحاصيل", "النبات", "التبادل", "تنوع"],
+      easyTip: "تنوع المناخ يؤدي دائماً لتنوع النبات والمحاصيل."
+    },
+    {
+      type: "text",
+      topic: "المشكلات البيئية (التصحر والجفاف)",
+      question: "س10: أذكر سبباً واحداً لحدوث مشكلة التصحر في الوطن العربي.",
+      modelAnswer: "زحف الرمال، الرعي الجائر، قطع الأشجار، أو استخدام طرق الري التقليدية.",
+      keywords: ["الرمال", "الرعي", "الأشجار", "الري", "جفاف"],
+      easyTip: "اختر أسهل سبب مثل الرعي الجائر أو قطع الأشجار."
+    },
+    {
+      type: "text",
+      topic: "السكان والتوزيع السكاني",
+      question: "س11: بم تفسر: يتركز السكان في مناطق السهول الفيضية بالوطن العربي؟",
+      modelAnswer: "بسبب وفرة المياه العذبة والتربة الخصبة وقيام الزراعة.",
+      keywords: ["المياه", "التربة", "الزراعة", "عذبة"],
+      easyTip: "السهول الفيضية مثل سهول وادي النيل بالعراق ومصر."
+    },
+    {
+      type: "text",
+      topic: "السكان والتوزيع السكاني",
+      question: "س12: ينقسم سكان الوطن العربي إلى حضر وريف، أيهما يمثل النسبة الأكبر؟",
+      modelAnswer: "سكان الحضر (المدن) يمثلون النسبة الأكبر.",
+      keywords: ["الحضر", "المدن"],
+      easyTip: "يمثل سكان الحضر نحو ثلثي سكان الوطن العربي."
+    },
+    {
+      type: "text",
+      topic: "التاريخ الإسلامي (السيرة النبوية)",
+      question: "س13: ما النتائج المترتبة على: صلح الحديبية عام 6 هـ؟",
+      modelAnswer: "بدء مرحلة نشر الدعوة الإسلامية عالمياً وإرسال الرسل إلى الملوك والرؤساء.",
+      keywords: ["عالميا", "عالمية", "نشر", "الدعوة", "الملوك"],
+      easyTip: "صلح الحديبية كان فتحاً مبيناً ونقل الدعوة للعالمية."
+    },
+    {
+      type: "text",
+      topic: "التاريخ الإسلامي (الغزوات)",
+      question: "س14: علل: تسمية غزوة الخندق باسم غزوة الأحزاب؟",
+      modelAnswer: "لأن قريش وتحالفت مع القبائل المجاورة (الأحزاب) ضد المسلمين.",
+      keywords: ["تحالف", "قبائل", "قريش", "الأحزاب"],
+      easyTip: "سميت الأحزاب لتجمع قبائل كثيرة ضد النبي ﷺ."
+    },
+    {
+      type: "text",
+      topic: "التاريخ الإسلامي (الخلفاء الراشدون)",
+      question: "س15: من هو أول خيلفة للمسلمين بعد وفاة النبي صلى الله عليه وسلم؟",
+      modelAnswer: "أبو بكر الصديق رضي الله عنه.",
+      keywords: ["أبو بكر", "ابو بكر", "الصديق"],
+      easyTip: "تم اختيار أبو بكر الصديق باجتماع المسلمين في سقيفة بني ساعدة."
+    },
+    {
+      type: "text",
+      topic: "التاريخ الإسلامي (الخلفاء الراشدون)",
+      question: "س16: أذكر عملاً واحداً قام به الخليفة عمر بن الخطاب رضي الله عنه.",
+      modelAnswer: "إنشاء الدواوين، وضع التقويم الهجري، أو فتح بيت المقدس ومصر.",
+      keywords: ["الدواوين", "التقويم", "الهجري", "مصر", "القدس"],
+      easyTip: "إنشاء الدواوين مثل ديوان بيت المال وديوان الجند."
+    },
+    {
+      type: "text",
+      topic: "التاريخ الإسلامي (عثمان بن عفان)",
+      question: "س17: بم تفسر: إقدام الخليفة عثمان بن عفان على كتابة القرآن في مصحف واحد؟",
+      modelAnswer: "لتوحد قراءة القرآن الكريم بين المسلمين في جميع الفتوحات.",
+      keywords: ["توحيد", "قراءة", "المصحف", "القرآن"],
+      easyTip: "كتبه بلسان قريش لتوحيد قراءته بجميع الدول الإسلامية."
+    },
+    {
+      type: "text",
+      topic: "التاريخ الإسلامي (علي بن أبي طالب)",
+      question: "س18: أين نقل الخليفة علي بن أبي طالب مقر الخلافة الإسلامية؟",
+      modelAnswer: "إلى مدينة الكوفة في العراق.",
+      keywords: ["الكوفة", "عراق"],
+      easyTip: "نقل العاصمة من المدينة المنورة إلى الكوفة لتسهيل الحركة."
+    },
+    {
+      type: "text",
+      topic: "الزراعة في الوطن العربي",
+      question: "س19: بم تفسر: أزمة نقص المياه العذبة تهدد الزراعة في الوطن العربي؟",
+      modelAnswer: "بسبب وقوع معظم الأراضي في نطاق الجفاف، وتذبذب كميات الأمطار.",
+      keywords: ["الجفاف", "الأمطار", "تذبذب", "قلة"],
+      easyTip: "معظم الزراعة بالوطن العربي تعتمد على الأمطار المتذبذبة."
+    },
+    {
+      type: "text",
+      topic: "الثروة الحيوانية والسمكية",
+      question: "س20: تعد دولة .......... الأولى عربياً في تربية الإبل (الجمال).",
+      modelAnswer: "دولة الصومال.",
+      keywords: ["الصومال"],
+      easyTip: "الصومال تمتلك أكبر أعداد من الإبل في الوطن العربي."
+    },
+    {
+      type: "text",
+      topic: "التعدين والصناعة",
+      question: "س21: ما هو المورد المعدني الذي تحتل فيه المغرب المرتبة الأولى عربياً في إنتاجه؟",
+      modelAnswer: "معدن الفوسفات.",
+      keywords: ["الفوسفات"],
+      easyTip: "الفوسفات يدخل في صناعة الأسمدة والمبيدات الحشرية."
+    },
+    {
+      type: "text",
+      topic: "مصادر الطاقة",
+      question: "س22: أذكر مثالاً واحداً لمصادر الطاقة النظيفة والمتجددة المستخدمة حالياً.",
+      modelAnswer: "الطاقة الشمسية، طاقة الرياح، أو الطاقة الكهرومائية.",
+      keywords: ["شمسية", "رياح", "كهرومائية", "الشمس"],
+      easyTip: "الطاقة الشمسية وطاقة الرياح لا تلوث البيئة."
+    },
+    {
+      type: "text",
+      topic: "السياحة في الوطن العربي",
+      question: "س23: بم تفسر: إقبال السياح على زيارة عين عذاري في البحرين والعيون الكبريتية بمصر؟",
+      modelAnswer: "لغرض السياحة العلاجية والاستشفاء من الأمراض.",
+      keywords: ["علاجية", "استشفاء", "علاج"],
+      easyTip: "المياه الكبريتية تستخدم للسياحة العلاجية."
+    },
+    {
+      type: "text",
+      topic: "التجارة العربية",
+      question: "س24: ما السبب في ضعف التجارة البينية (التبادل التجاري) بين الدول العربية؟",
+      modelAnswer: "تشابه المنتجات العربية والروتين وجودة البضائع الأجنبية المنافسة.",
+      keywords: ["تشابه", "روتين", "منافسة", "أجنبية"],
+      easyTip: "تشابه الإنتاج من أكبر أسباب ضعف التجارة البينية."
+    },
+    {
+      type: "text",
+      topic: "التنمية المستدامة",
+      question: "س25: أين أقيمت أول مدينة مستدامة صديقة للبيئة بالكامل في الإمارات؟",
+      modelAnswer: "مدينة مصدر في أبوظبي.",
+      keywords: ["مصدر"],
+      easyTip: "مدينة مصدر تعتمد بالكامل على الطاقة المتجددة."
+    },
+    {
+      type: "text",
+      topic: "الهجرة والزيادة السكانية",
+      question: "س26: ما النتائج المترتبة على: الهجرة المستمرة من الريف إلى المدن؟",
+      modelAnswer: "ظهور العشوائيات، الضغط على الخدمات، وزيادة التلوث في المدن.",
+      keywords: ["عشوائيات", "العشوائيات", "خدمات", "تلوث", "ازدحام"],
+      easyTip: "الهجرة للمدن تسبب العشوائيات وازدحام الخدمات."
+    },
+    {
+      type: "text",
+      topic: "المقومات الحضارية للوطن العربي",
+      question: "س27: دلل: قامت على أرض الوطن العربي أقدم الحضارات في العالم.",
+      modelAnswer: "حيث قامت فيه الحضارة المصرية القديمة (الفرعونية) وحضارة بلاد الرافدين (العراق).",
+      keywords: ["المصرية", "الفرعونية", "الرافدين", "العراق", "بابل"],
+      easyTip: "أمثلة: حضارة مصر القديمة وحضارة العراق."
+    },
+    {
+      type: "text",
+      topic: "الواحات والمنخفضات",
+      question: "س28: بم تفسر: قيام النشاط الزراعي واستقرار السكان في الواحات بالصحراء؟",
+      modelAnswer: "بسبب وجود المياه الجوفية (الآبار والعيون العذبة).",
+      keywords: ["جوفية", "آبار", "عيون", "الآبار"],
+      easyTip: "الواحات تعتمد دائماً على المياه الجوفية."
+    },
+    {
+      type: "text",
+      topic: "النبات الطبيعي والحيوانات",
+      question: "س29: تعيش الحيوانات آكلة العشب وآكلة اللحوم (حديقة حيوان طبيعية) في حشائش: ............",
+      modelAnswer: "حشائش السافانا (الحارة).",
+      keywords: ["السافانا", "سافانا"],
+      easyTip: "تعتبر حشائش السافانا حديقة حيوان طبيعية."
+    },
+    {
+      type: "text",
+      topic: "الدعم العربي والتعاون الإقليمي",
+      question: "س30: ما المنظمة العربية التي تجمع كافة الدول العربية ومقرها القاهرة؟",
+      modelAnswer: "جامعة الدول العربية.",
+      keywords: ["جامعة", "الدول العربية"],
+      easyTip: "تأسست جامعة الدول العربية عام 1945 ومقرها القاهرة."
     }
   ];
 
   let currentQ = 0;
   let timeLeft = 45;
   let timerInterval;
+
+  function startQuiz() {
+    let nameInput = document.getElementById("student-name").value.trim();
+    if (!nameInput) {
+      alert("برجاء كتابة اسمك الثلاثي للبدء!");
+      return;
+    }
+    studentName = nameInput;
+    document.getElementById("student-section").style.display = "none";
+    document.getElementById("quiz-section").style.display = "block";
+    document.getElementById("student-display").innerText = "👤 الطالب: " + studentName;
+    loadQuestion();
+  }
 
   function loadQuestion() {
     clearInterval(timerInterval);
@@ -104,7 +372,7 @@
 
     if (qData.type === "map") {
       document.getElementById("map-area").style.display = "block";
-      document.getElementById("map-image").src = qData.mapUrl;
+      document.getElementById("map-image").src = "https://upload.wikimedia.org/wikipedia/commons/2/22/Arab_World_location_map.svg";
     } else {
       document.getElementById("map-area").style.display = "none";
     }
@@ -133,15 +401,15 @@
 
     feedbackEl.style.display = "block";
 
-    if (isTimeOut) {
-      feedbackEl.className = "feedback-box feedback-incorrect";
-      feedbackEl.innerHTML = `⏰ <strong>انتهى الوقت المحدد!</strong><br>📌 <strong>الإجابة النموذجية:</strong> ${qData.modelAnswer}<br>💡 <small>${qData.easyTip}</small>`;
-    } else if (isCorrect) {
+    if (!isTimeOut && isCorrect) {
+      score++;
       feedbackEl.className = "feedback-box feedback-correct";
-      feedbackEl.innerHTML = `🎉 <strong>إجابة ممتازة وصحيحة!</strong><br>📌 <strong>الإجابة النموذجية الكاملة:</strong> ${qData.modelAnswer}`;
+      feedbackEl.innerHTML = `🎉 <strong>ممتاز يا ${studentName}! إجابة صحيحة.</strong><br>📌 <strong>الإجابة النموذجية:</strong> ${qData.modelAnswer}`;
     } else {
+      wrongTopics.push(qData.topic);
       feedbackEl.className = "feedback-box feedback-incorrect";
-      feedbackEl.innerHTML = `❌ <strong>حاول مرة أخرى! الإجابة غير كاملة.</strong><br>📌 <strong>الإجابة النموذجية الصحيحة:</strong> ${qData.modelAnswer}<br>💡 <strong>التركيز على النقاط الرئيسية:</strong> <small>${qData.easyTip}</small>`;
+      let reason = isTimeOut ? "انتهى الوقت المحدد!" : "الإجابة غير كاملة.";
+      feedbackEl.innerHTML = `❌ <strong>حاول مرة أخرى يا ${studentName} (${reason})</strong><br>📌 <strong>الإجابة النموذجية الصحيحة:</strong> ${qData.modelAnswer}<br>💡 <strong>ملاحظة:</strong> <small>${qData.easyTip}</small>`;
     }
   }
 
@@ -150,17 +418,45 @@
     if (currentQ < questionBank.length) {
       loadQuestion();
     } else {
-      document.getElementById("question-text").innerText = "🎉 ألف مبروك! أتممت جميع أسئلة الاختبار بنجاح.";
-      document.getElementById("map-area").style.display = "none";
-      document.getElementById("user-answer").style.display = "none";
-      document.getElementById("submit-btn").style.display = "none";
-      document.getElementById("next-btn").style.display = "none";
-      document.getElementById("timer").style.display = "none";
-      document.getElementById("feedback").style.display = "none";
+      showFinalResult();
     }
   }
 
-  loadQuestion();
+  function showFinalResult() {
+    document.getElementById("quiz-section").style.display = "none";
+    document.getElementById("result-section").style.display = "block";
+
+    let total = questionBank.length;
+    let percentage = Math.round((score / total) * 100);
+
+    let scoreHeader = document.getElementById("score-header");
+    let scoreDetails = document.getElementById("score-details");
+
+    scoreHeader.innerHTML = `🎉 النتيجة النهائية للاختبار`;
+    
+    let evaluationMsg = "";
+    if(percentage >= 85) {
+      evaluationMsg = "ممتاز جداً وأداء رائع! 🌟";
+    } else if(percentage >= 65) {
+      evaluationMsg = "جيد جداً، مع الحاجة لبعض التركيز البسيط! 👍";
+    } else {
+      evaluationMsg = "يحتاج إلى المزيد من المراجعة والتدريب 📚";
+    }
+
+    scoreDetails.innerHTML = `
+      <p style="font-size: 1.1rem;">يا <strong>${studentName}</strong>، درجتك هي: <strong>${score} من ${total}</strong></p>
+      <p style="font-size: 1.1rem;">النسبة المئوية: <strong>${percentage}%</strong> — (${evaluationMsg})</p>
+    `;
+
+    if (wrongTopics.length > 0) {
+      let weaknessReport = document.getElementById("weakness-report");
+      let weaknessItems = document.getElementById("weakness-items");
+      weaknessReport.style.display = "block";
+      
+      let uniqueTopics = [...new Set(wrongTopics)];
+      weaknessItems.innerHTML = uniqueTopics.map(t => `<li>عليك إعادة مراجعة: <strong>${t}</strong></li>`).join("");
+    }
+  }
 </script>
 
 </body>
