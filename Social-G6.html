@@ -21,8 +21,51 @@
         .quiz-body { display: none; }
         .controls { display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 12px 15px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; color: #334155; }
         .timer-box { color: #dc2626; }
+        
+        /* خريطة توضيحية مرسومة بالـ CSS */
         .map-container { text-align: center; margin-bottom: 15px; }
-        .map-img { max-width: 100%; height: auto; max-height: 280px; border-radius: 10px; border: 2px solid #cbd5e1; }
+        .drawn-map {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 220px;
+            margin: 0 auto;
+            background: #e0f2fe; /* لون البحر */
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .land-mass {
+            position: absolute;
+            background: #fef08a; /* لون اليابسة */
+            border: 2px solid #ca8a04;
+            border-radius: 8px;
+        }
+        /* شمال أفريقيا */
+        .north-africa { top: 80px; right: 20px; width: 220px; height: 90px; }
+        /* شبه الجزيرة العربية */
+        .arabian-peninsula { top: 70px; left: 30px; width: 110px; height: 110px; }
+        
+        /* علامة الرقم على الخريطة */
+        .pin {
+            position: absolute;
+            background: #ef4444;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            border: 2px solid white;
+        }
+        .pin-1 { top: 50px; right: 35px; } /* موقع جبال أطلس في أقصى الشمال الغربي */
+
+        .map-title { font-size: 0.85rem; color: #475569; margin-top: 5px; font-weight: bold; }
+
         .question-title { font-size: 1.15rem; font-weight: bold; color: #0f172a; margin-bottom: 15px; line-height: 1.6; }
         textarea { width: 100%; height: 90px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; resize: none; outline: none; margin-bottom: 15px; }
         textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
@@ -63,8 +106,14 @@
             <span class="timer-box">⏱️ المتبقي: <span id="timer">45</span> ثانية</span>
         </div>
 
+        <!-- الخريطة المرسومة -->
         <div id="map-area" class="map-container" style="display: none;">
-            <img id="map-image" class="map-img" src="" alt="خريطة الوطن العربي">
+            <div class="drawn-map">
+                <div class="land-mass north-africa"></div>
+                <div class="land-mass arabian-peninsula"></div>
+                <div class="pin pin-1">1</div>
+            </div>
+            <div class="map-title">📍 مخطط صماء للوطن العربي</div>
         </div>
 
         <div class="question-title" id="question-text">جاري تحميل السؤال...</div>
@@ -90,7 +139,7 @@
 
 <script>
     const quizData = [
-        { q: "س1: أمامك خريطة للوطن العربي، يشير رقم (1) في أقصى الشمال الغربي إلى جبال ............", a: ["اطلس", "جبال اطلس", "أطلس", "جبال أطلس"], map: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Arab_World_location_map.svg/800px-Arab_World_location_map.svg.png", note: "جبال أطلس تقع في أقصى شمال غرب الوطن العربي وتمر بالمغرب والجزائر وتونس." },
+        { q: "س1: أمامك خريطة للوطن العربي، يشير رقم (1) في أقصى الشمال الغربي إلى جبال ............", a: ["اطلس", "جبال اطلس", "أطلس", "جبال أطلس"], map: true, note: "جبال أطلس تقع في أقصى شمال غرب الوطن العربي وتمر بالمغرب والجزائر وتونس." },
         { q: "س2: أعلى قمة جبلية في الوطن العربي هي قمة جبل ............", a: ["توبقال", "جبل توبقال"], note: "قمة جبل توبقال تقع في دولة المغرب بشمال أفريقيا." },
         { q: "س3: يحد الوطن العربي من جهة الشرق خضوعاً لثلاثة مظاهر مائية منها الخليج العربي وخليج عُمان وبحر ............", a: ["العرب", "بحر العرب"], note: "الحدود الشرقية للوطن العربي تطل على الخليج العربي، خليج عمان، وبحر العرب." },
         { q: "س4: الممر المائي الذي يربط بين البحر الأحمر والبحر المتوسط هو ............", a: ["قناة السويس", "قناه السويس"], note: "قناة السويس هي ممر مائي مصري استراتيجي يربط البحرين الأحمر والمتوسط." },
@@ -158,7 +207,6 @@
         document.getElementById("question-text").innerText = q.q;
 
         if (q.map) {
-            document.getElementById("map-image").src = q.map;
             document.getElementById("map-area").style.display = "block";
         } else {
             document.getElementById("map-area").style.display = "none";
