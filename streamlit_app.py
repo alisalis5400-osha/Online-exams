@@ -8,11 +8,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# تخزين المستخدمين مع تخصيص حساب الأدمن الخاص بكِ
+# قاعدة بيانات خفيفة للمستخدمين (الاسم والباسورد فقط)
 if "users_db" not in st.session_state:
     st.session_state["users_db"] = {
-        "alis.alis5400@gmail.com": {"password": "admin", "role": "👑 مدير المنصة (Admin)"},
-        "admin": {"password": "123", "role": "👑 مدير المنصة (Admin)"}
+        "admin": {"password": "123", "role": "👑 مدير المنصة (Admin)"},
+        "ماما": {"password": "123", "role": "👑 مدير المنصة (Admin)"}
     }
 
 if "logged_in" not in st.session_state:
@@ -20,12 +20,12 @@ if "logged_in" not in st.session_state:
     st.session_state["user_role"] = ""
     st.session_state["username"] = ""
 
-# شاشة تسجيل الدخول أو إنشاء حساب
+# شاشة تسجيل الدخول أو إنشاء حساب (اسم وباسورد وبس)
 if not st.session_state["logged_in"]:
     st.markdown("""
         <div style="text-align: center; padding: 15px; background-color: #0f172a; border-radius: 12px; margin-bottom: 25px; color: white;">
             <h1 style="margin: 0; font-size: 2.2rem;">⚡ المنصة التعليمية الذكية</h1>
-            <p style="color: #94a3b8; font-size: 1.1rem; margin-top: 5px;">تسجيل الدخول للمتابعة</p>
+            <p style="color: #94a3b8; font-size: 1.1rem; margin-top: 5px;">تسجيل الدخول للاستخدام الفوري</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -33,54 +33,48 @@ if not st.session_state["logged_in"]:
     with col2:
         auth_mode = st.radio("اختر العملية:", ["تسجيل الدخول", "إنشاء حساب جديد"], horizontal=True)
         
-        username = st.text_input("اسم المستخدم أو الإيميل:")
+        # حقول بسيطة جداً: الاسم وباسورد وبس
+        username = st.text_input("الاسم:")
         password = st.text_input("كلمة المرور:", type="password")
         
         if auth_mode == "تسجيل الدخول":
-            if st.button("دخول كأدمن أو مستخدم", use_container_width=True):
+            if st.button("دخول", use_container_width=True):
                 if username in st.session_state["users_db"] and st.session_state["users_db"][username]["password"] == password:
                     st.session_state["logged_in"] = True
                     st.session_state["username"] = username
                     st.session_state["user_role"] = st.session_state["users_db"][username]["role"]
-                    st.success("تم تسجيل الدخول بنجاح! مرحباً بكِ في منصتك.")
+                    st.success("تم الدخول بنجاح!")
                     st.rerun()
                 else:
-                    st.error("خطأ في اسم المستخدم أو كلمة المرور!")
+                    st.error("خطأ في الاسم أو كلمة المرور!")
         else:
             if st.button("إنشاء الحساب الآن", use_container_width=True):
                 if username and password:
                     if username in st.session_state["users_db"]:
-                        st.warning("هذا الحساب موجود بالفعل، جرب تسجيل الدخول.")
+                        st.warning("هذا الاسم موجود بالفعل، جرب اسماً آخر.")
                     else:
-                        # أي حساب جديد بيتعمل بيكون مستخدم عادي، وأنتِ الأدمن الأساسي
                         st.session_state["users_db"][username] = {"password": password, "role": "student"}
-                        st.success("تم إنشاء الحساب بنجاح! يمكنك الانتقال لتسجيل الدخول الآن.")
+                        st.success("تم إنشاء الحساب بنجاح! انتقل لتسجيل الدخول.")
                 else:
-                    st.warning("يرجى ملء الحقول المطلوبة.")
+                    st.warning("يرجى كتابة الاسم وكلمة المرور.")
     
     st.stop()
 
 # =========================================================
-# الواجهة الرئيسية للمنصة (تظهر فقط بعد الدخول بنجاح)
+# الواجهة الرئيسية للمنصة (تظهر بعد الدخول بنجاح)
 # =========================================================
 st.markdown(f"""
     <div style="text-align: center; padding: 15px; background-color: #0f172a; border-radius: 12px; margin-bottom: 25px; color: white;">
         <h1 style="margin: 0; font-size: 2.2rem;">⚡ المنصة التعليمية الذكية</h1>
-        <p style="color: #38bdf8; font-size: 1.1rem; margin-top: 5px;">أهلاً بكِ يا فندم ({st.session_state.get('username', '')}) - الصلاحية: {st.session_state.get('user_role', '')}</p>
+        <p style="color: #38bdf8; font-size: 1.1rem; margin-top: 5px;">أهلاً بكِ يا فندم ({st.session_state.get('username', '')})</p>
     </div>
 """, unsafe_allow_html=True)
-
-# لو أدمن، نقدر نضيف لوحة تحكم مصغرة في الجانب لو حبيتي
-if "مدير" in st.session_state.get("user_role", ""):
-    st.sidebar.success("👑 أهلاً بكِ في لوحة تحكم الأدمن")
-    if st.sidebar.checkbox("عرض قائمة المستخدمين المسجلين"):
-        st.sidebar.write(st.session_state["users_db"])
 
 if st.sidebar.button("🚪 تسجيل الخروج"):
     st.session_state["logged_in"] = False
     st.rerun()
 
-# 3. الأقسام الرئيسية للمنصة (Tabs)
+# الأقسام الرئيسية للمنصة (Tabs)
 tab1, tab2, tab3 = st.tabs([
     "🎯 بنك الامتحانات التفاعلية", 
     "🎨 التلخيص والتصميم المعرفي", 
