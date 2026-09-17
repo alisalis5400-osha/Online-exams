@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنك أسئلة اللغة العربية الشامل - الصف الثاني الإعدادي (30 سؤالاً)</title>
+    <style>
+        body {
+            font-family: 'Cairo', 'Amiri', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1b4d3e;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .options label {
+            display: block;
+            margin: 8px 0;
+            padding: 8px 12px;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .options label:hover {
+            background: #eaf2ef;
+            border-color: #2e7d61;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #1b4d3e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+        button:hover {
+            background-color: #2e7d61;
+        }
+        #result {
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #1b4d3e;
+            padding: 15px;
+            background: #eaf2ef;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>بنك الأسئلة الشامل - لغة عربية (Prep 2)</h1>
+    <div class="subtitle">اختبر معلوماتك في النحو، النصوص، والقصة (30 سؤالاً)</div>
+    
+    <div id="quiz-form">
+        <!-- النحو -->
+        <div class="question-card">
+            <div class="question-title">1. في جملة "إن العمل شرف"، إعراب كلمة "العمل":</div>
+            <div class="options">
+                <label><input type="radio" name="q1" value="wrong"> فاعل مرفوع</label>
+                <label><input type="radio" name="q1" value="correct"> اسم إن منصوب وعلامة نصبه الفتحة</label>
+                <label><input type="radio" name="q1" value="wrong"> مفعول به منصوب</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">2. في جملة "تتقدم الأمم قاطبة"، إعراب كلمة "قاطبة":</div>
+            <div class="options">
+                <label><input type="radio" name="q2" value="correct"> حال منصوب وعلامة نصبه الفتحة</label>
+                <label><input type="radio" name="q2" value="wrong"> نعت منصوب</label>
+                <label><input type="radio" name="q2" value="wrong"> مفعول به منصوب</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">3. الفعل المعرب من الأفعال الآتية هو:</div>
+            <div class="options">
+                <label><input type="radio" name="q3" value="wrong"> اكتبْ (فعل أمر)</label>
+                <label><input type="radio" name="q3" value="wrong"> كتبَ (فعل ماضٍ)</label>
+                <label><input type="radio" name="q3" value="correct"> يكتبون (فعل مضارع)</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">4. اسم الإشارة المبني من بين الأتي هو:</div>
+            <div class="options">
+                <label><input type="radio" name="q4" value="wrong"> هذان</label>
+                <label><input type="radio" name="q4" value="correct"> هذا</label>
+                <label><input type="radio" name="q4" value="wrong"> هاتان</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">5. الاسم الموصول المعرب (الملحق بالمثنى) هو:</div>
+            <div class="options">
+                <label><input type="radio" name="q5" value="correct"> اللذان واللتان</label>
+                <label><input type="radio" name="q5" value="wrong"> الذي والتي</label>
+                <label><input type="radio" name="q5" value="wrong"> الذين واللاتي</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">6. التصويب الصحيح لجملة (رأيت طالباً ذو خلق):</div>
+            <div class="options">
+                <label><input type="radio" name="q6" value="wrong"> رأيت طالباً ذي خلق</label>
+                <label><input type="radio" name="q6" value="correct"> رأيت طالباً ذا خلق</label>
+                <label><input type="radio" name="q6" value="wrong"> رأيت طالباً ذوا خلق</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">7. في أسلوب المدح (نعم صفةً الإتقان)، فاعل نعم هنا:</div>
+            <div class="options">
+                <label><input type="radio" name="q7" value="correct"> ضمير مستتر تقديره (هو)</label>
+                <label><input type="radio" name="q7" value="wrong"> كلمة (صفةً)</label>
+                <label><input type="radio" name="q7" value="wrong"> كلمة (الإتقان)</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">8. علامة إعراب الأسماء الخمسة في حالتي النصب والجر هي:</div>
+            <div class="options">
+                <label><input type="radio" name="q8" value="wrong"> الواو والياء</label>
+                <label><input type="radio" name="q8" value="correct"> الألف (نصب) والياء (جر)</label>
+                <label><input type="radio" name="q8" value="wrong"> الضمة والكسرة</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">9. نوع النعت في جملة "رأيت عصفوراً يغرد":</div>
+            <div class="options">
+                <label><input type="radio" name="q9" value="wrong"> نعت مفرد</label>
+                <label><input type="radio" name="q9" value="correct"> نعت جملة فعلية</label>
+                <label><input type="radio" name="q9" value="wrong"> نعت شبه جملة</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">10. الحال الجملة الاسمية يجب أن يشتمل على:</div>
+            <div class="options">
+                <label><input type="radio" name="q10" value="correct"> رابط (واو الحال أو الضمير أو كلاهما)</label>
+                <label><input type="radio" name="q10" value="wrong"> فعل مضارع فقط</label>
+                <label><input type="radio" name="q10" value="wrong"> حرف جر زائد</label>
+            </div>
+        </div>
+
+        <!-- النصوص -->
+        <div class="question-card">
+            <div class="question-title">11. من نص (عشناك يا مصر)، مرادف كلمة (الحشا):</div>
+            <div class="options">
+                <label><input type="radio" name="q11" value="wrong"> اليدين والرجلين</label>
+                <label><input type="radio" name="q11" value="correct"> أعماق القلب</label>
+                <label><input type="radio" name="q11" value="wrong"> الكتفين والرأس</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">12. مضاد كلمة (كراماً) في قوله "عيشوا كراماً":</div>
+            <div class="options">
+                <label><input type="radio" name="q12" value="wrong"> أغنياء</label>
+                <label><input type="radio" name="q12" value="correct"> ذلاء أو أضعياء (أذلاء)</label>
+                <label><input type="radio" name="q12" value="wrong"> صغاراً</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">13. التعبير الجمالي في قول الشاعر "حملناك بين الحشا":</div>
+            <div class="options">
+                <label><input type="radio" name="q13" value="correct"> تصوير لمصر بجنين يحمل بحنان وعناية</label>
+                <label><input type="radio" name="q13" value="wrong"> تعبير يدل على السفر والرحلات</label>
+                <label><input type="radio" name="q13" value="wrong"> تعبير يدل على الثقل والتعب</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">14. استخدام الأفعال المضارعة في النصوص (مثل: تحيا، نبني) يفيد:</div>
+            <div class="options">
+                <label><input type="radio" name="q14" value="correct"> التجدد والاستمرار واستحضار الصورة</label>
+                <label><input type="radio" name="q14" value="wrong"> الثبوت والتحقق الماضي فقط</label>
+                <label><input type="radio" name="q14" value="wrong"> التباطؤ والكسل</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">15. قائل نص (عشناك يا مصر) هو الشاعر:</div>
+            <div class="options">
+                <label><input type="radio" name="q15" value="wrong"> أحمد شوقي</label>
+                <label><input type="radio" name="q15" value="correct"> فاروق شوشة</label>
+                <label><input type="radio" name="q15" value="wrong"> إبراهيم ناجي</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">16. في نص "في رحاب الإنسانية"، مفرد (الورى):</div>
+            <div class="options">
+                <label><input type="radio" name="q16" value="wrong"> الورقة</label>
+                <label><input type="radio" name="q16" value="correct"> الورى تعني الخلق (ليس لها مفرد لفظي مباشر، وتدل على البشر)</label>
+                <label><input type="radio" name="q16" value="wrong"> الوالي</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">17. الغرض الرئيسي من نص "فداك يا وطني":</div>
+            <div class="options">
+                <label><input type="radio" name="q17" value="correct"> الحث على التضحية وحب الوطن والدفاع عنه</label>
+                <label><input type="radio" name="q17" value="wrong"> الوصف للحدائق والأزهار</label>
+                <label><input type="radio" name="q17" value="wrong"> الفخر بالمال والسلطان</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">18. جمع كلمة (فم) في النصوص:</div>
+            <div class="options">
+                <label><input type="radio" name="q18" value="correct"> أفواه</label>
+                <label><input type="radio" name="q18" value="wrong"> فمات</label>
+                <label><input type="radio" name="q18" value="wrong"> فماتون</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">19. مرادف كلمة (ظمى):</div>
+            <div class="options">
+                <label><input type="radio" name="q19" value="correct"> عطش</label>
+                <label><input type="radio" name="q19" value="wrong"> جوع</label>
+                <label><input type="radio" name="q19" value="wrong"> خوف</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">20. الجمع بين العطف والشمول في "تحت ظل العلم" يدل على:</div>
+            <div class="options">
+                <label><input type="radio" name="q20" value="correct"> أهمية الاتحاد والالتفاف حول راية الوطن وعزته</label>
+                <label><input type="radio" name="q20" value="wrong"> الرغبة في الابتعاد عن الآخرين</label>
+                <label><input type="radio" name="q20" value="wrong"> الضعف والهوان</label>
+            </div>
+        </div>
+
+        <!-- القراءة والقصة -->
+        <div class="question-card">
+            <div class="question-title">21. تبدأ قصة كفاح شعب مصر ضد الهكسوس من إقليم:</div>
+            <div class="options">
+                <label><input type="radio" name="q21" value="wrong"> منف</label>
+                <label><input type="radio" name="q21" value="correct"> طيبة (الأقصر حالياً)</label>
+                <label><input type="radio" name="q21" value="wrong"> أورواريس</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">22. أمير طينية الذي بدأ الكفاح الحقيقي ضد الهكسوس هو:</div>
+            <div class="options">
+                <label><input type="radio" name="q22" value="correct"> سقنن رع</label>
+                <label><input type="radio" name="q22" value="wrong"> أحمس</label>
+                <label><input type="radio" name="q22" value="wrong"> كامس</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">23. الملك الذي تمكن من طرد الهكسوس نهائياً خارج البلاد هو:</div>
+            <div class="options">
+                <label><input type="radio" name="q23" value="correct"> أحمس</label>
+                <label><input type="radio" name="q23" value="wrong"> سقنن رع</label>
+                <label><input type="radio" name="q23" value="wrong"> رمسيس الثاني</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">24. الهكسوس هم قوم جاءوا من:</div>
+            <div class="options">
+                <label><input type="radio" name="q24" value="correct"> آسيا</label>
+                <label><input type="radio" name="q24" value="wrong"> أفريقيا</label>
+                <label><input type="radio" name="q24" value="wrong"> أوروبا</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">25. عاصمة الهكسوس التي تجمعوا فيها ودبروا منها خططهم هي:</div>
+            <div class="options">
+                <label><input type="radio" name="q25" value="correct"> أورواريس (أواريس)</label>
+                <label><input type="radio" name="q25" value="wrong"> الإسكندرية</label>
+                <label><input type="radio" name="q25" value="wrong"> أسوان</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">26. الدور العظيم للملكة (ياح حتب) في حرب الكفاح كان:</div>
+            <div class="options">
+                <label><input type="radio" name="q26" value="correct"> تشجيع ابنها أحمس بعد استشهاد أبيه وأخيه</label>
+                <label><input type="radio" name="q26" value="wrong"> قيادة الجيش بنفسها في المقدمة</label>
+                <label><input type="radio" name="q26" value="wrong"> الهروب إلى الصحراء</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">27. من موضوعات القراءة المقررة، درس يبرز أهمية اختراع تكنولوجي أو علمي مثل:</div>
+            <div class="options">
+                <label><input type="radio" name="q27" value="correct"> لوحات إرشادية أو اختراعات حديثة (اختراع غريب / عالم من ذهب)</label>
+                <label><input type="radio" name="q27" value="wrong"> قصة الفضاء الخارجي فقط</label>
+                <label><input type="radio" name="q27" value="wrong"> رحلات بحرية قديمة</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">28. ماذا تعلمت من صمود الشعب المصري عبر العصور التاريخية؟</div>
+            <div class="options">
+                <label><input type="radio" name="q28" value="correct"> أن الإرادة الصلبة وتلاحم الشعب يقهران المستحيل</label>
+                <label><input type="radio" name="q28" value="wrong"> الاعتماد على الغير في وقت الأزمات</label>
+                <label><input type="radio" name="q28" value="wrong"> الاستسلام عند أول مشكلة</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">29. المعركة الحقيقية التي خاضها أبطال الشرطة ضد الاحتلال كانت في:</div>
+            <div class="options">
+                <label><input type="radio" name="q29" value="correct"> الإسماعيلية</label>
+                <label><input type="radio" name="q29" value="wrong"> القاهرة</label>
+                <label><input type="radio" name="q29" value="wrong"> أسوان</label>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-title">30. عيد تحرير سيناء يوافق استرداد أرضنا بعد ملحمة من:</div>
+            <div class="options">
+                <label><input type="radio" name="q30" value="correct"> التخطيط العسكري والصبر والإعداد الواعي</label>
+                <label><input type="radio" name="q30" value="wrong"> الصدفة البحتة</label>
+                <label><input type="radio" name="q30" value="wrong"> التنازلات الدبلوماسية فقط</label>
+            </div>
+        </div>
+
+        <button onclick="calculateScore()">تصحيح الامتحان وإظهار النتيجة النهائية</button>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function calculateScore() {
+        let score = 0;
+        let total = 30;
+        
+        for (let i = 1; i <= total; i++) {
+            let q = document.querySelector(`input[name="q${i}"]:checked`);
+            if (q && q.value === 'correct') {
+                score++;
+            }
+        }
+
+        let resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `نتيحتك النهائية هي: ${score} من ${total} 🎉<br>` + 
+                              (score >= 25 ? "ممتاز! أدائr رائع ومتميز جداً." : "جيد جداً، يمكنك مراجعة الأخطاء لتثبيت المعلومات أكثر.");
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
