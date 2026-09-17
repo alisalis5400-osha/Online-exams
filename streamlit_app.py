@@ -75,13 +75,12 @@ st.markdown("""
 # أقسام المنصة الأساسية متكاملة تماماً
 tab1, tab2, tab3 = st.tabs(["📚 بنك الاختبارات الإلكترونية 🎯", "✍️ تصحيح الواجبات الذكي", "🎨 التلخيص والتصميم المعرفي"])
 
-# --- القسم الأول: بنك الاختبارات الإلكترونية (توليد تلقائي لأسماء الملفات) ---
+# --- القسم الأول: بنك الاختبارات الإلكترونية ---
 with tab1:
     st.markdown("### 📝 اختر المادة والصف لتأدية الامتحان")
     
     subject_name = st.selectbox("1️⃣ اختر المادة:", ["الدراسات الاجتماعية", "اللغة العربية", "اللغة الإنجليزية", "العلوم", "الرياضيات"])
     
-    # تحويل اسم المادة إلى اختصار الملف الإنجليزي
     subject_codes = {
         "الدراسات الاجتماعية": "social",
         "اللغة العربية": "Arabic",
@@ -106,26 +105,33 @@ with tab1:
         grade_codes = {"الصف الأول الثانوي": "sec1", "الصف الثاني الثانوي": "sec2", "الصف الثالث الثانوي": "sec3"}
         grade_code = grade_codes.get(grade_name, "sec1")
 
-    # قاعدة التسمية الذكية والشاملة لأي امتحان مستقبلي (مثال: Arabic.prep2.html أو social.prep2.html أو G6-social.html)
-    # نقوم بتجربة الصيغ الشائعة تلقائياً
+    # تحديد اسم الملف بدقة
     if subject_name == "الدراسات الاجتماعية" and grade_name == "الصف السادس":
-        file_url = "G6-social.html"
+        file_name = "G6-social.html"
+    elif subject_name == "الدراسات الاجتماعية" and grade_name == "الصف الثاني الإعدادي":
+        file_name = "social.prep2.html"
+    elif subject_name == "اللغة العربية" and grade_name == "الصف الثاني الإعدادي":
+        file_name = "Arabic.prep2.html"
     else:
-        file_url = f"{subj_code}.{grade_code}.html"
+        file_name = f"{subj_code}.{grade_code}.html"
+
+    # الحل الجذري: ربط الرابط بالكامل عبر GitHub Pages
+    base_github_url = "https://alisalis5400-osha.github.io/Online-exams/"
+    full_file_url = base_github_url + file_name
 
     st.markdown("---")
     st.success(f"✅ تم تجهيز مسار امتحان ({subject_name} - {grade_name}) بنجاح!")
     
-    # استخدام الرابط المباشر للملف مع اسم الملف المتوقع
+    # الزر بالرابط الكامل المباشر
     st.markdown(f'''
-        <a href="{file_url}" target="_blank" class="direct-btn">
+        <a href="{full_file_url}" target="_blank" class="direct-btn">
             🚀 اضغط هنا لبدء امتحان ({subject_name} - {grade_name}) فوراً
-            <p style="font-size: 0.8em; margin: 5px 0 0 0; color: #e2e8f0;">(سيفتح في تبويب جديد تماماً)</p>
+            <p style="font-size: 0.8em; margin: 5px 0 0 0; color: #e2e8f0;">(سيفتح في تبويب جديد مستقل تماماً)</p>
         </a>
     ''', unsafe_allow_html=True)
-    st.caption(f"📁 اسم الملف المتوقع في المستودع: `{file_url}` (تأكدي من رفع أي امتحان جديد بنفس هذه الصيغة ليعمل فوراً دون تعديل المنصة).")
+    st.caption(f"🔗 رابط الامتحان المباشر: `{full_file_url}`")
 
-# --- القسم الثاني: تصحيح وتقييم الواجبات (متعدد اللغات + تصحيح أخطاء إملائية) ---
+# --- القسم الثاني: تصحيح وتقييم الواجبات ---
 with tab2:
     st.markdown("### ✍️ مساعد تصحيح الواجبات الذكي")
     st.write("تصحيح الأخطاء، معالجة الأخطاء الإملائية، وتقديم الإجابة المثالية بأسلوب إيجابي وبسيط لجميع اللغات (عربي، إنجليزي، ماث، فرانساوي، قرآن).")
