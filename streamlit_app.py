@@ -12,22 +12,23 @@ st.markdown("""
         text-align: center;
         margin-bottom: 20px;
     }
-    .exam-btn {
+    /* تصميم زر احترافي يفتح الرابط في صفحة جديدة بشكل مضمون */
+    .direct-btn {
         display: block;
         width: 100%;
-        padding: 14px;
+        padding: 15px;
         background-color: #1b4d3e;
-        color: white;
+        color: white !important;
         text-align: center;
-        text-decoration: none;
+        text-decoration: none !important;
         font-size: 1.2em;
+        font-weight: bold;
         border-radius: 8px;
         margin-top: 15px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    .exam-btn:hover {
+    .direct-btn:hover {
         background-color: #2e7d61;
-        color: white;
     }
     </style>
     <div class="main-header">
@@ -49,32 +50,32 @@ with tab1:
     
     if stage == "المرحلة الابتدائية":
         grade_name = st.selectbox("3️⃣ اختر الصف:", ["الصف الرابع", "الصف الخامس", "الصف السادس"])
-        # تحديد اسم الملف بدقة حسب المادة والصف الابتدائي
         if subject_name == "الدراسات الاجتماعية" and grade_name == "الصف السادس":
-            file_name = "G6-social.html"
+            file_url = "G6-social.html"
         else:
-            file_name = "exam.html"
+            file_url = "#"
     else:
         grade_name = st.selectbox("3️⃣ اختر الصف:", ["الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"])
-        # تحديد اسم الملف بدقة حسب المادة والصف الإعدادي
         if subject_name == "اللغة العربية" and grade_name == "الصف الثاني الإعدادي":
-            file_name = "Arabic.prep2"  # الاسم الموجود في مستودعك تماماً
+            file_url = "Arabic.prep2"
         elif subject_name == "الدراسات الاجتماعية" and grade_name == "الصف الثاني الإعدادي":
-            file_name = "social.prep2.html"
+            file_url = "social.prep2.html"
         else:
-            file_name = "exam.html"
+            file_url = "#"
 
     st.markdown("---")
     st.success(f"✅ تم تجهيز مسار الامتحان بنجاح لهذا الصف!")
     
-    # زر ديناميكي يفتح الملف الصحيح مباشرة
-    btn_html = f'''
-        <a href="{file_name}" target="_blank" class="exam-btn">
-            🚀 اضغط هنا لبدء امتحان ({subject_name} - {grade_name})
-        </a>
-    '''
-    st.markdown(btn_html, unsafe_allow_html=True)
-    st.caption(f"📁 اسم الملف المرتبط: `{file_name}`")
+    # استخدام عنصر HTML مباشر مع target="_blank" لضمان فتح الامتحان في تبويب جديد دون إعادة تحميل المنصة
+    if file_url != "#":
+        st.markdown(f'''
+            <a href="{file_url}" target="_blank" class="direct-btn">
+                🚀 اضغط هنا لبدء امتحان ({subject_name} - {grade_name})
+            <p style="font-size: 0.8em; margin: 5px 0 0 0; color: #ddd;">(سيتم فتح الامتحان في صفحة جديدة)</p>
+            </a>
+        ''', unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ عذراً، الامتحان غير متوفر لهذه المادة حالياً.")
 
 with tab2:
     st.info("🛠️ قسم التلخيص والتصميم المعرفي قيد الاستخدام.")
