@@ -75,43 +75,55 @@ st.markdown("""
 # أقسام المنصة الأساسية متكاملة تماماً
 tab1, tab2, tab3 = st.tabs(["📚 بنك الاختبارات الإلكترونية 🎯", "✍️ تصحيح الواجبات الذكي", "🎨 التلخيص والتصميم المعرفي"])
 
-# --- القسم الأول: بنك الاختبارات الإلكترونية ---
+# --- القسم الأول: بنك الاختبارات الإلكترونية (توليد تلقائي لأسماء الملفات) ---
 with tab1:
     st.markdown("### 📝 اختر المادة والصف لتأدية الامتحان")
     
     subject_name = st.selectbox("1️⃣ اختر المادة:", ["الدراسات الاجتماعية", "اللغة العربية", "اللغة الإنجليزية", "العلوم", "الرياضيات"])
+    
+    # تحويل اسم المادة إلى اختصار الملف الإنجليزي
+    subject_codes = {
+        "الدراسات الاجتماعية": "social",
+        "اللغة العربية": "Arabic",
+        "اللغة الإنجليزية": "English",
+        "العلوم": "science",
+        "الرياضيات": "math"
+    }
+    subj_code = subject_codes.get(subject_name, "exam")
+
     stage = st.radio("2️⃣ اختر المرحلة:", ["المرحلة الابتدائية", "المرحلة الإعدادية", "المرحلة الثانوية"])
     
     if stage == "المرحلة الابتدائية":
         grade_name = st.selectbox("3️⃣ اختر الصف:", ["الصف الرابع", "الصف الخامس", "الصف السادس"])
-        if subject_name == "الدراسات الاجتماعية" and grade_name == "الصف السادس":
-            file_url = "G6-social.html"
-        else:
-            file_url = "#"
+        grade_codes = {"الصف الرابع": "G4", "الصف الخامس": "G5", "الصف السادس": "G6"}
+        grade_code = grade_codes.get(grade_name, "G6")
     elif stage == "المرحلة الإعدادية":
         grade_name = st.selectbox("3️⃣ اختر الصف:", ["الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"])
-        if subject_name == "اللغة العربية" and grade_name == "الصف الثاني الإعدادي":
-            file_url = "Arabic.prep2.html"  # الربط الدقيق بالاسم الصحيح
-        elif subject_name == "الدراسات الاجتماعية" and grade_name == "الصف الثاني الإعدادي":
-            file_url = "social.prep2.html"
-        else:
-            file_url = "#"
+        grade_codes = {"الصف الأول الإعدادي": "prep1", "الصف الثاني الإعدادي": "prep2", "الصف الثالث الإعدادي": "prep3"}
+        grade_code = grade_codes.get(grade_name, "prep2")
     else:
         grade_name = st.selectbox("3️⃣ اختر الصف:", ["الصف الأول الثانوي", "الصف الثاني الثانوي", "الصف الثالث الثانوي"])
-        file_url = "#"
+        grade_codes = {"الصف الأول الثانوي": "sec1", "الصف الثاني الثانوي": "sec2", "الصف الثالث الثانوي": "sec3"}
+        grade_code = grade_codes.get(grade_name, "sec1")
+
+    # قاعدة التسمية الذكية والشاملة لأي امتحان مستقبلي (مثال: Arabic.prep2.html أو social.prep2.html أو G6-social.html)
+    # نقوم بتجربة الصيغ الشائعة تلقائياً
+    if subject_name == "الدراسات الاجتماعية" and grade_name == "الصف السادس":
+        file_url = "G6-social.html"
+    else:
+        file_url = f"{subj_code}.{grade_code}.html"
 
     st.markdown("---")
     st.success(f"✅ تم تجهيز مسار امتحان ({subject_name} - {grade_name}) بنجاح!")
     
-    if file_url != "#":
-        st.markdown(f'''
-            <a href="{file_url}" target="_blank" class="direct-btn">
-                🚀 اضغط هنا لبدء الامتحان فوراً
-                <p style="font-size: 0.8em; margin: 5px 0 0 0; color: #e2e8f0;">(سيفتح في تبويب جديد دون إغلاق المنصة)</p>
-            </a>
-        ''', unsafe_allow_html=True)
-    else:
-        st.warning("⚠️ عذراً، الامتحان الخاص بهذه المادة قيد التجهيز وسيتم توفيره تلقائياً قريباً.")
+    # استخدام الرابط المباشر للملف مع اسم الملف المتوقع
+    st.markdown(f'''
+        <a href="{file_url}" target="_blank" class="direct-btn">
+            🚀 اضغط هنا لبدء امتحان ({subject_name} - {grade_name}) فوراً
+            <p style="font-size: 0.8em; margin: 5px 0 0 0; color: #e2e8f0;">(سيفتح في تبويب جديد تماماً)</p>
+        </a>
+    ''', unsafe_allow_html=True)
+    st.caption(f"📁 اسم الملف المتوقع في المستودع: `{file_url}` (تأكدي من رفع أي امتحان جديد بنفس هذه الصيغة ليعمل فوراً دون تعديل المنصة).")
 
 # --- القسم الثاني: تصحيح وتقييم الواجبات (متعدد اللغات + تصحيح أخطاء إملائية) ---
 with tab2:
