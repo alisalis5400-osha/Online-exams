@@ -52,8 +52,9 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
         file_name = "Social-G4.html"
     elif subject_name == "اللغة العربية" and grade_name == "الصف الثاني الإعدادي":
         file_name = "Arabic.prep2.html"
-    elif subject_name == "اللغة الإنجليزية" and grade_name == "الصف الثاني الإعدادي":
-        file_name = "English.prep2.html"
+elif subject_name == "اللغة الإنجليزية" and grade_name == "الصف الثاني الإعدادي":
+    file_name = "engprep2.html"
+
 
     if file_name:
         st.success(f"تم تجهيز مسار امتحان ({display_name}) بنجاح ✅")
