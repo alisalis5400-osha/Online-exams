@@ -48,15 +48,19 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
     file_name = ""
     display_name = f"{subject_name} - {grade_name}"
 
+    # ربط المواد بالملفات (تم إضافة دراسات سادس وتعديل إنجليزي ثانية إعدادي)
     if subject_name == "الدراسات الاجتماعية" and grade_name == "الصف الرابع":
         file_name = "Social-G4.html"
+    elif subject_name == "الدراسات الاجتماعية" and grade_name == "الصف السادس":
+        file_name = "Social-G6.html"
     elif subject_name == "اللغة العربية" and grade_name == "الصف الثاني الإعدادي":
         file_name = "Arabic.prep2.html"
     elif subject_name == "اللغة الإنجليزية" and grade_name == "الصف الثاني الإعدادي":
-        file_name = "engprep2.html"
+        file_name = "engprep2.htm"  # تم تعديل الاسم بناءً على الرابط الصحيح الذي اكتشفناه
 
     if file_name:
         st.success(f"تم تجهيز مسار امتحان ({display_name}) بنجاح ✅")
+        # الرابط الطبيعي للمنصة
         exam_url = f"https://alisalis5400-osha.github.io/Online-exams/{file_name}"
         
         st.markdown(f"""
