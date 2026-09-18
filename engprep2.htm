@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English - Grade 2 Preparatory (Unit 1) - Instant Feedback</title>
+    <title>English - Grade 2 Preparatory (Unit 1)</title>
     <style>
         body {
             font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -32,7 +32,7 @@
             font-size: 1.1em;
         }
         .question-card {
-            background: #fafa000a;
+            background: #fafafa;
             border: 1px solid #e0e0e0;
             padding: 20px;
             border-radius: 10px;
@@ -90,9 +90,8 @@
             display: block;
         }
         .feedback.incorrect {
-            background-color: f8d7da;
-            color: #721c24;
             background-color: #f8d7da;
+            color: #721c24;
             border: 1px solid #f5c6cb;
             display: block;
         }
@@ -134,7 +133,7 @@
             <div class="question-title">2. We usually ______ breakfast at 7:00 AM every day.</div>
             <div class="options">
                 <label><input type="radio" name="q2" value="A"> A) having</label>
-                <label><input type="radio" name="q2" value="B" data-correct="true"> B) have</label>
+                <label><input type="radio" name="q2" value="B"> B) have</label>
                 <label><input type="radio" name="q2" value="C"> C) has</label>
                 <label><input type="radio" name="q2" value="D"> D) had</label>
             </div>
@@ -148,14 +147,12 @@
             <div class="options">
                 <label><input type="radio" name="q3" value="A"> A) cry</label>
                 <label><input type="radio" name="q3" value="B"> B) cries</label>
-                <label><input type="radio" name="q3" value="C" data-correct="true"> C) is crying</label>
+                <label><input type="radio" name="q3" value="C"> C) is crying</label>
                 <label><input type="radio" name="q3" value="D"> D) cried</label>
             </div>
             <button type="button" class="check-btn" onclick="checkAnswer(3, 'C')">تأكد من الإجابة</button>
             <div class="feedback" id="feedback3"></div>
         </div>
-
-        <!-- يمكنك إضافة باقي الـ 90 سؤال بنفس الطريقة المنتظمة هنا -->
     </form>
 
     <div id="score-section">
@@ -164,7 +161,6 @@
 </div>
 
 <script>
-    // خريطة لتسجيل الأسئلة التي تم الإجابة عليها صحيحة لعدم تكرار احتساب النقاط
     const answeredCorrectly = {};
 
     function checkAnswer(questionNum, correctAnswer) {
@@ -186,13 +182,10 @@
             return;
         }
 
-        if (selectedValue === correctAnswer) {
+  if (selectedValue === correctAnswer) {
             feedbackDiv.className = "feedback correct";
             feedbackDiv.innerText = "إجابة صحيحة! برافو عليك 🌟";
-            
-            if (!answeredCorrectly[questionNum]) {
-                answeredCorrectly[questionNum] = true;
-            }
+            answeredCorrectly[questionNum] = true;
         } else {
             feedbackDiv.className = "feedback incorrect";
             feedbackDiv.innerText = "إجابة خاطئة، الإجابة الصحيحة هي: " + correctAnswer + " ❌";
