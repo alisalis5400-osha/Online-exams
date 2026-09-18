@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English - Grade 2 Preparatory (Unit 1) - 90 Questions</title>
+    <style>
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #1b4d3e;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .question-card {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .options label {
+            display: block;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .options label:hover {
+            background-color: #f0f7f4;
+            border-color: #1b4d3e;
+        }
+        .options input {
+            margin-left: 10px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #1b4d3e;
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .submit-btn:hover {
+            background-color: #2e7d61;
+        }
+        #result {
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .correct { color: #27ae60; background-color: #e8f8f5; border: 1px solid #27ae60; }
+        .incorrect { color: #c0392b; background-color: #fdedec; border: 1px solid #c0392b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>English - Grade 2 Preparatory</h1>
+    <div class="subtitle">Unit 1 Exam (90 Questions) - Mr. Taha Abed</div>
+
+    <form id="quizForm">
+        <div id="questionsContainer"></div>
+        <button type="button" class="submit-btn" onclick="calculateScore()">ظهر النتيجة وتصحيح الإجابات 🎯</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // بيانات الـ 90 سؤال المستخرجة من أوراق مستر طه بدقة
+    const questions = [
+        { q: "1. Social media strongly affects young ______.", options: ["locations", "generations", "invitations", "inventions"], answer: 1 },
+        { q: "2. It's important to ______ your time online with doing real-life activities.", options: ["balance", "wonder", "waste", "send"], answer: 0 },
+        { q: "3. Many teenagers enjoy creating and sharing ______ on social media.", options: ["memes", "screens", "lectures", "speeches"], answer: 0 },
+        { q: "4. ______ are popular new developments, often seen in digital content or social behavior.", options: ["Trends", "Subtitles", "Trams", "Traps"], answer: 0 },
+        { q: "5. Individuals who have grown up with technology are known as ______.", options: ["digital devices", "digital natives", "digital cameras", "digital machines"], answer: 1 },
+        { q: "6. This generation represents a powerful trend. The word \"powerful\" here is similar in meaning to \"______\".", options: ["lazy", "weak", "effective", "useless"], answer: 2 },
+        { q: "7. What challenges do new generations face? The word \"challenges\" here means \"______\".", options: ["solutions", "answers", "families", "difficulties"], answer: 3 },
+        { q: "8. Gen Alpha learn to use technology before they can read, and they usually ______ a lot of time online.", options: ["explore", "spend", "balance", "create"], answer: 1 },
+        { q: "9. Gen Alpha always likes using digital tools to ______ their identity.", options: ["decrease", "create", "reduce", "discourage"], answer: 1 },
+        { q: "10. To turn the adjective \"constant\" into an adverb, we add the suffix \"______\".", options: ["-tion", "-ity", "-al", "-ly"], answer: 3 },
+        { q: "11. Your words didn't encourage me. They ______ me.", options: ["discouraged", "helped", "supported", "motivated"], answer: 0 },
+        { q: "12. A/An ______ means a group of people born around the same time.", options: ["generation", "situation", "invention", "invitation"], answer: 0 },
+        { q: "13. \"______\" means a situation in which different things are of equal or proper weight or amount.", options: ["Damage", "Disorder", "Fight", "Balance"], answer: 3 },
+        { q: "14. We can use technology to solve global problems. The word \"global\" means ______.", options: ["traditional", "national", "local", "international"], answer: 3 },
+        { q: "15. Too much screen time can affect health and relationships badly. This means it has a/an ______ effect.", options: ["positive", "negative", "useful", "active"], answer: 1 },
+        { q: "16. What challenges did you ______ to reach your goal?", options: ["share", "face", "create", "express"], answer: 1 },
+        { q: "17. Parents want their children to ______ their screen time.", options: ["increase", "rise", "limit", "double"], answer: 2 },
+        { q: "18. The words \"online\" and \"connected\" are \"______\".", options: ["synonyms", "opposites", "antonyms", "adverbs"], answer: 0 },
+        { q: "19. \"Modern\" and \"______\" are antonyms.", options: ["recent", "new", "traditional", "current"], answer: 2 },
+        { q: "20. The suffix \"-ful\" turns the noun into a/an \"______\".", options: ["adverb", "adjective", "noun", "pronoun"], answer: 1 },
+        { q: "21. Look! The cat ______ jumping over the wall.", options: ["was", "is", "can", "has"], answer: 1 },
+        { q: "22. My father ______ to Aswan next Friday. He has the tickets.", options: ["travels", "traveled", "is traveling", "was traveling"], answer: 2 },
+        { q: "23. He can't answer the phone because he is ______ a shower.", options: ["take", "took", "taking", "takes"], answer: 2 },
+        { q: "24. They ______ computer games at the moment.", options: ["don't play", "aren't playing", "played", "playing"], answer: 1 },
+        { q: "25. What ______ you reading about these days?", options: ["do", "are", "is", "does"], answer: 1 },
+        { q: "26. We're ______ our school project this evening.", options: ["did", "do", "doing", "does"], answer: 2 },
+        { q: "27. She is ______ to Dubai next month.", options: ["fly", "flies", "flew", "flying"], answer: 3 },
+        { q: "28. Look! Many children ______ in the library.", options: ["is reading", "are reading", "read", "reading"], answer: 1 },
+        { q: "29. He ______ a new movie next Friday. He has already bought the tickets.", options: ["watching", "watch", "is watching", "watches"], answer: 2 },
+        { q: "30. Tarek uses his tablet to search for ______ at breakfast.", options: ["games", "news", "friends", "videos"], answer: 1 },
+        { q: "31. The underlined word \"wisely\" can be replaced by \"______\".", options: ["quickly", "happily", "carefully", "badly"], answer: 2 },
+        { q: "32. ______ are small digital images or icons used to express ideas or emotions in electronic communications.", options: ["Mails", "Tickets", "Emojis", "Friends"], answer: 2 },
+        { q: "33. Many parents encourage their children to use ______ skills online.", options: ["digital", "interpersonal", "manual", "mechanical"], answer: 0 },
+        { q: "34. You should ______ your screen time; too much is bad for you.", options: ["increase", "share", "limit", "express"], answer: 2 },
+        { q: "35. The suffix \"______\" forms the adjective from the word \"digit\".", options: ["-ment", "-ness", "-al", "-ity"], answer: 2 },
+        { q: "36. Video calls can ______ families who live in different countries.", options: ["confuse", "separate", "connect", "forget"], answer: 2 },
+        { q: "37. Although they are different, they still share many interests in ______.", options: ["together", "common", "around", "part"], answer: 1 },
+        { q: "38. A ______ can be useful for studying, using educational apps and taking photos.", options: ["mouse", "printer", "keyboard", "smartphone"], answer: 3 },
+        { q: "39. ______ means to join or link with someone or something.", options: ["Connect", "Correct", "Infect", "Object"], answer: 0 },
+        { q: "40. ______ means to be part of something.", options: ["Exclude", "Damage", "Break", "Include"], answer: 3 },
+        { q: "41. Technology helps them ______ each other and work together.", options: ["fight", "struggle", "escape", "understand"], answer: 3 },
+        { q: "42. If you have the same ideas and interests with someone, it means you have something in ______.", options: ["special", "common", "particular", "different"], answer: 1 },
+        { q: "43. Social media and online games help them ______ fun with others.", options: ["have", "fail", "fade", "bake"], answer: 0 },
+        { q: "44. Even though Gen Z is older than Gen Alpha, both generations ______ thoughts.", options: ["say", "tell", "talk", "share"], answer: 3 },
+        { q: "45. We add the suffix \"______\" to get the noun from the adjective \"fair\".", options: ["-ity", "-ness", "-dence", "-ment"], answer: 1 },
+        { q: "46. The antonym of the word \"distant\" is \"______\".", options: ["far apart", "nearby", "separate", "between"], answer: 1 },
+        { q: "47. In ______ means having similar ideas and interests.", options: ["private", "fun", "common", "comic"], answer: 2 },
+        { q: "48. ______ means being in distant places.", options: ["Near", "Close", "Happy", "Far apart"], answer: 3 },
+        { q: "49. The price of the smartphone ______ a charger and earphones.", options: ["connects", "unites", "includes", "treats"], answer: 2 },
+        { q: "50. Good thoughts lead to good actions. \"Thoughts\" here means ______.", options: ["devices", "skills", "ideas", "problems"], answer: 2 },
+        { q: "51. We add the suffix \"______\" to get the noun from the verb \"feel\".", options: ["-ment", "-ing", "-or", "-less"], answer: 0 },
+        { q: "52. \"Kind\" and \"gentle\" are \"______\".", options: ["antonyms", "synonyms", "opposites", "verbs"], answer: 1 },
+        { q: "53. Even though young people have different characters, they have many things ______.", options: ["far apart", "in common", "incorrect", "distant"], answer: 1 },
+        { q: "54. The words \"different\" and \"various\" are ______.", options: ["synonyms", "antonyms", "verbs", "prefixes"], answer: 0 },
+        { q: "55. To ______ means to join or link with someone or something.", options: ["leave", "include", "connect", "close"], answer: 2 },
+        { q: "56. Emojis and memes help people ______ their feelings in short messages.", options: ["hide", "show", "speak", "read"], answer: 1 },
+        { q: "57. Salma and Ali are ______.", options: ["parents", "neighbors", "friends", "cousins"], answer: 2 },
+        { q: "58. The underlined word \"bridge\" here means a way to ______.", options: ["connect", "play", "travel", "read"], answer: 0 },
+        { q: "59. During the ______ , the manager asked the employee many questions.", options: ["meme", "interview", "emoji", "trend"], answer: 1 },
+        { q: "60. Teenagers should learn how to ______ stress very well.", options: ["agree", "protect", "support", "handle"], answer: 3 },
+        { q: "61. She felt ______ when her friends didn't invite her to the party.", options: ["included", "left out", "involved", "accepted"], answer: 1 },
+        { q: "62. \"Each day\" can be replaced with \"______\".", options: ["weekly", "monthly", "yearly", "daily"], answer: 3 },
+        { q: "63. We can use the expression \"In my opinion\" to explain our ideas ______ when talking to others.", options: ["cleanly", "carelessly", "clearly", "rudely"], answer: 2 },
+        { q: "64. I use my smartphone for ______ my homework.", options: ["doing", "making", "interviewing", "spending"], answer: 0 },
+        { q: "65. Many students ______ online trends or post using emojis.", options: ["make", "follow", "do", "write"], answer: 1 },
+        { q: "66. To get the noun from the verb \"suggest\", we add the suffix \"______\".", options: ["-ment", "-ion", "-ive", "-al"], answer: 0 },
+        { q: "67. The antonym of the word \"agree\" is ______.", options: ["accept", "connect", "refuse", "read"], answer: 2 },
+        { q: "68. They enjoyed the ______ show at the museum.", options: ["blog", "boring", "wonderful", "usual"], answer: 2 },
+        { q: "69. Alaa writes useful ______ on her social media account.", options: ["posts", "boats", "bloggers", "caring"], answer: 0 },
+        { q: "70. I use my smartphone to chat and make video calls. The word \"chat\" means ______.", options: ["handle", "build", "suggest", "talk"], answer: 3 },
+        { q: "71. You should ______ balanced between studying and relaxing.", options: ["worry", "move", "stay", "express"], answer: 2 },
+        { q: "72. Exercise can help you ______ habits for a healthier life.", options: ["fill", "buy", "build", "take"], answer: 2 },
+        { q: "73. \"Creative\" and \"normal\" are ______.", options: ["antonyms", "similar", "nouns", "synonyms"], answer: 0 },
+        { q: "74. The synonym of the word \"agree\" is ______.", options: ["join", "disagree", "accept", "balance"], answer: 2 },
+        { q: "75. The suffix \"______\" forms the adjective from the word \"wonder\".", options: ["-ment", "-ly", "-ed", "-ful"], answer: 3 },
+        { q: "76. We should learn how to find ______ between using technology and reading books.", options: ["trend", "habit", "balance", "blog"], answer: 2 },
+        { q: "77. We add the suffix \"-ion\" to get the ______ from the word \"suggest\".", options: ["noun", "verb", "adverb", "adjective"], answer: 0 },
+        { q: "78. A ______ is an online journal or a website where someone writes regularly about a certain topic.", options: ["book", "notebook", "blog", "line"], answer: 2 },
+        { q: "79. Spending too much time using digital devices can be ______.", options: ["untidy", "unhappy", "unhealthy", "unclear"], answer: 2 },
+        { q: "80. Karim uses his smartphone for ______ hours a day.", options: ["five", "four", "eight", "three"], answer: 0 },
+        { q: "81. The underlined pronoun \"his\" refers to ______.", options: ["students", "the writer", "Karim's teacher", "Karim"], answer: 3 },
+        { q: "82. A ______ is a group of people born around the same time.", options: ["community", "family", "generation", "team"], answer: 2 },
+        { q: "83. You should use your phone ______ . Too much screen time is an unhealthy habit.", options: ["rarely", "loudly", "wisely", "slowly"], answer: 2 },
+        { q: "84. The words \"agree\" and \"refuse\" are ______.", options: ["synonyms", "antonyms", "prefixes", "adverbs"], answer: 1 },
+        { q: "85. To get the opposite of \"healthy\", we add the prefix \"______\".", options: ["un-", "im-", "dis-", "in-"], answer: 0 },
+        { q: "86. Gen Z and Gen Alpha both use ______.", options: ["newspapers", "letters", "smartphones", "radios"], answer: 2 },
+        { q: "87. The underlined word \"connect\" is the opposite of \"______\".", options: ["link", "join", "disconnect", "contact"], answer: 2 },
+        { q: "88. The amount of time spent looking at a screen is called ______ time.", options: ["show", "free", "screen", "busy"], answer: 2 },
+        { q: "89. Nowadays, people use emojis to ______ their emotions.", options: ["limit", "increase", "extend", "express"], answer: 3 },
+        { q: "90. The synonym of the word \"creative\" is ______.", options: ["public", "traditional", "normal", "imaginative"], answer: 3 }
+    ];
+
+    const container = document.getElementById('questionsContainer');
+    
+    questions.forEach((item, index) => {
+        let card = document.createElement('div');
+        card.className = 'question-card';
+        
+        let title = document.createElement('div');
+        title.className = 'question-title';
+        title.innerText = item.q;
+        card.appendChild(title);
+
+        let optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        item.options.forEach((opt, optIndex) => {
+            let label = document.createElement('label');
+            let input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'q' + index;
+            input.value = optIndex;
+            
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(' ' + String.fromCharCode(97 + optIndex) + ') ' + opt));
+            optionsDiv.appendChild(label);
+        });
+
+        card.appendChild(optionsDiv);
+        container.appendChild(card);
+    });
+
+    function calculateScore() {
+        let score = 0;
+        questions.forEach((item, index) => {
+            let selected = document.querySelector(`input[name="q${index}"]:checked`);
+            let cards = document.getElementsByClassName('question-card');
+            if (selected) {
+                if (parseInt(selected.value) === item.answer) {
+                    score++;
+                    cards[index].style.border = "2px solid #27ae60";
+                    cards[index].style.backgroundColor = "#f4fcf7";
+                } else {
+                    cards[index].style.border = "2px solid #c0392b";
+                    cards[index].style.backgroundColor = "#fcf4f4";
+                }
+            } else {
+                cards[index].style.border = "2px solid #f39c12";
+            }
+        });
+
+        let resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        let percentage = (score / questions.length) * 100;
+        
+        if (percentage >= 85) {
+            resultDiv.className = 'correct';
+            resultDiv.innerHTML = `🎉 ممتاز جداً يا أبطال! درجتك هي: ${score} من ${questions.length} (${percentage.toFixed(1)}%) - تقدير امتياز! 🌟`;
+        } else {
+            resultDiv.className = 'incorrect';
+            resultDiv.innerHTML = `📝 انتهى الامتحان. درجتك هي: ${score} من ${questions.length} (${percentage.toFixed(1)}%). راعي مراجعة الأخطاء وحاول مرة أخرى لتصل للقمة! 💪`;
+        }
+        
+        window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+    }
+</script>
+
+</body>
+</html>
