@@ -1,10 +1,20 @@
 import streamlit as st
+import google.generativeai as genai
+from PIL import Image
 
 st.set_page_config(
     page_title="المنصة التعليمية الذكية",
     page_icon="⚡",
     layout="centered"
 )
+
+# تهيئة مفتاح الـ Gemini API من أمان Streamlit Secrets
+if "GEMINI_API_KEY" in st.secrets:
+    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+else:
+    # بديل مؤقت في حال لم يتم إدخال المفتاح في الـ Secrets بعد
+    # يفضل دائماً وضعه في st.secrets لحماية مفتاحك
+    pass
 
 # تصميم العنوان الرئيسي للمنصة
 st.markdown("""
@@ -69,7 +79,7 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
     file_name = ""
     display_name = f"{subject_name} - {grade_name}"
     
-    # ربط المواد بالملفات (مع إضافة دراسات سادس ابتدائي)
+    # ربط المواد بالملفات
     if subject_name == "الدراسات الاجتماعية" and grade_name == "الصف الرابع الابتدائي":
         file_name = "Social-G4.html"
     elif subject_name == "الدراسات الاجتماعية" and grade_name == "الصف السادس الابتدائي":
@@ -109,18 +119,30 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
         for hw in uploaded_homeworks:
             if hw.type.startswith("image/"):
                 st.image(hw, caption=f"صورة الواجب: {hw.name}", use_container_width=True)
-            else:
-                st.info(f"📁 تم إرفاق ملف PDF: {hw.name}")
                 
         if st.button("بدء تحليل وتصحيح الواجبات 🔍", key="btn_correct_hw"):
-            st.markdown("---")
-            st.markdown("### 📋 تقرير التصحيح والتحليل الذكي:")
-            st.markdown("""
-            - تم فحص جميع الصفحات والأسئلة المرفوعة معاً لترابط الأفكار.
-            - تم رصد الملاحظات والخطوات الصحيحة لتوضيحها للطالب لضمان الفهم التام.
-            """)
+            with st.spinner("جاري تحليل الواجب وتصحيحه عبر الذكاء الاصطناعي..."):
+                try:
+                    # تجهيز الملفات لـ Gemini
+                    gemini_inputs = []
+                    for hw in uploaded_homeworks:
+                        if hw.type.startswith("image/"):
+                            gemini_inputs.append(Image.open(hw))
+                    
+                    model = genai.GenerativeModel('gemini-1.5-flash')
+                    prompt = "أنت معلم متميز ومساعد ذكي للواجبات المدرسية. قم بتحليل صور الواجب المرفقة، وتصحيح الأخطاء، وشرح الخطوات خطوة بخطوة بأسلوب مبسط ومناسب للأطفال."
+                    
+                    if gemini_inputs:
+                        response = model.generate_content([prompt] + gemini_inputs)
+                        st.markdown("---")
+                        st.markdown("### 📋 تقرير التصحيح والتحليل الذكي:")
+                        st.markdown(response.text)
+                    else:
+                        st.warning("الرجاء التأكد من رفع صور صحيحة للواجب.")
+                except Exception as e:
+                    st.error(fحدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {e}")
 
-# 3. قسم الملخصات والعروض التقديمية الذكية (مع مساحة المناقشة والتعديل)
+# 3. قسم الملخصات والعروض التقديمية الذكية (مدعوم بالفعلي عبر Gemini وبمساحة المناقشة)
 else:
     st.markdown("### 📊 الملخصات والعروض التقديمية الذكية")
     st.markdown("اختر المادة والصف، ثم ارفع صفحة أو صفحات الدرس كاملة لعمل ملخص مترابط من داخل المنهج فقط 📑")
@@ -162,7 +184,7 @@ else:
     if uploaded_lesson_files:
         st.success(f"تم رفع عدد ({len(uploaded_lesson_files)}) ملف/صفحة للدرس الخاصة بـ ({sum_subject_name} - {sum_grade_name}) بنجاح! ✅")
         
-        # معاينة مصغرة للملفات المرفوعة للتأكد
+        # معاينة مصغرة للملفات المرفوعة
         for file in uploaded_lesson_files:
             if file.type.startswith("image/"):
                 st.image(file, caption=file.name, width=150)
@@ -170,30 +192,59 @@ else:
                 st.write(f"📄 {file.name}")
         
         if st.button("تنفيذ التلخيص الشامل بدقة 💡", key="btn_summarize"):
-            # تخزين حالة أن التلخيص تم توليده
-            st.session_state['summary_generated'] = True
+            with st.spinner("جاري قراءة وتلخيص محتوى الدرس بدقة عبر الذكاء الاصطناعي..."):
+                try:
+                    gemini_files = []
+                    for file in uploaded_lesson_files:
+                        if file.type.startswith("image/"):
+                            gemini_files.append(Image.open(file))
+                    
+                    model = genai.GenerativeModel('gemini-1.5-flash')
+                    prompt = f"""
+                    أنت معلم خبير ومختص بمنهج وزارة التربية والتعليم لـ ({sum_subject_name}) لـ ({sum_grade_name}).
+                    مهمتك هي قراءة محتوى الملفات المرفقة الخاصة بالدرس حصرياً والتزام المنهج بدقة تامة دون إدخال أي معلومات خارجية.
+                    قم بعمل:
+                    1. ملخص شامل ومترابط يغطي الأفكار الرئيسية للدرس.
+                    2. أهم النقاط والقواعد أو التواريخ والمفاهيم لتسهيل المراجعة المبسطة للأولاد قبل الامتحانات.
+                    """
+                    
+                    if gemini_files:
+                        response = model.generate_content([prompt] + gemini_files)
+                        # حفظ التلخيص الناتج في الذاكرة المؤقتة لنتمكن من مناقشته لاحقاً
+                        st.session_state['generated_summary'] = response.text
+                        st.session_state['summary_generated'] = True
+                    else:
+                        st.warning("يرجى التأكد من رفع صور صحيحة للدرس.")
+                except Exception as e:
+                    st.error(f"حدث خطأ أثناء توليد التلخيص: {e}")
 
-        # مساحة المناقشة والتعديل (تظهر بعد توليد التلخيص أو عند الحاجة)
+        # عرض التلخيص ومساحة المناقشة والتعديل الفوري
         if st.session_state.get('summary_generated', False):
             st.markdown("---")
             st.markdown(f"### 📝 الملخص الشامل لمنهج ({sum_subject_name} - {sum_grade_name}):")
-            
-            # محاكاة عرض التلخيص المستخرج من الصفحات المرفوعة
-            st.markdown("""
-            * **العناصر الأساسية:** تم تحليل الملفات المرفوعة واستخراج الأفكار الرئيسية للدرس.
-            * **النقاط والتلخيص:** تم صياغة محتوى مبسط ومناسب للمراجعة الفورية حصرياً من المنهج المرفق.
-            """)
+            st.markdown(st.session_state.get('generated_summary', ''))
             
             st.markdown("---")
             st.markdown("### 💬 مساحة المناقشة والتعديل على الملخص:")
-            st.markdown("هل ترغبين في تعديل شيء بالتلخيص؟ أكتبي ملاحظتك وسأقوم بتعديلها فوراً (مثل: اختصري أكثر، اجعليه في شكل سؤال وجواب، ركزي على التواريخ... إلخ).")
+            st.markdown("هل ترغبين في تعديل أو إضافة شيء بالتلخيص؟ اكتبي طلبك (مثال: اختصري أكثر، حوليه لسؤال وجواب، ركزي على نقاط معينة) وسأقوم بتعديله فوراً.")
             
             user_feedback = st.text_input("اكتبي طلبك أو التعديل المطلوب على الملخص هنا:", key="feedback_input")
-            if st.button("تحديث التلخيص حسب التعديل المطلوب 🔄"):
+            if st.button("تحديث التلخيص حسب التعديل المطلوب 🔄", key="btn_update_summary"):
                 if user_feedback.strip():
-                    st.success("تم تعديل وتحديث الملخص بنجاح بناءً على توجيهاتك! ✨")
-                    st.markdown(f"**التلخيص بعد التعديل بناءً على طلبك ({user_feedback}):**")
-                    st.markdown("- تم إعادة صياغة الملخص والنقاط لتتوافق بدقة مع طلبك المضاف.")
+                    with st.spinner("جاري تعديل التلخيص بناءً على طلبك..."):
+                        try:
+                            model = genai.GenerativeModel('gemini-1.5-flash')
+                            chat_prompt = f"""
+                            بناءً على التلخيص السابق والمحتوى المرفق لدرس ({sum_subject_name} - {sum_grade_name})، 
+                            الطلب الجديد أو التعديل الذي تريده المستخدم هو: "{user_feedback}".
+                            قم بتعديل الملخص أو الرد على هذا الطلب بدقة وموضوعية تامة.
+                            """
+                            chat_response = model.generate_content(chat_prompt)
+                            st.markdown("---")
+                            st.markdown("### ✨ الملخص بعد التعديل:")
+                            st.markdown(chat_response.text)
+                        except Exception as e:
+                            st.error(f"حدث خطأ: {e}")
                 else:
                     st.warning("الرجاء كتابة التعديل المطلوب أولاً.")
     else:
