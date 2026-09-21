@@ -11,10 +11,6 @@ st.set_page_config(
 # تهيئة مفتاح الـ Gemini API من أمان Streamlit Secrets
 if "GEMINI_API_KEY" in st.secrets:
     genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-else:
-    # بديل مؤقت في حال لم يتم إدخال المفتاح في الـ Secrets بعد
-    # يفضل دائماً وضعه في st.secrets لحماية مفتاحك
-    pass
 
 # تصميم العنوان الرئيسي للمنصة
 st.markdown("""
@@ -123,7 +119,6 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
         if st.button("بدء تحليل وتصحيح الواجبات 🔍", key="btn_correct_hw"):
             with st.spinner("جاري تحليل الواجب وتصحيحه عبر الذكاء الاصطناعي..."):
                 try:
-                    # تجهيز الملفات لـ Gemini
                     gemini_inputs = []
                     for hw in uploaded_homeworks:
                         if hw.type.startswith("image/"):
@@ -140,9 +135,9 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
                     else:
                         st.warning("الرجاء التأكد من رفع صور صحيحة للواجب.")
                 except Exception as e:
-                    st.error(fحدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {e}")
+                    st.error(f"حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {e}")
 
-# 3. قسم الملخصات والعروض التقديمية الذكية (مدعوم بالفعلي عبر Gemini وبمساحة المناقشة)
+# 3. قسم الملخصات والعروض التقديمية الذكية
 else:
     st.markdown("### 📊 الملخصات والعروض التقديمية الذكية")
     st.markdown("اختر المادة والصف، ثم ارفع صفحة أو صفحات الدرس كاملة لعمل ملخص مترابط من داخل المنهج فقط 📑")
@@ -184,7 +179,6 @@ else:
     if uploaded_lesson_files:
         st.success(f"تم رفع عدد ({len(uploaded_lesson_files)}) ملف/صفحة للدرس الخاصة بـ ({sum_subject_name} - {sum_grade_name}) بنجاح! ✅")
         
-        # معاينة مصغرة للملفات المرفوعة
         for file in uploaded_lesson_files:
             if file.type.startswith("image/"):
                 st.image(file, caption=file.name, width=150)
@@ -210,7 +204,6 @@ else:
                     
                     if gemini_files:
                         response = model.generate_content([prompt] + gemini_files)
-                        # حفظ التلخيص الناتج في الذاكرة المؤقتة لنتمكن من مناقشته لاحقاً
                         st.session_state['generated_summary'] = response.text
                         st.session_state['summary_generated'] = True
                     else:
@@ -218,7 +211,6 @@ else:
                 except Exception as e:
                     st.error(f"حدث خطأ أثناء توليد التلخيص: {e}")
 
-        # عرض التلخيص ومساحة المناقشة والتعديل الفوري
         if st.session_state.get('summary_generated', False):
             st.markdown("---")
             st.markdown(f"### 📝 الملخص الشامل لمنهج ({sum_subject_name} - {sum_grade_name}):")
@@ -235,7 +227,7 @@ else:
                         try:
                             model = genai.GenerativeModel('gemini-1.5-flash')
                             chat_prompt = f"""
-                            بناءً على التلخيص السابق والمحتوى المرفق لدرس ({sum_subject_name} - {sum_grade_name})، 
+                            بناءً على التلخيص السابق والمحتوى المرفق لدرس ({sum_subject_name} - {sum_grade_name}), 
                             الطلب الجديد أو التعديل الذي تريده المستخدم هو: "{user_feedback}".
                             قم بتعديل الملخص أو الرد على هذا الطلب بدقة وموضوعية تامة.
                             """
