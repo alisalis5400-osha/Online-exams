@@ -96,8 +96,8 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
         accept_multiple_files=True
     )
     
+    images = []
     if uploaded_homeworks:
-        images = []
         for file in uploaded_homeworks:
             try:
                 img = Image.open(file)
@@ -121,13 +121,11 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
                     st.success("تم تحليل وتصحيح الواجبات بنجاح! ✅")
                     st.markdown(response.text)
                     
-                    # حفظ النتيجة للدردشة اللاحقة
                     st.session_state['last_homework_response'] = response.text
                     
                 except Exception as e:
                     st.error(f"حدث خطأ أثناء معالجة الواجب: {e}")
         
-        # مساحة الدردشة والتعديلات الإضافية للواجب
         if 'last_homework_response' in st.session_state:
             st.markdown("---")
             st.subheader("💬 مساحة الدردشة لطلب تعديلات أو أسئلة إضافية")
@@ -135,10 +133,10 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
             if hw_chat:
                 with st.spinner("جاري التعديل..."):
                     chat_model = genai.GenerativeModel(MODEL_NAME)
-                    chat_res = chat_model.generate_content(f بناءً على الإجابة السابقة للواجب، قم بالرد على هذا الطلب بدقة: {hw_chat}")
+                    chat_res = chat_model.generate_content(f"بناءً على الإجابة السابقة للواجب، قم بالرد على هذا الطلب بدقة: {hw_chat}")
                     st.write(chat_res.text)
 
-# 3. قسم الملخصات والعروض التقديمية (يدعم كل اللغات وملفات متعددة + مساحة دردشة)
+# 3. قسم الملخصات والعروض التقديمية
 else:
     st.markdown("### 📊 الملخصات والعروض التقديمية الذكية")
     st.markdown("استعرضي هنا أدوات تلخيص الدروس وصياغة النقاط الرئيسية (يدعم جميع اللغات، النصوص، والملفات الورقية المتعددة). 📑")
@@ -185,7 +183,6 @@ else:
             except Exception as e:
                 st.error(f"حدث خطأ أثناء التلخيص: {e}")
                 
-    # مساحة الدردشة والتعديلات على الملخص
     if 'last_summary' in st.session_state:
         st.markdown("---")
         st.subheader("💬 الدردشة لتعديل أو إضافة تفاصيل على الملخص")
@@ -193,5 +190,5 @@ else:
         if user_mod_request:
             with st.spinner("جاري تعديل الملخص حسب طلبك..."):
                 mod_model = genai.GenerativeModel(MODEL_NAME)
-                mod_res = mod_model.generate_content(f بناءً على الملخص السابق، قم بتنفيذ هذا التعديل بدقة: {user_mod_request}")
+                mod_res = mod_model.generate_content(f"بناءً على الملخص السابق، قم بتنفيذ هذا التعديل بدقة: {user_mod_request}")
                 st.write(mod_res.text)
