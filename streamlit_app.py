@@ -15,8 +15,8 @@ if "GEMINI_API_KEY" in st.secrets:
 else:
     st.error("الرجاء إضافة GEMINI_API_KEY في إعدادات Secrets الخاصة بـ Streamlit.")
 
-# اختيار النموذج المحدث والمدعوم
-MODEL_NAME = 'gemini-2.5-flash'
+# اختيار النموذج المستقر والمحدث
+MODEL_NAME = 'gemini-1.5-flash'
 
 # تصميم العنوان الرئيسي للمنصة
 st.markdown("""
@@ -42,7 +42,7 @@ st.markdown("---")
 if app_mode == "📚 بنك الاختبارات التفاعلية":
     st.markdown("### 📝 اختر المادة والصف لتأدية الامتحان")
     
-    # قائمة المواد السبعة المحدثة بدقة
+    # المواد السبعة كاملة
     subject_name = st.selectbox(
         "اختر المادة",
         ["عربي", "دراسات", "دين", "Math", "Science", "English", "Franish"]
@@ -53,18 +53,18 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
         ["المرحلة الابتدائية", "المرحلة الإعدادية"]
     )
     
+    # الصفوف الابتدائية من الأول إلى السادس كاملة
     if stage_name == "المرحلة الابتدائية":
-        grade_name = st.selectbox("اختر الصف", ["الصف الرابع", "الصف الخامس", "الصف السادس"])
+        grade_name = st.selectbox("اختر الصف", ["الصف الأول الابتدائي", "الصف الثاني الابتدائي", "الصف الثالث الابتدائي", "الصف الرابع الابتدائي", "الصف الخامس الابتدائي", "الصف السادس الابتدائي"])
     else:
         grade_name = st.selectbox("اختر الصف", ["الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"])
         
     file_name = ""
     display_name = f"{subject_name} - {grade_name}"
     
-    # ربط المواد بالملفات
-    if subject_name == "دراسات" and grade_name == "الصف الرابع":
+    if subject_name == "دراسات" and grade_name == "الصف الرابع الابتدائي":
         file_name = "Social-G4.html"
-    elif subject_name == "دراسات" and grade_name == "الصف السادس":
+    elif subject_name == "دراسات" and grade_name == "الصف السادس الابتدائي":
         file_name = "Social-G6.html"
     elif subject_name == "عربي" and grade_name == "الصف الثاني الإعدادي":
         file_name = "Arabic.prep2.html"
@@ -118,9 +118,8 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
                     content_payload = [prompt] + images if images else [prompt]
                     response = model.generate_content(content_payload)
                     
-                    st.success("تم تحليل وتصحيح الواجبات بنجاح! ✅")
+                    st.success("تم تحليل وتصحيح الواجبات بنجاح وإرسال التقرير! ✅")
                     st.markdown(response.text)
-                    
                     st.session_state['last_homework_response'] = response.text
                     
                 except Exception as e:
@@ -136,10 +135,14 @@ elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
                     chat_res = chat_model.generate_content(f"بناءً على الإجابة السابقة للواجب، قم بالرد على هذا الطلب بدقة: {hw_chat}")
                     st.write(chat_res.text)
 
-# 3. قسم الملخصات والعروض التقديمية
+# 3. قسم الملخصات والعروض التقديمية (منظم مثل الاختبارات لحفظ واستعراض التلخيصات)
 else:
     st.markdown("### 📊 الملخصات والعروض التقديمية الذكية")
-    st.markdown("استعرضي هنا أدوات تلخيص الدروس وصياغة النقاط الرئيسية (يدعم جميع اللغات، النصوص، والملفات الورقية المتعددة). 📑")
+    st.markdown("استعرضي هنا أدوات تلخيص الدروس وصياغة النقاط الرئيسية بشكل مرتب ومنظم كبطاقات مراجعة إلكترونية. 📑")
+    
+    # اختيار المادة والصف لتنظيم الملخصات وحفظها
+    sum_subject = st.selectbox("مادة التلخيص:", ["عربي", "دراسات", "دين", "Math", "Science", "English", "Franish"], key="sum_sub")
+    sum_grade = st.selectbox("الصف الدراسي:", ["الصف الأول الابتدائي", "الصف الثاني الابتدائي", "الصف الثالث الابتدائي", "الصف الرابع الابتدائي", "الصف الخامس الابتدائي", "الصف السادس الابتدائي", "الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"], key="sum_grd")
     
     input_method = st.radio("طريقة إدخال المحتوى للتلخيص:", ["إدخال نص الدرس", "رفع صفحات أو ملفات (صور/PDF متعددة)"])
     
@@ -158,23 +161,25 @@ else:
             for f in uploaded_lessons:
                 st.image(f, caption=f.name, use_container_width=True)
                 
-    if st.button("تنفيذ التلخيص الشامل ومتعدد اللغات 💡"):
-        with st.spinner("جاري قراءة وتلخيص المحتوى بكل دقة... ⚙️"):
+    if st.button("تنفيذ التلخيص الشامل وحفظه 💡"):
+        with st.spinner("جاري قراءة وتلخيص المحتوى بكل دقة وإعداده للحفظ... ⚙️"):
             try:
                 model = genai.GenerativeModel(MODEL_NAME)
                 
                 if input_method == "إدخال نص الدرس" and lesson_text.strip():
-                    prompt = f"قم بتلخيص النص التالي بأسلوب منظم وواضح في شكل نقاط رئيسية مبسطة ومناسبة للمراجعة السريعة (يدعم لغة النص الأصلية):\n\n{lesson_text}"
+                    prompt = f"قم بتلخيص النص التالي لمادة {sum_subject} ({sum_grade}) بأسلوب منظم وواضح في شكل نقاط رئيسية مبسطة ومناسبة للمراجعة السريعة:\n\n{lesson_text}"
                     response = model.generate_content(prompt)
-                    st.success("تم إعداد الملخص بنجاح ✅")
+                    
+                    st.success(f"تم إعداد وحفظ ملخص ({sum_subject} - {sum_grade}) بنجاح ✅")
                     st.markdown(response.text)
                     st.session_state['last_summary'] = response.text
                     
                 elif input_method == "رفع صفحات أو ملفات (صور/PDF متعددة)" and uploaded_lessons:
                     lesson_imgs = [Image.open(f) for f in uploaded_lessons]
-                    prompt = "قم بقراءة هذه الصفحات المرفوعة بعناية (بأي لغة كانت) وقدم تلخيصاً شاملاً ومنظماً يوضح الأفكار والمفاهيم الأساسية."
+                    prompt = f"قم بقراءة هذه الصفحات المرفوعة بعناية لمادة {sum_subject} ({sum_grade}) وقدم تلخيصاً شاملاً ومنظماً يوضح الأفكار والمفاهيم الأساسية."
                     response = model.generate_content([prompt] + lesson_imgs)
-                    st.success("تم إعداد الملخص بنجاح ✅")
+                    
+                    st.success(f"تم إعداد وحفظ ملخص ({sum_subject} - {sum_grade}) بنجاح ✅")
                     st.markdown(response.text)
                     st.session_state['last_summary'] = response.text
                 else:
@@ -185,7 +190,7 @@ else:
                 
     if 'last_summary' in st.session_state:
         st.markdown("---")
-        st.subheader("💬 الدردشة لتعديل أو إضافة تفاصيل على الملخص")
+        st.subheader("💬 الدردشة لتعديل أو إضافة تفاصيل على الملخص المحفوظ")
         user_mod_request = st.text_input("هل ترغبين في اختصار جزء معين، إضافة أمثلة، أو ترجمة الملخص للغة أخرى؟")
         if user_mod_request:
             with st.spinner("جاري تعديل الملخص حسب طلبك..."):
