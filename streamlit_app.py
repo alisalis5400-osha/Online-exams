@@ -42,9 +42,10 @@ st.markdown("---")
 if app_mode == "📚 بنك الاختبارات التفاعلية":
     st.markdown("### 📝 اختر المادة والصف لتأدية الامتحان")
     
+    # قائمة المواد السبعة المحدثة
     subject_name = st.selectbox(
         "اختر المادة",
-        ["الدراسات الاجتماعية", "اللغة العربية", "اللغة الإنجليزية"]
+        ["عربي", "دراسات", "دين", "Math", "Science", "English", "Franish"]
     )
     
     stage_name = st.radio(
@@ -61,13 +62,13 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
     display_name = f"{subject_name} - {grade_name}"
     
     # ربط المواد بالملفات
-    if subject_name == "الدراسات الاجتماعية" and grade_name == "الصف الرابع":
+    if subject_name == "دراسات" and grade_name == "الصف الرابع":
         file_name = "Social-G4.html"
-    elif subject_name == "الدراسات الاجتماعية" and grade_name == "الصف السادس":
+    elif subject_name == "دراسات" and grade_name == "الصف السادس":
         file_name = "Social-G6.html"
-    elif subject_name == "اللغة العربية" and grade_name == "الصف الثاني الإعدادي":
+    elif subject_name == "عربي" and grade_name == "الصف الثاني الإعدادي":
         file_name = "Arabic.prep2.html"
-    elif subject_name == "اللغة الإنجليزية" and grade_name == "الصف الثاني الإعدادي":
+    elif subject_name == "English" and grade_name == "الصف الثاني الإعدادي":
         file_name = "engprep2.htm"
         
     if file_name:
@@ -82,56 +83,115 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
         </div>
         """, unsafe_allow_html=True)
     else:
-        st.warning("عذراً، الامتحان غير متوفر لهذه المادة حالياً ⚠️")
+        st.warning("عذراً، الامتحان التفاعلي قيد التحديث لهذه المادة حالياً ⚠️ يمكنك استخدام أقسام التحليل والتلخيص بالأسفل.")
 
-# 2. قسم مساعد الواجبات الذكي وتصحيحها
+# 2. قسم مساعد الواجبات الذكي وتصحيحها (يدعم أكثر من ملف ورقي / صور / PDF)
 elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
     st.markdown("### 🤖 مساعد الواجبات الذكي وتصحيحها")
-    st.markdown("قم برفع صورة الواجب أو المسألة الدراسية، وسأقوم بتحليلها وتصحيحها خطوة بخطوة للأولاد! 💡")
+    st.markdown("قم برفع صور متعددة أو ملفات الواجب (تسمح بأكثر من ورقة)، وسأقوم بتحليلها وتصحيحها خطوة بخطوة! 💡")
     
-    uploaded_homework = st.file_uploader("ارفع صورة الواجب هنا (JPG, PNG)", type=["jpg", "jpeg", "png"])
+    uploaded_homeworks = st.file_uploader(
+        "ارفع صور أو ملفات الواجب هنا (JPG, PNG, PDF)", 
+        type=["jpg", "jpeg", "png", "pdf"], 
+        accept_multiple_files=True
+    )
     
-    if uploaded_homework is not None:
-        image = Image.open(uploaded_homework)
-        st.image(image, caption="صورة الواجب المرفوع", use_container_width=True)
+    if uploaded_homeworks:
+        images = []
+        for file in uploaded_homeworks:
+            try:
+                img = Image.open(file)
+                images.append(img)
+                st.image(img, caption=file.name, use_container_width=True)
+            except Exception:
+                st.warning(f"الملف {file.name} غير قابل للعرض كصورة مباشرة، لكن سيتم معالجته.")
         
-        if st.button("🚀 ابدأ تحليل وتصحيح الواجب"):
-            with st.spinner("جاري تحليل الخطوات وتصحيح الأخطاء عبر الذكاء الاصطناعي... ✨"):
+        if st.button("🚀 ابدأ تحليل وتصحيح الواجبات"):
+            with st.spinner("جاري تحليل الخطوات وتصحيح الأخطاء لجميع الأوراق المرفوعة... ✨"):
                 try:
                     model = genai.GenerativeModel(MODEL_NAME)
                     prompt = (
-                        "أنت معلم خبير ومساعد تعليمي. قم بقراءة هذه الصورة الخاصة بالواجب المدرسي، "
-                        "وتحليل الأسئلة الموجودة، وتقديم تصحيح تفصيلي، وإجابات نموذجية، وخطوات واضحة لشرحها للطالب بأسلوب تربوي مبسط."
+                        "أنت معلم خبير ومساعد تعليمي متعدد اللغات. قم بقراءة هذه الملفات أو الصور الخاصة بالواجب المدرسي، "
+                        "وتحليل الأسئلة بكل لغات المحتوى، وتقديم تصحيح تفصيلي، وإجابات نموذجية، وخطوات واضحة لشرحها للطالب."
                     )
-                    response = model.generate_content([prompt, image])
                     
-                    st.success("تم تحليل وتصحيح الواجب بنجاح! ✅")
+                    content_payload = [prompt] + images if images else [prompt]
+                    response = model.generate_content(content_payload)
+                    
+                    st.success("تم تحليل وتصحيح الواجبات بنجاح! ✅")
                     st.markdown(response.text)
+                    
+                    # حفظ النتيجة للدردشة اللاحقة
+                    st.session_state['last_homework_response'] = response.text
                     
                 except Exception as e:
                     st.error(f"حدث خطأ أثناء معالجة الواجب: {e}")
+        
+        # مساحة الدردشة والتعديلات الإضافية للواجب
+        if 'last_homework_response' in st.session_state:
+            st.markdown("---")
+            st.subheader("💬 مساحة الدردشة لطلب تعديلات أو أسئلة إضافية")
+            hw_chat = st.text_input("اطلبي أي تعديل، تبسيط إضافي، أو سؤال ترغبين في توضيحه للولاد:")
+            if hw_chat:
+                with st.spinner("جاري التعديل..."):
+                    chat_model = genai.GenerativeModel(MODEL_NAME)
+                    chat_res = chat_model.generate_content(f بناءً على الإجابة السابقة للواجب، قم بالرد على هذا الطلب بدقة: {hw_chat}")
+                    st.write(chat_res.text)
 
-# 3. قسم الملخصات والعروض التقديمية
+# 3. قسم الملخصات والعروض التقديمية (يدعم كل اللغات وملفات متعددة + مساحة دردشة)
 else:
     st.markdown("### 📊 الملخصات والعروض التقديمية الذكية")
-    st.markdown("استعرضي هنا أدوات تلخيص الدروس وصياغة النقاط الرئيسية المصغرة للأولاد بأسلوب سهل ومنظم. 📑")
+    st.markdown("استعرضي هنا أدوات تلخيص الدروس وصياغة النقاط الرئيسية (يدعم جميع اللغات، النصوص، والملفات الورقية المتعددة). 📑")
     
-    lesson_text = st.text_area("أدخلي نص الدرس أو الموضوع المراد تلخيصه:")
+    input_method = st.radio("طريقة إدخال المحتوى للتلخيص:", ["إدخال نص الدرس", "رفع صفحات أو ملفات (صور/PDF متعددة)"])
     
-    if st.button("تنفيذ التلخيص والعرض التصويري 💡"):
-        if lesson_text.strip():
-            with st.spinner("جاري إعداد الملخص الذكي... ⚙️"):
-                try:
-                    model = genai.GenerativeModel(MODEL_NAME)
-                    prompt = (
-                        f"قم بتلخيص النص التالي بأسلوب منظم وواضح في شكل نقاط رئيسية مبسطة ومناسبة للمراجعة السريعة للطلاب:\n\n{lesson_text}"
-                    )
+    lesson_text = ""
+    uploaded_lessons = None
+    
+    if input_method == "إدخال نص الدرس":
+        lesson_text = st.text_area("أدخلي نص الدرس أو الموضوع بأي لغة (عربي، إنجليزي، فرنسي...):")
+    else:
+        uploaded_lessons = st.file_uploader(
+            "ارفعي صفحات الدرس (صور أو ملفات متعددة)", 
+            type=["jpg", "jpeg", "png", "pdf"], 
+            accept_multiple_files=True
+        )
+        if uploaded_lessons:
+            for f in uploaded_lessons:
+                st.image(f, caption=f.name, use_container_width=True)
+                
+    if st.button("تنفيذ التلخيص الشامل ومتعدد اللغات 💡"):
+        with st.spinner("جاري قراءة وتلخيص المحتوى بكل دقة... ⚙️"):
+            try:
+                model = genai.GenerativeModel(MODEL_NAME)
+                
+                if input_method == "إدخال نص الدرس" and lesson_text.strip():
+                    prompt = f"قم بتلخيص النص التالي بأسلوب منظم وواضح في شكل نقاط رئيسية مبسطة ومناسبة للمراجعة السريعة (يدعم لغة النص الأصلية):\n\n{lesson_text}"
                     response = model.generate_content(prompt)
-                    
-                    st.success("تم إعداد الملخص والعرض التقديمي بنجاح ✅")
+                    st.success("تم إعداد الملخص بنجاح ✅")
                     st.markdown(response.text)
+                    st.session_state['last_summary'] = response.text
                     
-                except Exception as e:
-                    st.error(f"حدث خطأ أثناء التلخيص: {e}")
-        else:
-            st.warning("الرجاء إدخال نص الدرس أولاً.")
+                elif input_method == "رفع صفحات أو ملفات (صور/PDF متعددة)" and uploaded_lessons:
+                    lesson_imgs = [Image.open(f) for f in uploaded_lessons]
+                    prompt = "قم بقراءة هذه الصفحات المرفوعة بعناية (بأي لغة كانت) وقدم تلخيصاً شاملاً ومنظماً يوضح الأفكار والمفاهيم الأساسية."
+                    response = model.generate_content([prompt] + lesson_imgs)
+                    st.success("تم إعداد الملخص بنجاح ✅")
+                    st.markdown(response.text)
+                    st.session_state['last_summary'] = response.text
+                else:
+                    st.warning("الرجاء إدخال النص أو رفع الملفات أولاً.")
+                    
+            except Exception as e:
+                st.error(f"حدث خطأ أثناء التلخيص: {e}")
+                
+    # مساحة الدردشة والتعديلات على الملخص
+    if 'last_summary' in st.session_state:
+        st.markdown("---")
+        st.subheader("💬 الدردشة لتعديل أو إضافة تفاصيل على الملخص")
+        user_mod_request = st.text_input("هل ترغبين في اختصار جزء معين، إضافة أمثلة، أو ترجمة الملخص للغة أخرى؟")
+        if user_mod_request:
+            with st.spinner("جاري تعديل الملخص حسب طلبك..."):
+                mod_model = genai.GenerativeModel(MODEL_NAME)
+                mod_res = mod_model.generate_content(f بناءً على الملخص السابق، قم بتنفيذ هذا التعديل بدقة: {user_mod_request}")
+                st.write(mod_res.text)
