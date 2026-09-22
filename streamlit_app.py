@@ -15,8 +15,8 @@ if "GEMINI_API_KEY" in st.secrets:
 else:
     st.error("الرجاء إضافة GEMINI_API_KEY في إعدادات Secrets الخاصة بـ Streamlit.")
 
-# اختيار النموذج بالطريقة الصحيحة تماماً لمنع أخطاء الـ API
-MODEL_NAME = 'gemini-1.5-flash'
+# اختيار أحدث نموذج مدعوم ومستقر تماماً
+MODEL_NAME = 'gemini-2.5-flash'
 
 # تصميم العنوان الرئيسي للمنصة
 st.markdown("""
