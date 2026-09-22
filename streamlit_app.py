@@ -15,8 +15,7 @@ if "GEMINI_API_KEY" in st.secrets:
 else:
     st.error("الرجاء إضافة GEMINI_API_KEY في إعدادات Secrets الخاصة بـ Streamlit.")
 
-# استخدام النموذج المحدث والمدعوم رسمياً من النظام
-MODEL_NAME = 'gemini-3.6-flash'
+MODEL_NAME = 'gemini-1.5-flash'
 
 # تصميم العنوان الرئيسي للمنصة
 st.markdown("""
@@ -52,7 +51,6 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
         ["المرحلة الابتدائية", "المرحلة الإعدادية"]
     )
     
-    # صفوف الابتدائي كاملة من الأول للسادس
     if stage_name == "المرحلة الابتدائية":
         grade_name = st.selectbox("اختر الصف", ["الصف الأول الابتدائي", "الصف الثاني الابتدائي", "الصف الثالث الابتدائي", "الصف الرابع الابتدائي", "الصف الخامس الابتدائي", "الصف السادس الابتدائي"])
     else:
@@ -84,114 +82,119 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
     else:
         st.warning("عذراً، الامتحان التفاعلي قيد التحديث لهذه المادة حالياً ⚠️ يمكنك استخدام أقسام التحليل والتلخيص بالأسفل.")
 
-# 2. قسم مساعد الواجبات الذكي وتصحيحها
+# 2. قسم مساعد الواجبات الذكي وتصحيحها (بذاكرة محادثة مستمرة)
 elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
     st.markdown("### 🤖 مساعد الواجبات الذكي وتصحيحها")
-    st.markdown("قم برفع صور متعددة أو ملفات الواجب (تسمح بأكثر من ورقة)، وسأقوم بتحليلها وتصحيحها خطوة بخطوة لكل اللغات! 💡")
+    st.markdown("ارفعي صور الواجب، وتحدثي معي بحرية لتعديل أو شرح أي نقطة بناءً على الصور المرفوعة! 💡")
     
+    if "hw_chat_session" not in st.session_state:
+        model = genai.GenerativeModel(MODEL_NAME)
+        st.session_state.hw_chat_session = model.start_chat(history=[])
+    
+    if "hw_messages" not in st.session_state:
+        st.session_state.hw_messages = []
+
     uploaded_homeworks = st.file_uploader(
         "ارفع صور أو ملفات الواجب هنا (JPG, PNG, PDF)", 
         type=["jpg", "jpeg", "png", "pdf"], 
-        accept_multiple_files=True
+        accept_multiple_files=True,
+        key="hw_uploader"
     )
     
-    images = []
     if uploaded_homeworks:
-        for file in uploaded_homeworks:
-            try:
-                img = Image.open(file)
-                images.append(img)
-                st.image(img, caption=file.name, use_container_width=True)
-            except Exception:
-                st.warning(f"الملف {file.name} غير قابل للعرض كصورة مباشرة، لكن سيتم معالجته.")
-        
-        if st.button("🚀 ابدأ تحليل وتصحيح الواجبات"):
-            with st.spinner("جاري تحليل الخطوات وتصحيح الأخطاء لجميع الأوراق المرفوعة... ✨"):
-                try:
-                    model = genai.GenerativeModel(MODEL_NAME)
-                    prompt = (
-                        "أنت معلم خبير ومساعد تعليمي متعدد اللغات. قم بقراءة هذه الملفات أو الصور الخاصة بالواجب المدرسي، "
-                        "وتحليل الأسئلة بكل لغات المحتوى، وتقديم تصحيح تفصيلي، وإجابات نموذجية، وخطوات واضحة لشرحها للطالب."
-                    )
-                    
-                    content_payload = [prompt] + images if images else [prompt]
-                    response = model.generate_content(content_payload)
-                    
-                    st.success("تم تحليل وتصحيح الواجبات بنجاح وإرسال التقرير! ✅")
-                    st.markdown(response.text)
-                    st.session_state['last_homework_response'] = response.text
-                    
-                except Exception as e:
-                    st.error(f"حدث خطأ أثناء معالجة الواجب: {e}")
-        
-        if 'last_homework_response' in st.session_state:
-            st.markdown("---")
-            st.subheader("💬 مساحة الدردشة لطلب تعديلات أو أسئلة إضافية")
-            hw_chat = st.text_input("اطلبي أي تعديل، تبسيط إضافي، أو سؤال ترغبين في توضيحه للولاد:")
-            if hw_chat:
-                with st.spinner("جاري التعديل..."):
-                    chat_model = genai.GenerativeModel(MODEL_NAME)
-                    chat_res = chat_model.generate_content(f"بناءً على الإجابة السابقة للواجب، قم بالرد على هذا الطلب بدقة: {hw_chat}")
-                    st.write(chat_res.text)
+        images = [Image.open(f) for f in uploaded_homeworks]
+        for img in images:
+            st.image(img, use_container_width=True)
+            
+        if st.button("🚀 بدء تحليل الواجب"):
+            with st.spinner("جاري تحليل الواجب..."):
+                prompt = "أنت معلم خبير. قم بقراءة وتحليل هذه الصور الخاصة بالواجب المدرسي وتقديم تصحيح تفصيلي وخطوات واضحة."
+                response = st.session_state.hw_chat_session.send_message([prompt] + images)
+                st.session_state.hw_messages.append({"role": "user", "content": "[تم إرفاق صور الواجب للتحليل]"})
+                st.session_state.hw_messages.append({"role": "model", "content": response.text})
 
-# 3. قسم الملخصات والعروض التقديمية (منظم كبطاقات لحفظ واستعراض التلخيصات)
+    # عرض تاريخ المحادثة للواجبات
+    for message in st.session_state.hw_messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # صندوق محادثة مستمر
+    if user_input := st.chat_input("اطلبي أي تعديل، ترجمة، أو توضيح إضافي للواجب..."):
+        st.session_state.hw_messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
+            
+        with st.chat_message("assistant"):
+            with st.spinner("جاري الرد..."):
+                response = st.session_state.hw_chat_session.send_message(user_input)
+                st.markdown(response.text)
+                st.session_state.hw_messages.append({"role": "model", "content": response.text})
+
+# 3. قسم الملخصات والعروض التقديمية (بذاكرة محادثة مستمرة ومرتبة بالمواد والصفوف)
 else:
     st.markdown("### 📊 الملخصات والعروض التقديمية الذكية")
-    st.markdown("استعرضي هنا أدوات تلخيص الدروس وصياغة النقاط الرئيسية بشكل مرتب ومنظم كبطاقات مراجعة إلكترونية. 📑")
+    st.markdown("استعرضي هنا أدوات تلخيص الدروس مع إمكانية التعديل والدردشة المستمرة حول نفس محتوى الصور أو النصوص المرفوعة. 📑")
     
     sum_subject = st.selectbox("مادة التلخيص:", ["عربي", "دراسات", "دين", "Math", "Science", "English", "Franish"], key="sum_sub")
     sum_grade = st.selectbox("الصف الدراسي:", ["الصف الأول الابتدائي", "الصف الثاني الابتدائي", "الصف الثالث الابتدائي", "الصف الرابع الابتدائي", "الصف الخامس الابتدائي", "الصف السادس الابتدائي", "الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"], key="sum_grd")
     
+    if "sum_chat_session" not in st.session_state:
+        model = genai.GenerativeModel(MODEL_NAME)
+        st.session_state.sum_chat_session = model.start_chat(history=[])
+        st.session_state.sum_messages = []
+
     input_method = st.radio("طريقة إدخال المحتوى للتلخيص:", ["إدخال نص الدرس", "رفع صفحات أو ملفات (صور/PDF متعددة)"])
     
     lesson_text = ""
     uploaded_lessons = None
     
     if input_method == "إدخال نص الدرس":
-        lesson_text = st.text_area("أدخلي نص الدرس أو الموضوع بأي لغة (عربي، إنجليزي، فرنسي...):")
+        lesson_text = st.text_area("أدخلي نص الدرس أو الموضوع بأي لغة:")
     else:
         uploaded_lessons = st.file_uploader(
             "ارفعي صفحات الدرس (صور أو ملفات متعددة)", 
             type=["jpg", "jpeg", "png", "pdf"], 
-            accept_multiple_files=True
+            accept_multiple_files=True,
+            key="sum_uploader"
         )
         if uploaded_lessons:
             for f in uploaded_lessons:
-                st.image(f, caption=f.name, use_container_width=True)
+                st.image(f, use_container_width=True)
                 
     if st.button("تنفيذ التلخيص الشامل وحفظه 💡"):
-        with st.spinner("جاري قراءة وتلخيص المحتوى بكل دقة وإعداده للحفظ... ⚙️"):
+        with st.spinner("جاري قراءة وتلخيص المحتوى بكل دقة..."):
             try:
-                model = genai.GenerativeModel(MODEL_NAME)
-                
                 if input_method == "إدخال نص الدرس" and lesson_text.strip():
-                    prompt = f"قم بتلخيص النص التالي لمادة {sum_subject} ({sum_grade}) بأسلوب منظم وواضح في شكل نقاط رئيسية مبسطة ومناسبة للمراجعة السريعة:\n\n{lesson_text}"
-                    response = model.generate_content(prompt)
-                    
-                    st.success(f"تم إعداد وحفظ ملخص ({sum_subject} - {sum_grade}) بنجاح ✅")
-                    st.markdown(response.text)
-                    st.session_state['last_summary'] = response.text
+                    prompt = f"قم بتلخيص النص التالي لمادة {sum_subject} ({sum_grade}) بأسلوب منظم وواضح في شكل نقاط رئيسية مبسطة:\n\n{lesson_text}"
+                    response = st.session_state.sum_chat_session.send_message(prompt)
+                    st.session_state.sum_messages.append({"role": "user", "content": f"تلخيص النص: {lesson_text[:50]}..."})
+                    st.session_state.sum_messages.append({"role": "model", "content": response.text})
                     
                 elif input_method == "رفع صفحات أو ملفات (صور/PDF متعددة)" and uploaded_lessons:
                     lesson_imgs = [Image.open(f) for f in uploaded_lessons]
                     prompt = f"قم بقراءة هذه الصفحات المرفوعة بعناية لمادة {sum_subject} ({sum_grade}) وقدم تلخيصاً شاملاً ومنظماً يوضح الأفكار والمفاهيم الأساسية."
-                    response = model.generate_content([prompt] + lesson_imgs)
-                    
-                    st.success(f"تم إعداد وحفظ ملخص ({sum_subject} - {sum_grade}) بنجاح ✅")
-                    st.markdown(response.text)
-                    st.session_state['last_summary'] = response.text
+                    response = st.session_state.sum_chat_session.send_message([prompt] + lesson_imgs)
+                    st.session_state.sum_messages.append({"role": "user", "content": "[تم إرفاق صور الصفحات للتلخيص]"})
+                    st.session_state.sum_messages.append({"role": "model", "content": response.text})
                 else:
                     st.warning("الرجاء إدخال النص أو رفع الملفات أولاً.")
-                    
             except Exception as e:
                 st.error(f"حدث خطأ أثناء التلخيص: {e}")
+
+    # عرض تاريخ محادثة الملخصات
+    for message in st.session_state.get('sum_messages', []):
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # صندوق محادثة مستمر للتلخيصات
+    if sum_input := st.chat_input("اطلبي تعديل الملخص، ترجمته، أو إضافة أمثلة..."):
+        if "sum_chat_session" in st.session_state:
+            st.session_state.sum_messages.append({"role": "user", "content": sum_input})
+            with st.chat_message("user"):
+                st.markdown(sum_input)
                 
-    if 'last_summary' in st.session_state:
-        st.markdown("---")
-        st.subheader("💬 الدردشة لتعديل أو إضافة تفاصيل على الملخص المحفوظ")
-        user_mod_request = st.text_input("هل ترغبين في اختصار جزء معين، إضافة أمثلة، أو ترجمة الملخص للغة أخرى؟")
-        if user_mod_request:
-            with st.spinner("جاري تعديل الملخص حسب طلبك..."):
-                mod_model = genai.GenerativeModel(MODEL_NAME)
-                mod_res = mod_model.generate_content(f"بناءً على الملخص السابق، قم بتنفيذ هذا التعديل بدقة: {user_mod_request}")
-                st.write(mod_res.text)
+            with st.chat_message("assistant"):
+                with st.spinner("جاري تعديل الملخص حسب طلبك..."):
+                    response = st.session_state.sum_chat_session.send_message(sum_input)
+                    st.markdown(response.text)
+                    st.session_state.sum_messages.append({"role": "model", "content": response.text})
