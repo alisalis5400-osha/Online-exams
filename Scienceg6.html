@@ -1,34 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Science Quiz: The Respiratory System</title>
+    <title>منصة الاختبارات والواجبات الذكية</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f4f8;
             color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+        }
+        .header-admin {
+            background-color: #1e4620;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
         }
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: #ffffff;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        h1 {
-            text-align: center;
+        .section-title {
+            font-weight: bold;
+            font-size: 1.1em;
             color: #2c3e50;
             margin-bottom: 10px;
         }
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
+        .options-group {
+            margin-bottom: 20px;
+        }
+        .options-group label {
+            display: block;
+            padding: 8px 0;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #e1e8ed;
+            margin: 20px 0;
+        }
+        /* تصميم أسئلة الامتحان النصي الذكي */
+        .exam-container {
+            display: none;
         }
         .question-card {
             background: #f9fbfd;
@@ -36,28 +66,43 @@
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
+            direction: ltr;
+            text-align: left;
         }
         .question-title {
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1.05em;
             color: #2980b9;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
-        .options label {
-            display: block;
-            background: #ffffff;
+        textarea {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
             border: 1px solid #cbd5e1;
-            padding: 10px 15px;
             border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            font-family: inherit;
+            font-size: 0.95em;
+            resize: vertical;
         }
-        .options label:hover {
-            background: #e2e8f0;
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            display: none;
         }
-        input[type="radio"] {
-            margin-right: 10px;
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .feedback.partial {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            display: block;
         }
         .submit-btn {
             display: block;
@@ -65,7 +110,7 @@
             background-color: #27ae60;
             color: white;
             padding: 12px;
-            font-size: 1.2em;
+            font-size: 1.1em;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -76,7 +121,7 @@
         }
         #result {
             text-align: center;
-            font-size: 1.3em;
+            font-size: 1.2em;
             font-weight: bold;
             margin-top: 20px;
             color: #2c3e50;
@@ -85,105 +130,143 @@
 </head>
 <body>
 
+<div class="header-admin">
+    أهلاً بك يا فندم (admin) ⚡
+</div>
+
 <div class="container">
-    <h1>Science Online Exam: Respiratory System</h1>
-    <div class="subtitle">Interactive questions based on "What happens if...?" and "Give reasons" concepts</div>
+    <div class="section-title">اختر القسم المطلوب:</div>
+    <div class="options-group">
+        <label><input type="radio" name="section" checked> 📚 بنك الاختبارات التفاعلية</label>
+        <label><input type="radio" name="section"> 🤖 مساعد الواجبات الذكي وتصحيحها</label>
+        <label><input type="radio" name="section"> 📊 الملخصات والعروض التقديمية الذكية</label>
+    </div>
 
-    <form id="examForm">
-        <!-- Question 1 -->
-        <div class="question-card">
-            <div class="question-title">1. What happens when you breathe in (inhale) air through your nose or mouth?[span_1](start_span)[span_1](end_span)</div>
-            <div class="options">
-                <label><input type="radio" name="q1" value="wrong"> Air rich in carbon dioxide leaves the body.[span_2](start_span)[span_2](end_span)</label>
-                <label><input type="radio" name="q1" value="correct"> Air goes to the lungs, and the chest gets bigger.[span_3](start_span)[span_3](end_span)</label>
-                <label><input type="radio" name="q1" value="wrong"> The chest gets smaller.[span_4](start_span)[span_4](end_span)</label>
+    <hr>
+
+    <div class="section-title">✏️ اختر المادة والصّف لتأدية الامتحان</div>
+    
+    <label>اختر المادة</label>
+    <select id="subjectSelect" onchange="checkExamAvailability()">
+        <option value="">-- اختر المادة --</option>
+        <option value="science">Science</option>
+    </select>
+
+    <label>اختر المرحلة</label>
+    <div class="options-group">
+        <label><input type="radio" name="stage" checked> المرحلة الابتدائية</label>
+        <label><input type="radio" name="stage"> المرحلة الإعدادية</label>
+    </div>
+
+    <label>اختر الصّف</label>
+    <select id="gradeSelect" onchange="checkExamAvailability()">
+        <option value="">-- اختر الصف --</option>
+        <option value="g6">الصف السادس الابتدائي</option>
+    </select>
+
+    <!-- منطقة عرض الامتحان الذكي النصي -->
+    <div id="examArea" class="exam-container">
+        <hr>
+        <h2 style="text-align: center; color: #2c3e50;">Science Smart Exam: Respiratory System</h2>
+        <p style="text-align: center; color: #7f8c8d; font-size: 0.9em;">Type your answers in English. The system evaluates your sentences scientifically and linguistically.</p>
+
+        <form id="examForm">
+            <!-- Q1 -->
+            <div class="question-card" data-keywords="lungs,chest,bigger">
+                <div class="question-title">1. What happens when you breathe in (inhale) air through your nose or mouth?</div>
+                <textarea placeholder="Type your answer here..."></textarea>
+                <div class="feedback"></div>
             </div>
-        </div>
 
-        <!-- Question 2 -->
-        <div class="question-card">
-            <div class="question-title">2. Why does clear limewater turn milky white when exhaled air is blown into it?[span_5](start_span)[span_5](end_span)[span_6](start_span)[span_6](end_span)</div>
-            <div class="options">
-                <label><input type="radio" name="q2" value="correct"> Because exhaled air contains carbon dioxide.[span_7](start_span)[span_7](end_span)</label>
-                <label><input type="radio" name="q2" value="wrong"> Because room air contains a very small amount of carbon dioxide.[span_8](start_span)[span_8](end_span)</label>
-                <label><input type="radio" name="q2" value="wrong"> Because oxygen reacts with limewater.[span_9](start_span)[span_9](end_span)</label>
+            <!-- Q2 -->
+            <div class="question-card" data-keywords="carbon,dioxide,exhaled">
+                <div class="question-title">2. Why does clear limewater turn milky white when exhaled air is blown into it?</div>
+                <textarea placeholder="Type your answer here..."></textarea>
+                <div class="feedback"></div>
             </div>
-        </div>
 
-        <!-- Question 3 -->
-        <div class="question-card">
-            <div class="question-title">3. Where does gas exchange take place in the human lungs?[span_10](start_span)[span_10](end_span)</div>
-            <div class="options">
-                <label><input type="radio" name="q3" value="wrong"> In the nose and mouth.[span_11](start_span)[span_11](end_span)</label>
-                <label><input type="radio" name="q3" value="correct"> In the alveoli.[span_12](start_span)[span_12](end_span)</label>
-                <label><input type="radio" name="q3" value="wrong"> In the trachea directly.[span_13](start_span)[span_13](end_span)</label>
+            <!-- Q3 -->
+            <div class="question-card" data-keywords="alveoli">
+                <div class="question-title">3. Where does gas exchange take place in the human lungs?</div>
+                <textarea placeholder="Type your answer here..."></textarea>
+                <div class="feedback"></div>
             </div>
-        </div>
 
-        <!-- Question 4 -->
-        <div class="question-card">
-            <div class="question-title">4. Why are alveoli surrounded by a network of blood vessels?[span_14](start_span)[span_14](end_span)</div>
-            <div class="options">
-                <label><input type="radio" name="q4" value="correct"> Because gas exchange takes place between the air and the blood.[span_15](start_span)[span_15](end_span)</label>
-                <label><input type="radio" name="q4" value="wrong"> To let air pass faster inside the lungs.[span_16](start_span)[span_16](end_span)</label>
-                <label><input type="radio" name="q4" value="wrong"> To decrease the size of the chest during exhale.[span_17](start_span)[span_17](end_span)</label>
+            <!-- Q4 -->
+            <div class="question-card" data-keywords="gas,exchange,blood,air">
+                <div class="question-title">4. Why are alveoli surrounded by a network of blood vessels?</div>
+                <textarea placeholder="Type your answer here..."></textarea>
+                <div class="feedback"></div>
             </div>
-        </div>
 
-        <!-- Question 5 -->
-        <div class="question-card">
-            <div class="question-title">5. How does a fish breathe?[span_18](start_span)[span_18](end_span)</div>
-            <div class="options">
-                <label><input type="radio" name="q5" value="wrong"> It takes in oxygen from the air directly.[span_19](start_span)[span_19](end_span)</label>
-                <label><input type="radio" name="q5" value="correct"> It takes in oxygen from water through its gills and releases carbon dioxide.[span_20](start_span)[span_20](end_span)</label>
-                <label><input type="radio" name="q5" value="wrong"> It depends on alveoli under water.[span_21](start_span)[span_21](end_span)</label>
+            <!-- Q5 -->
+            <div class="question-card" data-keywords="gills,water,oxygen">
+                <div class="question-title">5. How does a fish breathe?</div>
+                <textarea placeholder="Type your answer here..."></textarea>
+                <div class="feedback"></div>
             </div>
-        </div>
 
-        <!-- Question 6 -->
-        <div class="question-card">
-            <div class="question-title">6. What happens if there is an absence of alveoli in the lungs?[span_22](start_span)[span_22](end_span)</div>
-            <div class="options">
-                <label><input type="radio" name="q6" value="correct"> Gas exchange will not take place.[span_23](start_span)[span_23](end_span)</label>
-                <label><input type="radio" name="q6" value="wrong"> Breathing process will become much faster.[span_24](start_span)[span_24](end_span)</label>
-                <label><input type="radio" name="q6" value="wrong"> The chest size will increase rapidly.[span_25](start_span)[span_25](end_span)</label>
+            <!-- Q6 -->
+            <div class="question-card" data-keywords="take,place,not">
+                <div class="question-title">6. What happens if there is an absence of alveoli in the lungs?</div>
+                <textarea placeholder="Type your answer here..."></textarea>
+                <div class="feedback"></div>
             </div>
-        </div>
 
-        <button type="button" class="submit-btn" onclick="calculateScore()">Submit and Show Result</button>
-    </form>
+            <button type="button" class="submit-btn" onclick="evaluateExam()">Evaluate My Answers</button>
+        </form>
 
-    <div id="result"></div>
+        <div id="result"></div>
+    </div>
 </div>
 
 <script>
-    function calculateScore() {
-        const answers = {
-            q1: 'correct',
-            q2: 'correct',
-            q3: 'correct',
-            q4: 'correct',
-            q5: 'correct',
-            q6: 'correct'
-        };
+    function checkExamAvailability() {
+        const subject = document.getElementById('subjectSelect').value;
+        const grade = document.getElementById('gradeSelect').value;
+        const examArea = document.getElementById('examArea');
 
-        let score = 0;
-        let total = Object.keys(answers).length;
-
-        for (let key in answers) {
-            const selected = document.querySelector(`input[name="${key}"]:checked`);
-            if (selected && selected.value === answers[key]) {
-                score++;
-            }
+        if (subject === 'science' && grade === 'g6') {
+            examArea.style.display = 'block';
+        } else {
+            examArea.style.display = 'none';
         }
+    }
+
+    function evaluateExam() {
+        const cards = document.querySelectorAll('.question-card');
+        let score = 0;
+
+        cards.forEach((card) => {
+            const textarea = card.querySelector('textarea');
+            const feedback = card.querySelector('.feedback');
+            const keywordsAttr = card.getAttribute('data-keywords');
+            const keywords = keywordsAttr.split(',');
+            const userText = textarea.value.trim().toLowerCase();
+
+            let matchedCount = 0;
+            keywords.forEach(kw => {
+                if (userText.includes(kw.trim())) {
+                    matchedCount++;
+                }
+            });
+
+            if (userText === "") {
+                feedback.className = "feedback partial";
+                feedback.innerHTML = `⚠️ Please type an answer. Model Answer suggested.`;
+            } else if (matchedCount >= Math.min(2, keywords.length)) {
+                score++;
+                feedback.className = "feedback correct";
+                feedback.innerHTML = `✅ Excellent sentence structure and accurate scientific meaning!`;
+            } else {
+                feedback.className = "feedback partial";
+                feedback.innerHTML = `✍️ Good attempt! Check your sentence structure and key scientific terms.`;
+            }
+        });
 
         const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = `You scored ${score} out of ${total}!`;
-        if (score === total) {
-            resultDiv.style.color = "#27ae60";
-        } else {
-            resultDiv.style.color = "#e67e22";
-        }
+        resultDiv.innerHTML = `Your Smart Evaluation Score: ${score} out of ${cards.length}`;
+        resultDiv.style.color = score === cards.length ? "#27ae60" : "#e67e22";
     }
 </script>
 
