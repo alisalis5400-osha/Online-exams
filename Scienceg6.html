@@ -3,206 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بنك التدريبات التفاعلي الشامل - Science</title>
+    <title>منصة الاختبارات والواجبات الذكية</title>
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f0f4f8; margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .quiz-card { background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 600px; padding: 25px; }
-        .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
-        .header h2 { color: #1e293b; margin: 0 0 5px 0; font-size: 1.5rem; }
-        .header p { color: #64748b; margin: 0; font-size: 0.95rem; }
-        
-        .student-info-box { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; text-align: center; margin-bottom: 20px; }
-        .student-info-box label { font-size: 1.1rem; font-weight: bold; color: #1e293b; display: block; margin-bottom: 10px; }
-        .student-info-box input { width: 100%; max-width: 350px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; text-align: center; outline: none; }
-        .start-btn { background-color: #2563eb; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s; }
-        .start-btn:hover { background-color: #1d4ed8; }
-
-        .quiz-body { display: none; }
-        .controls { display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 12px 15px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; color: #334155; }
-        .timer-box { color: #dc2626; }
-        
-        .question-title { font-size: 1.15rem; font-weight: bold; color: #0f172a; margin-bottom: 15px; line-height: 1.6; direction: ltr; text-align: left; }
-        textarea { width: 100%; height: 80px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; resize: none; outline: none; margin-bottom: 15px; direction: ltr; }
-        textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
-        .submit-btn { background-color: #2563eb; color: white; border: none; padding: 12px 25px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; }
-        .submit-btn:hover { background-color: #1d4ed8; }
-        .feedback-box { display: none; margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 1rem; line-height: 1.6; direction: ltr; text-align: left; }
-        .feedback-correct { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-        .feedback-incorrect { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        .next-btn { background-color: #059669; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 1rem; cursor: pointer; margin-top: 10px; float: right; }
-
-        .result-card { display: none; background: #f8fafc; border-radius: 12px; padding: 20px; border: 2px solid #e2e8f0; text-align: center; }
-        .score-badge { font-size: 1.8rem; font-weight: bold; color: #2563eb; margin-bottom: 15px; }
-        .weakness-box { background: #ffffff; padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444; margin-top: 15px; text-align: left; direction: ltr; }
-        .weakness-list ul { margin: 5px 0 0 0; padding-left: 20px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header-admin {
+            background-color: #1e4620;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .options-group {
+            margin-bottom: 20px;
+        }
+        .options-group label {
+            display: block;
+            padding: 8px 0;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 1em;
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #e1e8ed;
+            margin: 20px 0;
+        }
+        .success-box {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .launch-btn {
+            display: none;
+            width: 100%;
+            background-color: #1e4620;
+            color: white;
+            padding: 15px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: background 0.3s;
+        }
+        .launch-btn:hover {
+            background-color: #143216;
+        }
     </style>
 </head>
 <body>
 
-<div class="quiz-card">
-    <div class="header">
-        <h2>🎯 Science Smart Exam</h2>
-        <p>Primary 6 - The Respiratory System</p>
+<div class="header-admin">
+    أهلاً بك يا فندم (admin) ⚡
+</div>
+
+<div class="container">
+    <div class="section-title">اختر القسم المطلوب:</div>
+    <div class="options-group">
+        <label><input type="radio" name="section" checked> 📚 بنك الاختبارات التفاعلية</label>
+        <label><input type="radio" name="section"> 🤖 مساعد الواجبات الذكي وتصحيحها</label>
+        <label><input type="radio" name="section"> 📊 الملخصات والعروض التقديمية الذكية</label>
     </div>
 
-    <!-- مرحلة إدخال اسم الطالب -->
-    <div id="student-section" class="student-info-box">
-        <label for="student-name">👤 أدخل اسم الطالب:</label>
-        <input type="text" id="student-name" placeholder="Type your name here...">
-        <br>
-        <button class="start-btn" onclick="startQuiz()">🚀 Start Quiz</button>
+    <hr>
+
+    <div class="section-title">✏️ اختر المادة والصّف لتأدية الامتحان</div>
+    
+    <label>اختر المادة</label>
+    <select id="subjectSelect" onchange="checkSelection()">
+        <option value="">-- اختر المادة --</option>
+        <option value="science">Science</option>
+        <option value="social">الدراسات الاجتماعية</option>
+        <option value="english">اللغة الإنجليزية (English)</option>
+    </select>
+
+    <label>اختر المرحلة</label>
+    <div class="options-group">
+        <label><input type="radio" name="stage" id="primaryStage" checked> المرحلة الابتدائية</label>
+        <label><input type="radio" name="stage"> المرحلة الإعدادية</label>
     </div>
 
-    <!-- جسم الامتحان -->
-    <div id="quiz-section" class="quiz-body">
-        <div class="controls">
-            <span>Student: <span id="student-display" style="color: #1e293b;"></span></span>
-            <span>Question <span id="q-counter">1</span> of 6</span>
-            <span class="timer-box">⏱️ Time: <span id="timer">45</span>s</span>
-        </div>
+    <label>اختر الصّف</label>
+    <select id="gradeSelect" onchange="checkSelection()">
+        <option value="">-- اختر الصف --</option>
+        <option value="g6">الصف السادس الابتدائي</option>
+    </select>
 
-        <div class="question-title" id="question-text">Loading question...</div>
-
-        <textarea id="user-answer" placeholder="Type your answer in English..."></textarea>
-
-        <button class="submit-btn" id="submit-btn" onclick="checkAnswer()">🚀 Submit Answer</button>
-
-        <div class="feedback-box" id="feedback"></div>
+    <!-- رسالة النجاح والزر الديناميكي -->
+    <div id="successBox" class="success-box">
+        <span id="successText">تم تجهيز مسار الامتحان بنجاح ✅</span>
     </div>
 
-    <!-- تقرير النتيجة النهائي -->
-    <div id="result-section" class="result-card">
-        <h2>🏆 Final Score Report</h2>
-        <div class="score-badge" id="final-score"></div>
-        <p id="student-final-name" style="font-weight: bold; font-size: 1.1rem; color: #334155;"></p>
-        <div id="weakness-area" class="weakness-box">
-            <strong style="color: #991b1b;">📌 Areas to review and practice:</strong>
-            <div class="weakness-list" id="weakness-list"></div>
-        </div>
-    </div>
+    <a id="launchBtn" href="#" target="_blank" class="launch-btn">
+        <span id="btnText">اضغط هنا لبدء الامتحان 🚀</span> <br>
+        <span style="font-size: 0.85em; font-weight: normal;">(سيتم فتح الامتحان في تبويب جديد تماماً)</span>
+    </a>
 </div>
 
 <script>
-    const quizData = [
-        { q: "Q1: What happens when you breathe in (inhale) air through your nose or mouth?", a: ["lungs", "chest", "bigger", "expands"], note: "The chest cavity expands and gets bigger as the lungs fill with air." },
-        { q: "Q2: Why does clear limewater turn milky white when exhaled air is blown into it?", a: ["carbon dioxide", "co2", "exhaled"], note: "Clear limewater turns milky white in the presence of carbon dioxide gas." },
-        { q: "Q3: Where does gas exchange take place in the human lungs?", a: ["alveoli", "air sacs"], note: "Gas exchange takes place inside the tiny air sacs known as alveoli." },
-        { q: "Q4: Why are alveoli surrounded by a network of blood vessels?", a: ["gas exchange", "blood", "air"], note: "To allow oxygen and carbon dioxide to pass easily between the air and blood." },
-        { q: "Q5: How does a fish breathe?", a: ["gills", "water", "oxygen"], note: "Fish breathe by absorbing dissolved oxygen from water through their gills." },
-        { q: "Q6: What happens if there is an absence of alveoli in the lungs?", a: ["take place not", "cannot", "no gas exchange"], note: "Without alveoli, gas exchange would not take place and the body wouldn't get oxygen." }
-    ];
+    function checkSelection() {
+        const subject = document.getElementById('subjectSelect').value;
+        const grade = document.getElementById('gradeSelect').value;
+        const successBox = document.getElementById('successBox');
+        const launchBtn = document.getElementById('launchBtn');
+        const successText = document.getElementById('successText');
+        const btnText = document.getElementById('btnText');
+        const primaryStage = document.getElementById('primaryStage').checked;
 
-    let currentQ = 0;
-    let score = 0;
-    let timerInterval;
-    let timeLeft = 45;
-    let studentName = "";
-    let weaknesses = [];
-
-    function startQuiz() {
-        const nameInput = document.getElementById("student-name").value.trim();
-        if (nameInput === "") {
-            alert("Please enter the student's name to start!");
-            return;
-        }
-        studentName = nameInput;
-        document.getElementById("student-display").innerText = studentName;
-        document.getElementById("student-section").style.display = "none";
-        document.getElementById("quiz-section").style.display = "block";
-        loadQuestion();
-    }
-
-    function loadQuestion() {
-        if (currentQ >= quizData.length) {
-            endQuiz();
-            return;
-        }
-
-        document.getElementById("q-counter").innerText = currentQ + 1;
-        document.getElementById("user-answer").value = "";
-        document.getElementById("user-answer").disabled = false;
-        document.getElementById("submit-btn").style.display = "block";
-        document.getElementById("feedback").style.display = "none";
-
-        const q = quizData[currentQ];
-        document.getElementById("question-text").innerText = q.q;
-
-        resetTimer();
-    }
-
-    function resetTimer() {
-        clearInterval(timerInterval);
-        timeLeft = 45;
-        document.getElementById("timer").innerText = timeLeft;
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            document.getElementById("timer").innerText = timeLeft;
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                timeOutAnswer();
+        if (primaryStage && grade === 'g6') {
+            if (subject === 'science') {
+                successBox.style.display = 'block';
+                launchBtn.style.display = 'block';
+                successText.innerHTML = "تم تجهيز مسار امتحان (Science - الصف السادس الابتدائي) بنجاح ✅";
+                launchBtn.href = "Scienceg6.html";
+                btnText.innerHTML = "اضغط هنا لبدء امتحان Science - الصف السادس الابتدائي 🚀";
+            } else if (subject === 'social') {
+                successBox.style.display = 'block';
+                launchBtn.style.display = 'block';
+                successText.innerHTML = "تم تجهيز مسار امتحان (الدراسات الاجتماعية - الصف السادس الابتدائي) بنجاح ✅";
+                launchBtn.href = "Socialg6.html";
+                btnText.innerHTML = "اضغط هنا لبدء امتحان الدراسات الاجتماعية - الصف السادس الابتدائي 🚀";
+            } else if (subject === 'english') {
+                successBox.style.display = 'block';
+                launchBtn.style.display = 'block';
+                successText.innerHTML = "تم تجهيز مسار امتحان (English - الصف السادس الابتدائي) بنجاح ✅";
+                launchBtn.href = "Englishg6.html";
+                btnText.innerHTML = "اضغط هنا لبدء امتحان English - الصف السادس الابتدائي 🚀";
+            } else {
+                successBox.style.display = 'none';
+                launchBtn.style.display = 'none';
             }
-        }, 1000);
-    }
-
-    function checkAnswer() {
-        clearInterval(timerInterval);
-        const userAns = document.getElementById("user-answer").value.trim().toLowerCase();
-        const q = quizData[currentQ];
-        const feedback = document.getElementById("feedback");
-
-        document.getElementById("user-answer").disabled = true;
-        document.getElementById("submit-btn").style.display = "none";
-
-        let isCorrect = q.a.some(ans => userAns.includes(ans.toLowerCase()));
-
-        if (isCorrect) {
-            score++;
-            feedback.className = "feedback-box feedback-correct";
-            feedback.innerHTML = `<strong>✨ Excellent and accurate scientific answer!</strong><br>${q.note}<br><button class="next-btn" onclick="nextQuestion()">Next Question ➡️</button><div style="clear:both;"></div>`;
         } else {
-            weaknesses.push({ q: q.q, correct: q.a[0], note: q.note });
-            feedback.className = "feedback-box feedback-incorrect";
-            feedback.innerHTML = `<strong>❌ Incorrect or incomplete answer.</strong><br>Key concept: <strong>(${q.a[0]})</strong><br>💡 <em>Explanation:</em> ${q.note}<br><button class="next-btn" onclick="nextQuestion()">Next Question ➡️</button><div style="clear:both;"></div>`;
-        }
-        feedback.style.display = "block";
-    }
-
-    function timeOutAnswer() {
-        const q = quizData[currentQ];
-        const feedback = document.getElementById("feedback");
-
-        document.getElementById("user-answer").disabled = true;
-        document.getElementById("submit-btn").style.display = "none";
-
-        weaknesses.push({ q: q.q, correct: q.a[0], note: q.note });
-        feedback.className = "feedback-box feedback-incorrect";
-        feedback.innerHTML = `<strong>⏰ Time's up!</strong><br>Key concept: <strong>(${q.a[0]})</strong><br>💡 <em>Note:</em> ${q.note}<br><button class="next-btn" onclick="nextQuestion()">Next Question ➡️</button><div style="clear:both;"></div>`;
-        feedback.style.display = "block";
-    }
-
-    function nextQuestion() {
-        currentQ++;
-        loadQuestion();
-    }
-
-    function endQuiz() {
-        document.getElementById("quiz-section").style.display = "none";
-        document.getElementById("result-section").style.display = "block";
-        document.getElementById("student-final-name").innerText = `Student: ${studentName}`;
-        document.getElementById("final-score").innerText = `Your Score: ${score} out of ${quizData.length}`;
-
-        const weaknessListDiv = document.getElementById("weakness-list");
-        if (weaknesses.length === 0) {
-            document.getElementById("weakness-area").style.borderLeftColor = "#166534";
-            weaknessListDiv.innerHTML = "<p style='color: #166534; font-weight: bold;'>Fantastic! 100% correct answers with zero weaknesses 🎉</p>";
-        } else {
-            let listHTML = "<ul>";
-            weaknesses.forEach(w => {
-                listHTML += `<li style="margin-bottom: 8px;"><strong>${w.q}:</strong> Key term: (${w.correct}) - <em>${w.note}</em></li>`;
-            });
-            listHTML += "</ul>";
-            weaknessListDiv.innerHTML = listHTML;
+            successBox.style.display = 'none';
+            launchBtn.style.display = 'none';
         }
     }
 </script>
