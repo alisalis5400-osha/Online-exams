@@ -45,85 +45,46 @@
         }
         select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             border: 1px solid #cbd5e1;
             font-size: 1em;
             margin-bottom: 15px;
+            background-color: #fff;
         }
         hr {
             border: 0;
             border-top: 1px solid #e1e8ed;
             margin: 20px 0;
         }
-        .exam-container {
+        .success-box {
             display: none;
-        }
-        .question-card {
-            background: #f9fbfd;
-            border: 1px solid #e1e8ed;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            direction: ltr;
-            text-align: left;
-        }
-        .question-title {
-            font-weight: bold;
-            font-size: 1.05em;
-            color: #2980b9;
-            margin-bottom: 10px;
-        }
-        textarea {
-            width: 100%;
-            height: 60px;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.95em;
-            resize: vertical;
-        }
-        .feedback {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.9em;
-            display: none;
-        }
-        .feedback.correct {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
-            display: block;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
-        .feedback.partial {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-            display: block;
-        }
-        .submit-btn {
-            display: block;
+        .launch-btn {
+            display: none;
             width: 100%;
-            background-color: #27ae60;
+            background-color: #1e4620;
             color: white;
-            padding: 12px;
+            padding: 15px;
             font-size: 1.1em;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             transition: background 0.3s;
         }
-        .submit-btn:hover {
-            background-color: #219653;
-        }
-        #result {
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-top: 20px;
-            color: #2c3e50;
+        .launch-btn:hover {
+            background-color: #143216;
         }
     </style>
 </head>
@@ -146,126 +107,49 @@
     <div class="section-title">✏️ اختر المادة والصّف لتأدية الامتحان</div>
     
     <label>اختر المادة</label>
-    <select id="subjectSelect" onchange="checkExamAvailability()">
+    <select id="subjectSelect" onchange="checkSelection()">
         <option value="">-- اختر المادة --</option>
         <option value="science">Science</option>
     </select>
 
     <label>اختر المرحلة</label>
     <div class="options-group">
-        <label><input type="radio" name="stage" checked> المرحلة الابتدائية</label>
+        <label><input type="radio" name="stage" id="primaryStage" checked> المرحلة الابتدائية</label>
         <label><input type="radio" name="stage"> المرحلة الإعدادية</label>
     </div>
 
     <label>اختر الصّف</label>
-    <select id="gradeSelect" onchange="checkExamAvailability()">
+    <select id="gradeSelect" onchange="checkSelection()">
         <option value="">-- اختر الصف --</option>
         <option value="g6">الصف السادس الابتدائي</option>
     </select>
 
-    <!-- منطقة عرض الامتحان الذكي النصي -->
-    <div id="examArea" class="exam-container">
-        <hr>
-        <h2 style="text-align: center; color: #2c3e50;">Science Smart Exam: Respiratory System</h2>
-        <p style="text-align: center; color: #7f8c8d; font-size: 0.9em;">Type your answers in English. The system evaluates your sentences scientifically and linguistically.</p>
-
-        <form id="examForm">
-            <!-- Q1 -->
-            <div class="question-card" data-keywords="lungs,chest,bigger">
-                <div class="question-title">1. What happens when you breathe in (inhale) air through your nose or mouth?</div>
-                <textarea placeholder="Type your answer here..."></textarea>
-                <div class="feedback"></div>
-            </div>
-
-            <!-- Q2 -->
-            <div class="question-card" data-keywords="carbon,dioxide,exhaled">
-                <div class="question-title">2. Why does clear limewater turn milky white when exhaled air is blown into it?</div>
-                <textarea placeholder="Type your answer here..."></textarea>
-                <div class="feedback"></div>
-            </div>
-
-            <!-- Q3 -->
-            <div class="question-card" data-keywords="alveoli">
-                <div class="question-title">3. Where does gas exchange take place in the human lungs?</div>
-                <textarea placeholder="Type your answer here..."></textarea>
-                <div class="feedback"></div>
-            </div>
-
-            <!-- Q4 -->
-            <div class="question-card" data-keywords="gas,exchange,blood,air">
-                <div class="question-title">4. Why are alveoli surrounded by a network of blood vessels?</div>
-                <textarea placeholder="Type your answer here..."></textarea>
-                <div class="feedback"></div>
-            </div>
-
-            <!-- Q5 -->
-            <div class="question-card" data-keywords="gills,water,oxygen">
-                <div class="question-title">5. How does a fish breathe?</div>
-                <textarea placeholder="Type your answer here..."></textarea>
-                <div class="feedback"></div>
-            </div>
-
-            <!-- Q6 -->
-            <div class="question-card" data-keywords="take,place,not">
-                <div class="question-title">6. What happens if there is an absence of alveoli in the lungs?</div>
-                <textarea placeholder="Type your answer here..."></textarea>
-                <div class="feedback"></div>
-            </div>
-
-            <button type="button" class="submit-btn" onclick="evaluateExam()">Evaluate My Answers</button>
-        </form>
-
-        <div id="result"></div>
+    <!-- رسالة النجاح والزر المطابق لطلبك -->
+    <div id="successBox" class="success-box">
+        تم تجهيز مسار امتحان (Science - الصف السادس الابتدائي) بنجاح ✅
     </div>
+
+    <a id="launchBtn" href="Scienceg6.html" target="_blank" class="launch-btn">
+        اضغط هنا لبدء امتحان Science - الصف السادس الابتدائي 🚀 <br>
+        <span style="font-size: 0.85em; font-weight: normal;">(سيتم فتح الامتحان في تبويب جديد تماماً)</span>
+    </a>
 </div>
 
 <script>
-    function checkExamAvailability() {
+    function checkSelection() {
         const subject = document.getElementById('subjectSelect').value;
         const grade = document.getElementById('gradeSelect').value;
-        const examArea = document.getElementById('examArea');
+        const successBox = document.getElementById('successBox');
+        const launchBtn = document.getElementById('launchBtn');
+        const primaryStage = document.getElementById('primaryStage').checked;
 
-        if (subject === 'science' && grade === 'g6') {
-            examArea.style.display = 'block';
+        if (subject === 'science' && grade === 'g6' && primaryStage) {
+            successBox.style.display = 'block';
+            launchBtn.style.display = 'block';
         } else {
-            examArea.style.display = 'none';
+            successBox.style.display = 'none';
+            launchBtn.style.display = 'none';
         }
-    }
-
-    function evaluateExam() {
-        const cards = document.querySelectorAll('.question-card');
-        let score = 0;
-
-        cards.forEach((card) => {
-            const textarea = card.querySelector('textarea');
-            const feedback = card.querySelector('.feedback');
-            const keywordsAttr = card.getAttribute('data-keywords');
-            const keywords = keywordsAttr.split(',');
-            const userText = textarea.value.trim().toLowerCase();
-
-            let matchedCount = 0;
-            keywords.forEach(kw => {
-                if (userText.includes(kw.trim())) {
-                    matchedCount++;
-                }
-            });
-
-            if (userText === "") {
-                feedback.className = "feedback partial";
-                feedback.innerHTML = `⚠️ Please type an answer. Model Answer suggested.`;
-            } else if (matchedCount >= Math.min(2, keywords.length)) {
-                score++;
-                feedback.className = "feedback correct";
-                feedback.innerHTML = `✅ Excellent sentence structure and accurate scientific meaning!`;
-            } else {
-                feedback.className = "feedback partial";
-                feedback.innerHTML = `✍️ Good attempt! Check your sentence structure and key scientific terms.`;
-            }
-        });
-
-        const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = `Your Smart Evaluation Score: ${score} out of ${cards.length}`;
-        resultDiv.style.color = score === cards.length ? "#27ae60" : "#e67e22";
     }
 </script>
 
