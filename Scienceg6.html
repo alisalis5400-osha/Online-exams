@@ -116,7 +116,7 @@
 
     <label>اختر المرحلة</label>
     <div class="options-group">
-        <label><input type="radio" name="stage" id="primaryStage" checked> المرحلة الابتدائية</label>
+        <label><input type="radio" name="stage" checked> المرحلة الابتدائية</label>
         <label><input type="radio" name="stage"> المرحلة الإعدادية</label>
     </div>
 
@@ -145,30 +145,24 @@
         const launchBtn = document.getElementById('launchBtn');
         const successText = document.getElementById('successText');
         const btnText = document.getElementById('btnText');
-        const primaryStage = document.getElementById('primaryStage').checked;
 
-        if (primaryStage && grade === 'g6') {
+        // التحقق من اختيار الصف والمادة بغض النظر عن المرحلة لتجنب أي تعارض
+        if (grade === 'g6' && subject !== '') {
+            successBox.style.display = 'block';
+            launchBtn.style.display = 'block';
+
             if (subject === 'science') {
-                successBox.style.display = 'block';
-                launchBtn.style.display = 'block';
                 successText.innerHTML = "تم تجهيز مسار امتحان (Science - الصف السادس الابتدائي) بنجاح ✅";
                 launchBtn.href = "Scienceg6.html";
                 btnText.innerHTML = "اضغط هنا لبدء امتحان Science - الصف السادس الابتدائي 🚀";
             } else if (subject === 'social') {
-                successBox.style.display = 'block';
-                launchBtn.style.display = 'block';
                 successText.innerHTML = "تم تجهيز مسار امتحان (الدراسات الاجتماعية - الصف السادس الابتدائي) بنجاح ✅";
                 launchBtn.href = "Socialg6.html";
                 btnText.innerHTML = "اضغط هنا لبدء امتحان الدراسات الاجتماعية - الصف السادس الابتدائي 🚀";
             } else if (subject === 'english') {
-                successBox.style.display = 'block';
-                launchBtn.style.display = 'block';
                 successText.innerHTML = "تم تجهيز مسار امتحان (English - الصف السادس الابتدائي) بنجاح ✅";
                 launchBtn.href = "Englishg6.html";
                 btnText.innerHTML = "اضغط هنا لبدء امتحان English - الصف السادس الابتدائي 🚀";
-            } else {
-                successBox.style.display = 'none';
-                launchBtn.style.display = 'none';
             }
         } else {
             successBox.style.display = 'none';
