@@ -29,7 +29,7 @@ def run_full_respiration_exam():
                         ["a. It contains no oxygen.", "b. It contains more carbon dioxide than breathed-in air.", "c. It contains only carbon dioxide.", "d. It contains more oxygen than breathed-in air."])
         
         q2_2 = st.radio("2. Which sequence shows the correct route of air into the body?", 
-                        ["a. Lungs → nose → windpipe", "b. Mouth → blood vessels → lungs", "c. Nose or mouth → windpipe → lungs", "d. Heart → windpipe → lungs"])
+                        ["a. Lungs -> nose -> windpipe", "b. Mouth -> blood vessels -> lungs", "c. Nose or mouth -> windpipe -> lungs", "d. Heart -> windpipe -> lungs"])
         
         q2_3 = st.radio("3. What is the main role of the blood vessels around the lungs in the chapter?", 
                         ["a. They make limewater.", "b. They allow gases to pass between the air and the blood.", "c. They carry air directly to the mouth.", "d. They change oxygen into water."])
@@ -117,6 +117,5 @@ def run_full_respiration_exam():
 
         if submit_button:
             st.success("تم إرسال إجاباتك بنجاح! سيقوم النظام الذكي الآن بمراجعتها وتقييمها.")
-            # يمكنك ربط هذه الإجابات بدالة التصحيح الذكي الخاصة بك هنا
 
 run_full_respiration_exam()
