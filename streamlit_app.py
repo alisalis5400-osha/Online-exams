@@ -63,6 +63,8 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
         file_name = "Social-G4.html"
     elif subject_name == "دراسات" and grade_name == "الصف السادس الابتدائي":
         file_name = "Social-G6.html"
+    elif subject_name == "Science" and grade_name == "الصف السادس الابتدائي":
+        file_name = "Scienceg6.html"
     elif subject_name == "عربي" and grade_name == "الصف الثاني الإعدادي":
         file_name = "Arabic.prep2.html"
     elif subject_name == "English" and grade_name == "الصف الثاني الإعدادي":
@@ -186,7 +188,7 @@ else:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # صندوق محادثة مستمر للتلخيصات
+    # صندوق محادثة مستمر للتلخصيات
     if sum_input := st.chat_input("اطلبي تعديل الملخص، ترجمته، أو إضافة أمثلة..."):
         if "sum_chat_session" in st.session_state:
             st.session_state.sum_messages.append({"role": "user", "content": sum_input})
