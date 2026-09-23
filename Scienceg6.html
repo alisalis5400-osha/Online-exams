@@ -3,170 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الاختبارات والواجبات الذكية</title>
+    <title>امتحان مادة Science - الصف السادس الابتدائي</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f4f6f9;
             color: #333;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
-        .header-admin {
-            background-color: #1e4620;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .container {
+        .exam-container {
             max-width: 800px;
-            margin: 20px auto;
+            margin: 0 auto;
             background: #ffffff;
-            padding: 25px;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .section-title {
+        h1 {
+            color: #1e4620;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .question-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .question-title {
             font-weight: bold;
             font-size: 1.1em;
             color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        .options-group {
-            margin-bottom: 20px;
-        }
-        .options-group label {
-            display: block;
-            padding: 8px 0;
-            cursor: pointer;
-            font-size: 1em;
-        }
-        select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            font-size: 1em;
             margin-bottom: 15px;
-            background-color: #fff;
         }
-        hr {
-            border: 0;
-            border-top: 1px solid #e1e8ed;
-            margin: 20px 0;
+        .options label {
+            display: block;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-        .success-box {
-            display: none;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
+        .options label:hover {
+            background: #e2e8f0;
         }
-        .launch-btn {
-            display: none;
+        .submit-btn {
+            display: block;
             width: 100%;
             background-color: #1e4620;
             color: white;
             padding: 15px;
-            font-size: 1.1em;
+            font-size: 1.2em;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             text-align: center;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            margin-top: 30px;
             transition: background 0.3s;
         }
-        .launch-btn:hover {
+        .submit-btn:hover {
             background-color: #143216;
+        }
+        #result {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
-<div class="header-admin">
-    أهلاً بك يا فندم (admin) ⚡
-</div>
-
-<div class="container">
-    <div class="section-title">اختر القسم المطلوب:</div>
-    <div class="options-group">
-        <label><input type="radio" name="section" checked> 📚 بنك الاختبارات التفاعلية</label>
-        <label><input type="radio" name="section"> 🤖 مساعد الواجبات الذكي وتصحيحها</label>
-        <label><input type="radio" name="section"> 📊 الملخصات والعروض التقديمية الذكية</label>
-    </div>
-
-    <hr>
-
-    <div class="section-title">✏️ اختر المادة والصّف لتأدية الامتحان</div>
+<div class="exam-container">
+    <h1>🧪 امتحان مادة Science (الصف السادس الابتدائي)</h1>
     
-    <label>اختر المادة</label>
-    <select id="subjectSelect" onchange="checkSelection()">
-        <option value="">-- اختر المادة --</option>
-        <option value="science">Science</option>
-        <option value="social">الدراسات الاجتماعية</option>
-        <option value="english">اللغة الإنجليزية (English)</option>
-    </select>
+    <form id="scienceExamForm" onsubmit="calculateScore(event)">
+        
+        <!-- السؤال الأول -->
+        <div class="question-box">
+            <div class="question-title">1. Which of the following is the control center of the cell?</div>
+            <div class="options">
+                <label><input type="radio" name="q1" value="wrong"> Cell membrane</label>
+                <label><input type="radio" name="q1" value="correct"> Nucleus</label>
+                <label><input type="radio" name="q1" value="wrong"> Cytoplasm</label>
+                <label><input type="radio" name="q1" value="wrong"> Mitochondria</label>
+            </div>
+        </div>
 
-    <label>اختر المرحلة</label>
-    <div class="options-group">
-        <label><input type="radio" name="stage" checked> المرحلة الابتدائية</label>
-        <label><input type="radio" name="stage"> المرحلة الإعدادية</label>
-    </div>
+        <!-- السؤال الثاني -->
+        <div class="question-box">
+            <div class="question-title">2. What is the process by which plants make their own food?</div>
+            <div class="options">
+                <label><input type="radio" name="q2" value="wrong"> Respiration</label>
+                <label><input type="radio" name="q2" value="correct"> Photosynthesis</label>
+                <label><input type="radio" name="q2" value="wrong"> Digestion</label>
+                <label><input type="radio" name="q2" value="wrong"> Transpiration</label>
+            </div>
+        </div>
 
-    <label>اختر الصّف</label>
-    <select id="gradeSelect" onchange="checkSelection()">
-        <option value="">-- اختر الصف --</option>
-        <option value="g6">الصف السادس الابتدائي</option>
-    </select>
+        <!-- السؤال الثالث -->
+        <div class="question-box">
+            <div class="question-title">3. The organelle responsible for energy production in the cell is:</div>
+            <div class="options">
+                <label><input type="radio" name="q3" value="correct"> Mitochondria</label>
+                <label><input type="radio" name="q3" value="wrong"> Vacuole</label>
+                <label><input type="radio" name="q3" value="wrong"> Cell wall</label>
+                <label><input type="radio" name="q3" value="wrong"> Ribosome</label>
+            </div>
+        </div>
 
-    <!-- رسالة النجاح والزر الديناميكي -->
-    <div id="successBox" class="success-box">
-        <span id="successText">تم تجهيز مسار الامتحان بنجاح ✅</span>
-    </div>
+        <button type="submit" class="submit-btn">إرسال وتصحيح الامتحان 📋</button>
+    </form>
 
-    <a id="launchBtn" href="#" target="_blank" class="launch-btn">
-        <span id="btnText">اضغط هنا لبدء الامتحان 🚀</span> <br>
-        <span style="font-size: 0.85em; font-weight: normal;">(سيتم فتح الامتحان في تبويب جديد تماماً)</span>
-    </a>
+    <div id="result"></div>
 </div>
 
 <script>
-    function checkSelection() {
-        const subject = document.getElementById('subjectSelect').value;
-        const grade = document.getElementById('gradeSelect').value;
-        const successBox = document.getElementById('successBox');
-        const launchBtn = document.getElementById('launchBtn');
-        const successText = document.getElementById('successText');
-        const btnText = document.getElementById('btnText');
+    function calculateScore(event) {
+        event.preventDefault();
+        let score = 0;
+        let total = 3;
 
-        // التحقق من اختيار الصف والمادة بغض النظر عن المرحلة لتجنب أي تعارض
-        if (grade === 'g6' && subject !== '') {
-            successBox.style.display = 'block';
-            launchBtn.style.display = 'block';
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        const q3 = document.querySelector('input[name="q3"]:checked');
 
-            if (subject === 'science') {
-                successText.innerHTML = "تم تجهيز مسار امتحان (Science - الصف السادس الابتدائي) بنجاح ✅";
-                launchBtn.href = "Scienceg6.html";
-                btnText.innerHTML = "اضغط هنا لبدء امتحان Science - الصف السادس الابتدائي 🚀";
-            } else if (subject === 'social') {
-                successText.innerHTML = "تم تجهيز مسار امتحان (الدراسات الاجتماعية - الصف السادس الابتدائي) بنجاح ✅";
-                launchBtn.href = "Socialg6.html";
-                btnText.innerHTML = "اضغط هنا لبدء امتحان الدراسات الاجتماعية - الصف السادس الابتدائي 🚀";
-            } else if (subject === 'english') {
-                successText.innerHTML = "تم تجهيز مسار امتحان (English - الصف السادس الابتدائي) بنجاح ✅";
-                launchBtn.href = "Englishg6.html";
-                btnText.innerHTML = "اضغط هنا لبدء امتحان English - الصف السادس الابتدائي 🚀";
-            }
+        if (q1 && q1.value === 'correct') score++;
+        if (q2 && q2.value === 'correct') score++;
+        if (q3 && q3.value === 'correct') score++;
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        if (score === total) {
+            resultDiv.style.backgroundColor = '#d4edda';
+            resultDiv.style.color = '#155724';
+            resultDiv.innerHTML = `ممتاز جداً! 🎉 درجتك هي ${score} من ${total} (100%)`;
         } else {
-            successBox.style.display = 'none';
-            launchBtn.style.display = 'none';
+            resultDiv.style.backgroundColor = '#fff3cd';
+            resultDiv.style.color = '#856404';
+            resultDiv.innerHTML = `جيد جداً! 👏 درجتك هي ${score} من ${total}. حاولي مرة أخرى لتحقيق الدرجة النهائية!`;
         }
     }
 </script>
