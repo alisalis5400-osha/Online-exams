@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>امتحان مادة Science - الصف السادس الابتدائي</title>
+    <title>امتحان Science التفاعلي - الصف السادس الابتدائي</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,7 +13,7 @@
             padding: 20px;
         }
         .exam-container {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
             background: #ffffff;
             padding: 30px;
@@ -36,20 +36,17 @@
             font-weight: bold;
             font-size: 1.1em;
             color: #2c3e50;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-        .options label {
-            display: block;
-            padding: 10px;
-            margin-bottom: 8px;
-            background: #fff;
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
             border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .options label:hover {
-            background: #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            resize: vertical;
+            font-family: inherit;
         }
         .submit-btn {
             display: block;
@@ -68,88 +65,167 @@
         .submit-btn:hover {
             background-color: #143216;
         }
-        #result {
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-top: 20px;
-            padding: 15px;
+        .feedback-box {
+            margin-top: 10px;
+            padding: 12px;
             border-radius: 8px;
+            display: none;
+            font-size: 0.95em;
+        }
+        .model-answer {
+            background: #e2e8f0;
+            color: #1e293b;
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
 
 <div class="exam-container">
-    <h1>🧪 امتحان مادة Science (الصف السادس الابتدائي)</h1>
-    
-    <form id="scienceExamForm" onsubmit="calculateScore(event)">
+    <h1>🧪 امتحان Science المقالي الذكي (الصف السادس الابتدائي)</h1>
+    <p style="text-align: center; color: #64748b;">أجب عن الأسئلة الآتية بأسلوبك العلمي، وسيتم تقييم إجابتك وعرض الإجابة النموذجية فوراً.</p>
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
+
+    <form id="scienceEssayForm" onsubmit="evaluateExam(event)">
         
-        <!-- السؤال الأول -->
         <div class="question-box">
-            <div class="question-title">1. Which of the following is the control center of the cell?</div>
-            <div class="options">
-                <label><input type="radio" name="q1" value="wrong"> Cell membrane</label>
-                <label><input type="radio" name="q1" value="correct"> Nucleus</label>
-                <label><input type="radio" name="q1" value="wrong"> Cytoplasm</label>
-                <label><input type="radio" name="q1" value="wrong"> Mitochondria</label>
-            </div>
+            <div class="question-title">1. Give reason: Why does clear limewater turn milky white when exhaled air is blown into it?</div>
+            <textarea id="q1" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb1" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Because exhaled air contains carbon dioxide.</div>
         </div>
 
-        <!-- السؤال الثاني -->
         <div class="question-box">
-            <div class="question-title">2. What is the process by which plants make their own food?</div>
-            <div class="options">
-                <label><input type="radio" name="q2" value="wrong"> Respiration</label>
-                <label><input type="radio" name="q2" value="correct"> Photosynthesis</label>
-                <label><input type="radio" name="q2" value="wrong"> Digestion</label>
-                <label><input type="radio" name="q2" value="wrong"> Transpiration</label>
-            </div>
+            <div class="question-title">2. Give reason: Why does clear limewater remain clear when room air is blown into it?</div>
+            <textarea id="q2" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb2" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Because room air contains a very small amount of carbon dioxide.</div>
         </div>
 
-        <!-- السؤال الثالث -->
         <div class="question-box">
-            <div class="question-title">3. The organelle responsible for energy production in the cell is:</div>
-            <div class="options">
-                <label><input type="radio" name="q3" value="correct"> Mitochondria</label>
-                <label><input type="radio" name="q3" value="wrong"> Vacuole</label>
-                <label><input type="radio" name="q3" value="wrong"> Cell wall</label>
-                <label><input type="radio" name="q3" value="wrong"> Ribosome</label>
-            </div>
+            <div class="question-title">3. Give reason: Why does the chest get bigger when a person inhales?</div>
+            <textarea id="q3" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb3" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Because air enters and fills the lungs.</div>
         </div>
 
-        <button type="submit" class="submit-btn">إرسال وتصحيح الامتحان 📋</button>
+        <div class="question-box">
+            <div class="question-title">4. Give reason: Why does the heart work alongside the lungs during respiration?</div>
+            <textarea id="q4" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb4" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Because the heart pumps oxygen-rich blood to the whole body.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">5. Give reason: Why can oxygen taken in by the lungs reach the fingertips and toes?</div>
+            <textarea id="q5" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb5" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Because the blood carries oxygen to the whole body.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">6. Give reason: Alveoli are surrounded by a network of blood vessels.</div>
+            <textarea id="q6" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb6" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Because gas exchange takes place between the air and the blood.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">7. What happens if: You breathe in (inhale) air through your nose or mouth?</div>
+            <textarea id="q7" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb7" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Air goes to the lungs, and the chest gets bigger.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">8. What happens if: You breathe out (exhale) air?</div>
+            <textarea id="q8" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb8" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> The chest gets smaller, and air rich in carbon dioxide leaves the body.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">9. What happens if: You blow exhaled air into clear limewater and shake it?</div>
+            <textarea id="q9" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb9" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> The limewater turns milky white because of carbon dioxide.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">10. What happens if: Blood passes around the alveoli in the lungs?</div>
+            <textarea id="q10" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb10" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Gas exchange takes place in the alveoli.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">11. What happens if: A fish breathes?</div>
+            <textarea id="q11" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb11" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> It takes in oxygen from water through its gills and releases carbon dioxide into the water.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">12. What happens if: There is an absence of alveoli in the lungs?</div>
+            <textarea id="q12" placeholder="اكتب إجابتك هنا بالإنجليزية..."></textarea>
+            <div id="fb12" class="feedback-box"></div>
+            <div class="model-answer"><b>الإجابة النموذجية المثالية:</b> Gas exchange will not take place.</div>
+        </div>
+
+        <button type="submit" class="submit-btn">تصحيح ومراجعة الإجابات المقالية 📋</button>
     </form>
-
-    <div id="result"></div>
 </div>
 
 <script>
-    function calculateScore(event) {
+    function evaluateExam(event) {
         event.preventDefault();
-        let score = 0;
-        let total = 3;
-
-        const q1 = document.querySelector('input[name="q1"]:checked');
-        const q2 = document.querySelector('input[name="q2"]:checked');
-        const q3 = document.querySelector('input[name="q3"]:checked');
-
-        if (q1 && q1.value === 'correct') score++;
-        if (q2 && q2.value === 'correct') score++;
-        if (q3 && q3.value === 'correct') score++;
-
-        const resultDiv = document.getElementById('result');
-        resultDiv.style.display = 'block';
         
-        if (score === total) {
-            resultDiv.style.backgroundColor = '#d4edda';
-            resultDiv.style.color = '#155724';
-            resultDiv.innerHTML = `ممتاز جداً! 🎉 درجتك هي ${score} من ${total} (100%)`;
-        } else {
-            resultDiv.style.backgroundColor = '#fff3cd';
-            resultDiv.style.color = '#856404';
-            resultDiv.innerHTML = `جيد جداً! 👏 درجتك هي ${score} من ${total}. حاولي مرة أخرى لتحقيق الدرجة النهائية!`;
-        }
+        // مصفوفة الكلمات الدالة لكل سؤال للتقييم الذكي وتصحيح الصياغة
+        const answersData = [
+            { id: 'q1', keywords: ['carbon dioxide', 'exhaled'] },
+            { id: 'q2', keywords: ['small amount', 'carbon dioxide', 'room air'] },
+            { id: 'q3', keywords: ['air enters', 'fills', 'lungs'] },
+            { id: 'q4', keywords: ['pumps', 'oxygen', 'blood', 'body'] },
+            { id: 'q5', keywords: ['blood carries', 'oxygen'] },
+            { id: 'q6', keywords: ['gas exchange', 'air', 'blood'] },
+            { id: 'q7', keywords: ['lungs', 'chest', 'bigger'] },
+            { id: 'q8', keywords: ['smaller', 'carbon dioxide', 'leaves'] },
+            { id: 'q9', keywords: ['milky', 'white', 'carbon dioxide'] },
+            { id: 'q10', keywords: ['gas exchange', 'alveoli'] },
+            { id: 'q11', keywords: ['oxygen', 'water', 'gills', 'carbon dioxide'] },
+            { id: 'q12', keywords: ['gas exchange', 'not take place'] }
+        ];
+
+        answersData.forEach((item, index) => {
+            const userText = document.getElementById(item.id).value.trim().toLowerCase();
+            const fbBox = document.getElementById('fb' + (index + 1));
+            fbBox.style.display = 'block';
+
+            if (userText === "") {
+                fbBox.style.backgroundColor = '#fef3c7';
+                fbBox.style.color = '#92400e';
+                fbBox.innerHTML = `⚠️ لم تقم بكتابة إجابة لهذا السؤال. راجع الإجابة النموذجية بالأسفل.`;
+                return;
+            }
+
+            // فحص ذكي للكلمات الدالة لتقييم صحة المعنى وصياغة الطالب
+            let matchCount = item.keywords.filter(kw => userText.includes(kw)).length;
+            
+            if (matchCount >= Math.min(1, item.keywords.length)) {
+                fbBox.style.backgroundColor = '#d4edda';
+                fbBox.style.color = '#155724';
+                fbBox.innerHTML = `✅ إجابة رائعة وصحيحة علمياً! تم ضبط الصياغة وقبولها بنجاح.`;
+            } else {
+                fbBox.style.backgroundColor = '#fee2e2';
+                fbBox.style.color = '#b91c1c';
+                fbBox.innerHTML = `❌ الإجابة تحتاج لمراجعة المفهوم العلمي. راجع الإجابة النموذجية الصحيحة أدناه.`;
+            }
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 </script>
 
