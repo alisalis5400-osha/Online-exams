@@ -1,0 +1,122 @@
+import streamlit as st
+
+def run_full_respiration_exam():
+    st.title("Chapter 2: Respiration - Complete Exam")
+    st.write("Mr. Adel Elamin - Science Teacher | Grade 6")
+    st.markdown("---")
+
+    with st.form("full_respiration_exam_form"):
+        
+        # ----------------- SECTION A -----------------
+        st.header("A. Complete the Following Sentences")
+        q1_1 = st.text_input("1. Taking in oxygen and letting out carbon dioxide is called...")
+        q1_2 = st.text_input("2. Air passes from the nose and mouth through the ... before it reaches the lungs.")
+        q1_3 = st.text_input("3. The two organs in the chest that receive air are the left and right ...")
+        q1_4 = st.text_input("4. The enlarged structure used in the model to observe where gases are exchanged is an ...")
+        q1_5 = st.text_input("5. The ... around the lungs provide the route through which gas exchange occurs.")
+        q1_6 = st.text_input("6. The gas taken from the air into the blood is ...")
+        q1_7 = st.text_input("7. The gas released from the blood into the air is ...")
+        q1_8 = st.text_input("8. The ... carries oxygen from the lungs to the whole body.")
+        q1_9 = st.text_input("9. The ... does the work that helps transport oxygen-rich blood around the body.")
+        q1_10 = st.text_input("10. Fish let out carbon dioxide through their ...")
+
+        st.markdown("---")
+
+        # ----------------- SECTION B -----------------
+        st.header("B. Choose the Correct Answer")
+        
+        q2_1 = st.radio("1. Which statement best describes breathed-out air?", 
+                        ["a. It contains no oxygen.", "b. It contains more carbon dioxide than breathed-in air.", "c. It contains only carbon dioxide.", "d. It contains more oxygen than breathed-in air."])
+        
+        q2_2 = st.radio("2. Which sequence shows the correct route of air into the body?", 
+                        ["a. Lungs → nose → windpipe", "b. Mouth → blood vessels → lungs", "c. Nose or mouth → windpipe → lungs", "d. Heart → windpipe → lungs"])
+        
+        q2_3 = st.radio("3. What is the main role of the blood vessels around the lungs in the chapter?", 
+                        ["a. They make limewater.", "b. They allow gases to pass between the air and the blood.", "c. They carry air directly to the mouth.", "d. They change oxygen into water."])
+        
+        q2_4 = st.radio("4. A learner blows breathed-out air into limewater. What should the learner observe?", 
+                        ["a. The limewater turns milky white.", "b. The limewater turns bright blue.", "c. The limewater disappears.", "d. The limewater becomes solid immediately."])
+        
+        q2_5 = st.radio("5. Why is one bag filled with room air in the investigation?", 
+                        ["a. To provide a comparison with the bag containing breathed-out air.", "b. To remove all the oxygen from the experiment.", "c. To replace the limewater.", "d. To make the plastic bag heavier."])
+        
+        q2_6 = st.radio("6. Which item is not listed as equipment for the investigation?", 
+                        ["a. Safety goggles", "b. A gas sampling pump", "c. A thermometer", "d. Scissors"])
+        
+        q2_7 = st.radio("7. What can gas detector tubes help the learners check?", 
+                        ["a. The colour of the lungs", "b. The amounts of oxygen and carbon dioxide in the bags", "c. The size of the heart", "d. The temperature of the room"])
+        
+        q2_8 = st.radio("8. A learner concludes, 'Breathed-out air contains no oxygen at all.' Which observation most directly challenges this conclusion?", 
+                        ["a. The air passes through the windpipe.", "b. Breathed-out air also contains oxygen.", "c. Fish use gills.", "d. The lungs are in the chest."])
+        
+        q2_9 = st.radio("9. Oxygen taken in by the lungs can eventually reach the fingertips and toes because it is carried by the:", 
+                        ["a. blood", "b. windpipe", "c. limewater", "d. gills"])
+        
+        q2_10 = st.radio("10. Which comparison is most likely to show that breathing changes the air?", 
+                         ["a. Compare two empty bags.", "b. Compare breathed-out air with room air using limewater and gas detector tubes.", "c. Compare a lung with a bone.", "d. Compare the nose with the mouth."])
+
+        st.markdown("---")
+
+        # ----------------- SECTION C -----------------
+        st.header("C. Write the Scientific Concept")
+        q3_1 = st.text_input("1. The process of taking in oxygen and releasing carbon dioxide:")
+        q3_2 = st.text_input("2. The tube through which air travels on its way to the lungs:")
+        q3_3 = st.text_input("3. The organs in the chest where the air is exchanged with the blood:")
+        q3_4 = st.text_input("4. The movement of oxygen into the blood and carbon dioxide out of the blood:")
+        q3_5 = st.text_input("5. The small blood pathways around the lungs involved in gas exchange:")
+        q3_6 = st.text_input("6. The liquid that turns milky white when breathed-out air is passed into it:")
+        q3_7 = st.text_input("7. The instrument used in the investigation to check the amounts of oxygen and carbon dioxide:")
+
+        st.markdown("---")
+
+        # ----------------- SECTION D -----------------
+        st.header("D. Put (True / False)")
+        q4_1 = st.selectbox("1. Air enters the body through the nose or the mouth.", ["Select", "True", "False"], key="d1")
+        q4_2 = st.selectbox("2. The windpipe sends air directly to the heart.", ["Select", "True", "False"], key="d2")
+        q4_3 = st.selectbox("3. The lungs are located in the chest.", ["Select", "True", "False"], key="d3")
+        q4_4 = st.selectbox("4. Gas exchange in the chapter occurs between the air and the blood.", ["Select", "True", "False"], key="d4")
+        q4_5 = st.selectbox("5. Carbon dioxide moves from the blood into the air during gas exchange.", ["Select", "True", "False"], key="d5")
+        q4_6 = st.selectbox("6. Breathed-out air contains no oxygen.", ["Select", "True", "False"], key="d6")
+        q4_7 = st.selectbox("7. Breathed-out air can make limewater turn milky white.", ["Select", "True", "False"], key="d7")
+        q4_8 = st.selectbox("8. Both bags in the investigation receive exactly the same kind of air.", ["Select", "True", "False"], key="d8")
+        q4_9 = st.selectbox("9. Gas detector tubes are used to check the amounts of oxygen and carbon dioxide.", ["Select", "True", "False"], key="d9")
+        q4_10 = st.selectbox("10. Blood helps carry oxygen from the lungs to the whole body.", ["Select", "True", "False"], key="d10")
+
+        st.markdown("---")
+
+        # ----------------- SECTION E -----------------
+        st.header("E. Correct the Underlined Word(s)")
+        q5_1 = st.text_input("1. Air travels from the nose and mouth through the [ esophagus ] to the lungs. (Correct word):")
+        q5_2 = st.text_input("2. During gas exchange, [ nitrogen ] in the air is taken into the blood. (Correct word):")
+        q5_3 = st.text_input("3. The [ lungs ] carry oxygen-rich blood to the whole body. (Correct word):")
+        q5_4 = st.text_input("4. Compared with breathed-in air, breathed-out air contains [ more ] oxygen. (Correct word):")
+        q5_5 = st.text_input("5. Fish let out carbon dioxide through their [ lungs ]. (Correct word):")
+
+        st.markdown("---")
+
+        # ----------------- SECTION F -----------------
+        st.header("F. Give Reasons")
+        q6_1 = st.text_area("1. Why is breathed-out air different from breathed-in air?")
+        q6_2 = st.text_area("2. Why does the investigation use a bag filled with room air as well as a bag filled with breathed-out air?")
+        q6_3 = st.text_area("3. Why are limewater and gas detector tubes useful in the investigation?")
+        q6_4 = st.text_area("4. Why are the blood vessels around the lungs important?")
+        q6_5 = st.text_area("5. How can oxygen taken in by the lungs reach distant parts of the body?")
+
+        st.markdown("---")
+
+        # ----------------- SECTION G -----------------
+        st.header("G. Delete the Odd Word")
+        q7_1 = st.text_input("1. nose, mouth, windpipe, heart")
+        q7_2 = st.text_input("2. oxygen, carbon dioxide, windpipe")
+        q7_3 = st.text_input("3. lungs, blood vessels, limewater")
+        q7_4 = st.text_input("4. plastic bag, limewater, scissors")
+        q7_5 = st.text_input("5. nose, mouth, windpipe, blood")
+
+        # زر إرسال الامتحان
+        submit_button = st.form_submit_button(label="إرسال الإجابات للتقييم والتصحيح الذكي")
+
+        if submit_button:
+            st.success("تم إرسال إجاباتك بنجاح! سيقوم النظام الذكي الآن بمراجعتها وتقييمها.")
+            # يمكنك ربط هذه الإجابات بدالة التصحيح الذكي الخاصة بك هنا
+
+run_full_respiration_exam()
