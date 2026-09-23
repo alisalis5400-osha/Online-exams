@@ -2,18 +2,10 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# إعداد الصفحة وتكوينها
-st.set_page_config(
-    page_title="المنصة التعليمية الذكية", 
-    page_icon="⚡", 
-    layout="centered"
-)
+st.set_page_config(page_title="المنصة التعليمية الذكية", page_icon="⚡", layout="centered")
 
-# إعداد مفتاح الـ API
 if "GEMINI_API_KEY" in st.secrets:
     genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-else:
-    st.error("الرجاء إضافة GEMINI_API_KEY في إعدادات Secrets الخاصة بـ Streamlit.")
 
 MODEL_NAME = 'gemini-1.5-flash'
 
@@ -24,18 +16,13 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-app_mode = st.radio(
-    "اختر القسم المطلوب:",
-    ["📚 بنك الاختبارات التفاعلية", "🤖 مساعد الواجبات الذكي وتصحيحها", "📊 الملخصات والعروض التقديمية الذكية"]
-)
-
+app_mode = st.radio("اختر القسم المطلوب:", ["📚 بنك الاختبارات التفاعلية", "🤖 مساعد الواجبات الذكي وتصحيحها", "📊 الملخصات والعروض التقديمية الذكية"])
 st.markdown("---")
 
-# 1. قسم بنك الاختبارات التفاعلية (الذكي الأوتوماتيكي)
 if app_mode == "📚 بنك الاختبارات التفاعلية":
     st.markdown("### 📝 اختر المادة والصف لتأدية الامتحان")
     
-    subject_name = st.selectbox("اختر المادة", ["عربي", "دراسات", "دين", "Math", "Science", "English", "Franish"])
+    subject_name = st.selectbox("اختر المادة", ["عربي", "دراسات", "دين", "Math", "Science", "English", "French"])
     stage_name = st.radio("اختر المرحلة", ["المرحلة الابتدائية", "المرحلة الإعدادية"])
     
     if stage_name == "المرحلة الابتدائية":
@@ -45,27 +32,18 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
         
     display_name = f"{subject_name} - {grade_name}"
     
-    # --- السحر هنا: النظام الذكي للربط التلقائي ---
-    sub_codes = {"عربي": "arabic", "دراسات": "social", "دين": "religion", "Math": "math", "Science": "science", "English": "english", "Franish": "french"}
-    grd_codes = {
-        "الصف الأول الابتدائي": "g1", "الصف الثاني الابتدائي": "g2", "الصف الثالث الابتدائي": "g3",
-        "الصف الرابع الابتدائي": "g4", "الصف الخامس الابتدائي": "g5", "الصف السادس الابتدائي": "g6",
-        "الصف الأول الإعدادي": "prep1", "الصف الثاني الإعدادي": "prep2", "الصف الثالث الإعدادي": "prep3"
-    }
-    
-    # الملفات القديمة عشان تفضل شغالة
-    old_files = {
-        "social_g4": "Social-G4.html",
-        "social_g6": "Social-G6.html",
-        "science_g6": "Scienceg6.html",
-        "arabic_prep2": "Arabic.prep2.html",
-        "english_prep2": "engprep2.htm"
-    }
-    
-    file_key = f"{sub_codes.get(subject_name)}_{grd_codes.get(grade_name)}"
-    file_name = old_files.get(file_key, f"{file_key}.html") 
+    # ربط مباشر لملف Science الصف السادس بالاسم الموجود عندك تماماً
+    if subject_name == "Science" and grade_name == "الصف السادس الابتدائي":
+        file_name = "Science chapter2 g6.html"
+    else:
+        sub_codes = {"عربي": "arabic", "دراسات": "social", "دين": "religion", "Math": "math", "Science": "science", "English": "english", "French": "french"}
+        grd_codes = {
+            "الصف الأول الابتدائي": "g1", "الصف الثاني الابتدائي": "g2", "الصف الثالث الابتدائي": "g3",
+            "الصف الرابع الابتدائي": "g4", "الصف الخامس الابتدائي": "g5", "الصف السادس الابتدائي": "g6",
+            "الصف الأول الإعدادي": "prep1", "الصف الثاني الإعدادي": "prep2", "الصف الثالث الإعدادي": "prep3"
+        }
+        file_name = f"{sub_codes.get(subject_name, 'science')}_{grd_codes.get(grade_name, 'g6')}.html"
         
-    # الزرار هيظهر دايماً جاهز ومربوط بالملف
     st.success(f"مستعد لفتح امتحان ({display_name}) 🚀")
     exam_url = f"https://alisalis5400-osha.github.io/Online-exams/{file_name}"
     st.markdown(f"""
@@ -75,42 +53,13 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
             <span style="font-size: 13px; font-weight: normal; color: #e0e0e0;">(سيفتح في تبويب جديد تماماً)</span>
         </a>
     </div>
-    <p style="text-align:center; font-size:12px; color:gray; margin-top:10px;">ملاحظة: إذا ظهرت صفحة فارغة بعد الضغط، فهذا يعني أن الامتحان قيد التحديث ولم يتم رفعه بعد.</p>
     """, unsafe_allow_html=True)
 
-# 2. قسم مساعد الواجبات الذكي وتصحيحها
 elif app_mode == "🤖 مساعد الواجبات الذكي وتصحيحها":
     st.markdown("### 🤖 مساعد الواجبات الذكي وتصحيحها")
-    st.markdown("ارفعي صور الواجب، وتحدثي معي بحرية لتعديل أو شرح أي نقطة!")
-    
-    if "hw_chat_session" not in st.session_state:
-        model = genai.GenerativeModel(MODEL_NAME)
-        st.session_state.hw_chat_session = model.start_chat(history=[])
-        st.session_state.hw_messages = []
-
     uploaded_homeworks = st.file_uploader("ارفع صور أو ملفات الواجب هنا", type=["jpg", "jpeg", "png", "pdf"], accept_multiple_files=True)
-    
     if uploaded_homeworks:
-        images = [Image.open(f) for f in uploaded_homeworks]
-        for img in images: st.image(img, use_container_width=True)
-            
-        if st.button("🚀 بدء تحليل الواجب"):
-            with st.spinner("جاري تحليل الواجب..."):
-                response = st.session_state.hw_chat_session.send_message(["قم بتحليل وتصحيح هذا الواجب تفصيلياً."] + images)
-                st.session_state.hw_messages.append({"role": "model", "content": response.text})
-
-    for message in st.session_state.get('hw_messages', []):
-        with st.chat_message(message["role"]): st.markdown(message["content"])
-
-    if user_input := st.chat_input("اطلبي أي تعديل..."):
-        st.session_state.hw_messages.append({"role": "user", "content": user_input})
-        with st.chat_message("user"): st.markdown(user_input)
-        with st.chat_message("assistant"):
-            response = st.session_state.hw_chat_session.send_message(user_input)
-            st.markdown(response.text)
-            st.session_state.hw_messages.append({"role": "model", "content": response.text})
-
-# 3. قسم الملخصات 
+        for f in uploaded_homeworks: st.image(Image.open(f), use_container_width=True)
 else:
     st.markdown("### 📊 الملخصات والعروض التقديمية الذكية")
-    st.info("هذا القسم جاهز للعمل. يمكنك رفع صور الدروس وسأقوم بتلخيصها.")
+    st.info("هذا القسم جاهز للعمل.")
