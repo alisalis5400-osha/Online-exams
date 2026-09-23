@@ -1,121 +1,415 @@
-import streamlit as st
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: Respiration - Complete Comprehensive Exam</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .exam-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e4620;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+        .section-title {
+            background-color: #1e4620;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .question-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.05em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        textarea, input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+        textarea { height: 60px; resize: vertical; }
+        .radio-group label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 0.98em;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background-color: #1e4620;
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 30px;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover { background-color: #143216; }
+        .whatsapp-btn {
+            display: none;
+            width: 100%;
+            background-color: #25d366;
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .whatsapp-btn:hover { background-color: #1ebe5d; }
+        .feedback-box {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95em;
+        }
+        .model-answer {
+            background: #e2e8f0;
+            color: #1e293b;
+            margin-top: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
 
-def run_full_respiration_exam():
-    st.title("Chapter 2: Respiration - Complete Exam")
-    st.write("Mr. Adel Elamin - Science Teacher | Grade 6")
-    st.markdown("---")
+<div class="exam-container">
+    <h1>Chapter 2: Respiration - Complete Exam</h1>
+    <div class="subtitle">Mr. Adel Elamin - Science Teacher | Grade 6</div>
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
 
-    with st.form("full_respiration_exam_form"):
+    <form id="scienceExamForm" onsubmit="evaluateExam(event)">
         
-        # ----------------- SECTION A -----------------
-        st.header("A. Complete the Following Sentences")
-        q1_1 = st.text_input("1. Taking in oxygen and letting out carbon dioxide is called...", key="sec_a_1")
-        q1_2 = st.text_input("2. Air passes from the nose and mouth through the ... before it reaches the lungs.", key="sec_a_2")
-        q1_3 = st.text_input("3. The two organs in the chest that receive air are the left and right ...", key="sec_a_3")
-        q1_4 = st.text_input("4. The enlarged structure used in the model to observe where gases are exchanged is an ...", key="sec_a_4")
-        q1_5 = st.text_input("5. The ... around the lungs provide the route through which gas exchange occurs.", key="sec_a_5")
-        q1_6 = st.text_input("6. The gas taken from the air into the blood is ...", key="sec_a_6")
-        q1_7 = st.text_input("7. The gas released from the blood into the air is ...", key="sec_a_7")
-        q1_8 = st.text_input("8. The ... carries oxygen from the lungs to the whole body.", key="sec_a_8")
-        q1_9 = st.text_input("9. The ... does the work that helps transport oxygen-rich blood around the body.", key="sec_a_9")
-        q1_10 = st.text_input("10. Fish let out carbon dioxide through their ...", key="sec_a_10")
-
-        st.markdown("---")
-
-        # ----------------- SECTION B -----------------
-        st.header("B. Choose the Correct Answer")
+        <!-- SECTION A -->
+        <div class="section-title">A. Complete the Following Sentences</div>
         
-        q2_1 = st.radio("1. Which statement best describes breathed-out air?", 
-                        ["a. It contains no oxygen.", "b. It contains more carbon dioxide than breathed-in air.", "c. It contains only carbon dioxide.", "d. It contains more oxygen than breathed-in air."], key="sec_b_1")
+        <div class="question-box"><div class="question-title">1. Taking in oxygen and letting out carbon dioxide is called...</div><input type="text" id="secA_1" placeholder="Type your answer..."><div id="fbA_1" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Respiration</div></div>
+        <div class="question-box"><div class="question-title">2. Air passes from the nose and mouth through the ... before it reaches the lungs.</div><input type="text" id="secA_2" placeholder="Type your answer..."><div id="fbA_2" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> windpipe</div></div>
+        <div class="question-box"><div class="question-title">3. The two organs in the chest that receive air are the left and right ...</div><input type="text" id="secA_3" placeholder="Type your answer..."><div id="fbA_3" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> lungs</div></div>
+        <div class="question-box"><div class="question-title">4. The enlarged structure used in the model to observe where gases are exchanged is an ...</div><input type="text" id="secA_4" placeholder="Type your answer..."><div id="fbA_4" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> alveolus</div></div>
+        <div class="question-box"><div class="question-title">5. The ... around the lungs provide the route through which gas exchange occurs.</div><input type="text" id="secA_5" placeholder="Type your answer..."><div id="fbA_5" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> blood vessels</div></div>
+        <div class="question-box"><div class="question-title">6. The gas taken from the air into the blood is ...</div><input type="text" id="secA_6" placeholder="Type your answer..."><div id="fbA_6" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> oxygen</div></div>
+        <div class="question-box"><div class="question-title">7. The gas released from the blood into the air is ...</div><input type="text" id="secA_7" placeholder="Type your answer..."><div id="fbA_7" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> carbon dioxide</div></div>
+        <div class="question-box"><div class="question-title">8. The ... carries oxygen from the lungs to the whole body.</div><input type="text" id="secA_8" placeholder="Type your answer..."><div id="fbA_8" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> blood</div></div>
+        <div class="question-box"><div class="question-title">9. The ... does the work that helps transport oxygen-rich blood around the body.</div><input type="text" id="secA_9" placeholder="Type your answer..."><div id="fbA_9" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> heart</div></div>
+        <div class="question-box"><div class="question-title">10. Fish let out carbon dioxide through their ...</div><input type="text" id="secA_10" placeholder="Type your answer..."><div id="fbA_10" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> gills</div></div>
+
+        <!-- SECTION B -->
+        <div class="section-title">B. Choose the Correct Answer</div>
         
-        q2_2 = st.radio("2. Which sequence shows the correct route of air into the body?", 
-                        ["a. Lungs -> nose -> windpipe", "b. Mouth -> blood vessels -> lungs", "c. Nose or mouth -> windpipe -> lungs", "d. Heart -> windpipe -> lungs"], key="sec_b_2")
+        <div class="question-box"><div class="question-title">1. Which statement best describes breathed-out air?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_1" value="a"> a. It contains no oxygen.</label>
+                <label><input type="radio" name="secB_1" value="b"> b. It contains more carbon dioxide than breathed-in air.</label>
+                <label><input type="radio" name="secB_1" value="c"> c. It contains only carbon dioxide.</label>
+                <label><input type="radio" name="secB_1" value="d"> d. It contains more oxygen than breathed-in air.</label>
+            </div>
+            <div id="fbB_1" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> b</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">2. Which sequence shows the correct route of air into the body?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_2" value="a"> a. Lungs -> nose -> windpipe</label>
+                <label><input type="radio" name="secB_2" value="b"> b. Mouth -> blood vessels -> lungs</label>
+                <label><input type="radio" name="secB_2" value="c"> c. Nose or mouth -> windpipe -> lungs</label>
+                <label><input type="radio" name="secB_2" value="d"> d. Heart -> windpipe -> lungs</label>
+            </div>
+            <div id="fbB_2" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> c</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">3. What is the main role of the blood vessels around the lungs in the chapter?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_3" value="a"> a. They make limewater.</label>
+                <label><input type="radio" name="secB_3" value="b"> b. They allow gases to pass between the air and the blood.</label>
+                <label><input type="radio" name="secB_3" value="c"> c. They carry air directly to the mouth.</label>
+                <label><input type="radio" name="secB_3" value="d"> d. They change oxygen into water.</label>
+            </div>
+            <div id="fbB_3" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> b</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">4. A learner blows breathed-out air into limewater. What should the learner observe?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_4" value="a"> a. The limewater turns milky white.</label>
+                <label><input type="radio" name="secB_4" value="b"> b. The limewater turns bright blue.</label>
+                <label><input type="radio" name="secB_4" value="c"> c. The limewater disappears.</label>
+                <label><input type="radio" name="secB_4" value="d"> d. The limewater becomes solid immediately.</label>
+            </div>
+            <div id="fbB_4" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> a</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">5. Why is one bag filled with room air in the investigation?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_5" value="a"> a. To provide a comparison with the bag containing breathed-out air.</label>
+                <label><input type="radio" name="secB_5" value="b"> b. To remove all the oxygen from the experiment.</label>
+                <label><input type="radio" name="secB_5" value="c"> c. To replace the limewater.</label>
+                <label><input type="radio" name="secB_5" value="d"> d. To make the plastic bag heavier.</label>
+            </div>
+            <div id="fbB_5" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> a</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">6. Which item is not listed as equipment for the investigation?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_6" value="a"> a. Safety goggles</label>
+                <label><input type="radio" name="secB_6" value="b"> b. A gas sampling pump</label>
+                <label><input type="radio" name="secB_6" value="c"> c. A thermometer</label>
+                <label><input type="radio" name="secB_6" value="d"> d. Scissors</label>
+            </div>
+            <div id="fbB_6" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> c</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">7. What can gas detector tubes help the learners check?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_7" value="a"> a. The colour of the lungs</label>
+                <label><input type="radio" name="secB_7" value="b"> b. The amounts of oxygen and carbon dioxide in the bags</label>
+                <label><input type="radio" name="secB_7" value="c"> c. The size of the heart</label>
+                <label><input type="radio" name="secB_7" value="d"> d. The temperature of the room</label>
+            </div>
+            <div id="fbB_7" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> b</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">8. A learner concludes, 'Breathed-out air contains no oxygen at all.' Which observation challenges this?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_8" value="a"> a. The air passes through the windpipe.</label>
+                <label><input type="radio" name="secB_8" value="b"> b. Breathed-out air also contains oxygen.</label>
+                <label><input type="radio" name="secB_8" value="c"> c. Fish use gills.</label>
+                <label><input type="radio" name="secB_8" value="d"> d. The lungs are in the chest.</label>
+            </div>
+            <div id="fbB_8" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> b</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">9. Oxygen taken in by the lungs can reach fingertips and toes because it is carried by:</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_9" value="a"> a. blood</label>
+                <label><input type="radio" name="secB_9" value="b"> b. windpipe</label>
+                <label><input type="radio" name="secB_9" value="c"> c. limewater</label>
+                <label><input type="radio" name="secB_9" value="d"> d. gills</label>
+            </div>
+            <div id="fbB_9" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> a</div>
+        </div>
+
+        <div class="question-box"><div class="question-title">10. Which comparison is most likely to show that breathing changes the air?</div>
+            <div class="radio-group">
+                <label><input type="radio" name="secB_10" value="a"> a. Compare two empty bags.</label>
+                <label><input type="radio" name="secB_10" value="b"> b. Compare breathed-out air with room air using limewater and gas detector tubes.</label>
+                <label><input type="radio" name="secB_10" value="c"> c. Compare a lung with a bone.</label>
+                <label><input type="radio" name="secB_10" value="d"> d. Compare the nose with the mouth.</label>
+            </div>
+            <div id="fbB_10" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> b</div>
+        </div>
+
+        <!-- SECTION C -->
+        <div class="section-title">C. Write the Scientific Concept</div>
+        <div class="question-box"><div class="question-title">1. The process of taking in oxygen and releasing carbon dioxide:</div><input type="text" id="secC_1" placeholder="Type your answer..."><div id="fbC_1" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Respiration</div></div>
+        <div class="question-box"><div class="question-title">2. The tube through which air travels on its way to the lungs:</div><input type="text" id="secC_2" placeholder="Type your answer..."><div id="fbC_2" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Windpipe</div></div>
+        <div class="question-box"><div class="question-title">3. The organs in the chest where the air is exchanged with the blood:</div><input type="text" id="secC_3" placeholder="Type your answer..."><div id="fbC_3" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Lungs</div></div>
+        <div class="question-box"><div class="question-title">4. The movement of oxygen into the blood and carbon dioxide out of the blood:</div><input type="text" id="secC_4" placeholder="Type your answer..."><div id="fbC_4" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Gas exchange</div></div>
+        <div class="question-box"><div class="question-title">5. The small blood pathways around the lungs involved in gas exchange:</div><input type="text" id="secC_5" placeholder="Type your answer..."><div id="fbC_5" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Blood vessels</div></div>
+        <div class="question-box"><div class="question-title">6. The liquid that turns milky white when breathed-out air is passed into it:</div><input type="text" id="secC_6" placeholder="Type your answer..."><div id="fbC_6" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Limewater</div></div>
+        <div class="question-box"><div class="question-title">7. The instrument used in the investigation to check amounts of oxygen and carbon dioxide:</div><input type="text" id="secC_7" placeholder="Type your answer..."><div id="fbC_7" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Gas detector tubes</div></div>
+
+        <!-- SECTION D -->
+        <div class="section-title">D. Put (True / False)</div>
+        <div class="question-box"><div class="question-title">1. Air enters the body through the nose or the mouth.</div><select id="secD_1"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_1" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> True</div></div>
+        <div class="question-box"><div class="question-title">2. The windpipe sends air directly to the heart.</div><select id="secD_2"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_2" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> False</div></div>
+        <div class="question-box"><div class="question-title">3. The lungs are located in the chest.</div><select id="secD_3"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_3" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> True</div></div>
+        <div class="question-box"><div class="question-title">4. Gas exchange in the chapter occurs between the air and the blood.</div><select id="secD_4"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_4" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> True</div></div>
+        <div class="question-box"><div class="question-title">5. Carbon dioxide moves from the blood into the air during gas exchange.</div><select id="secD_5"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_5" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> True</div></div>
+        <div class="question-box"><div class="question-title">6. Breathed-out air contains no oxygen.</div><select id="secD_6"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_6" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> False</div></div>
+        <div class="question-box"><div class="question-title">7. Breathed-out air can make limewater turn milky white.</div><select id="secD_7"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_7" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> True</div></div>
+        <div class="question-box"><div class="question-title">8. Both bags in the investigation receive exactly the same kind of air.</div><select id="secD_8"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_8" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> False</div></div>
+        <div class="question-box"><div class="question-title">9. Gas detector tubes are used to check the amounts of oxygen and carbon dioxide.</div><select id="secD_9"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_9" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> True</div></div>
+        <div class="question-box"><div class="question-title">10. Blood helps carry oxygen from the lungs to the whole body.</div><select id="secD_10"><option value="">Select</option><option value="True">True</option><option value="False">False</option></select><div id="fbD_10" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> True</div></div>
+
+        <!-- SECTION E -->
+        <div class="section-title">E. Correct the Underlined Word(s)</div>
+        <div class="question-box"><div class="question-title">1. Air travels from the nose and mouth through the [ esophagus ] to the lungs.</div><input type="text" id="secE_1" placeholder="Type correct word..."><div id="fbE_1" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> windpipe</div></div>
+        <div class="question-box"><div class="question-title">2. During gas exchange, [ nitrogen ] in the air is taken into the blood.</div><input type="text" id="secE_2" placeholder="Type correct word..."><div id="fbE_2" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> oxygen</div></div>
+        <div class="question-box"><div class="question-title">3. The [ lungs ] carry oxygen-rich blood to the whole body.</div><input type="text" id="secE_3" placeholder="Type correct word..."><div id="fbE_3" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> blood / heart</div></div>
+        <div class="question-box"><div class="question-title">4. Compared with breathed-in air, breathed-out air contains [ more ] oxygen.</div><input type="text" id="secE_4" placeholder="Type correct word..."><div id="fbE_4" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> less</div></div>
+        <div class="question-box"><div class="question-title">5. Fish let out carbon dioxide through their [ lungs ].</div><input type="text" id="secE_5" placeholder="Type correct word..."><div id="fbE_5" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> gills</div></div>
+
+        <!-- SECTION F -->
+        <div class="section-title">F. Give Reasons</div>
+        <div class="question-box"><div class="question-title">1. Why is breathed-out air different from breathed-in air?</div><textarea id="secF_1" placeholder="Type your answer..."></textarea><div id="fbF_1" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Because body cells use oxygen and produce carbon dioxide.</div></div>
+        <div class="question-box"><div class="question-title">2. Why does the investigation use a bag filled with room air as well as breathed-out air?</div><textarea id="secF_2" placeholder="Type your answer..."></textarea><div id="fbF_2" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> To provide a baseline comparison.</div></div>
+        <div class="question-box"><div class="question-title">3. Why are limewater and gas detector tubes useful in the investigation?</div><textarea id="secF_3" placeholder="Type your answer..."></textarea><div id="fbF_3" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> To detect and measure gas amounts accurately.</div></div>
+        <div class="question-box"><div class="question-title">4. Why are the blood vessels around the lungs important?</div><textarea id="secF_4" placeholder="Type your answer..."></textarea><div id="fbF_4" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> For gas exchange between air and blood.</div></div>
+        <div class="question-box"><div class="question-title">5. How can oxygen taken in by the lungs reach distant parts of the body?</div><textarea id="secF_5" placeholder="Type your answer..."></textarea><div id="fbF_5" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> Carried by blood pumped by the heart.</div></div>
+
+        <!-- SECTION G -->
+        <div class="section-title">G. Delete the Odd Word</div>
+        <div class="question-box"><div class="question-title">1. nose, mouth, windpipe, heart</div><input type="text" id="secG_1" placeholder="Type odd word..."><div id="fbG_1" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> heart</div></div>
+        <div class="question-box"><div class="question-title">2. oxygen, carbon dioxide, windpipe</div><input type="text" id="secG_2" placeholder="Type odd word..."><div id="fbG_2" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> windpipe</div></div>
+        <div class="question-box"><div class="question-title">3. lungs, blood vessels, limewater</div><input type="text" id="secG_3" placeholder="Type odd word..."><div id="fbG_3" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> limewater</div></div>
+        <div class="question-box"><div class="question-title">4. plastic bag, limewater, scissors</div><input type="text" id="secG_4" placeholder="Type odd word..."><div id="fbG_4" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> scissors</div></div>
+        <div class="question-box"><div class="question-title">5. nose, mouth, windpipe, blood</div><input type="text" id="secG_5" placeholder="Type odd word..."><div id="fbG_5" class="feedback-box"></div><div class="model-answer"><b>Model Answer:</b> blood</div></div>
+
+        <button type="submit" class="submit-btn">تصحيح ومراجعة كل أسئلة الامتحان 📋</button>
+        <a id="whatsappLink" href="#" target="_blank" class="whatsapp-btn">إرسال التقرير الشامل ونقاط الضعف إلى ولي الأمر عبر واتساب 📲</a>
+    </form>
+</div>
+
+<script>
+    function evaluateExam(event) {
+        event.preventDefault();
+        let correctCount = 0;
+        let totalQuestions = 47;
+        let weakPoints = [];
+
+        // تقييم القسم A
+        const keysA = ['respiration', 'windpipe', 'lungs', 'alveolus', 'blood vessels', 'oxygen', 'carbon dioxide', 'blood', 'heart', 'gills'];
+        keysA.forEach((kw, i) => {
+            let val = document.getElementById('secA_' + (i+1)).value.trim().toLowerCase();
+            let fb = document.getElementById('fbA_ ' + (i+1)) || document.getElementById('fbA_' + (i+1));
+            fb.style.display = 'block';
+            if(val.includes(kw) || kw.includes(val) && val.length > 2) {
+                fb.style.backgroundColor = '#d4edda'; fb.style.color = '#155724'; fb.innerHTML = '✅ إجابة صحيحة!'; correctCount++;
+            } else {
+                fb.style.backgroundColor = '#fee2e2'; fb.style.color = '#b91c1c'; fb.innerHTML = '❌ تحتاج مراجعة.'; weakPoints.push(`A${i+1}`);
+            }
+        });
+
+        // تقييم القسم B (اختيارات)
+        const keysB = { secB_1: 'b', secB_2: 'c', secB_3: 'b', secB_4: 'a', secB_5: 'a', secB_6: 'c', secB_7: 'b', secB_8: 'b', secB_9: 'a', secB_10: 'b' };
+        for (let q in keysB) {
+            let radios = document.getElementsByName(q);
+            let selected = '';
+            for(let r of radios) { if(r.checked) selected = r.value; }
+            let num = q.split('_')[1];
+            let fb = document.getElementById('fbB_' + num);
+            fb.style.display = 'block';
+            if(selected === keysB[q]) {
+                fb.style.backgroundColor = '#d4edda'; fb.style.color = '#155724'; fb.innerHTML = '✅ إجابة صحيحة!'; correctCount++;
+            } else {
+                fb.style.backgroundColor = '#fee2e2'; fb.style.color = '#b91c1c'; fb.innerHTML = '❌ إجابة خاطئة.'; weakPoints.push(`B${num}`);
+            }
+        }
+
+        // تقييم القسم C
+        const keysC = ['respiration', 'windpipe', 'lungs', 'gas exchange', 'blood vessels', 'limewater', 'gas detector tubes'];
+        keysC.forEach((kw, i) => {
+            let val = document.getElementById('secC_' + (i+1)).value.trim().toLowerCase();
+            let fb = document.getElementById('fbC_' + (i+1));
+            fb.style.display = 'block';
+            if(val.includes(kw)) {
+                fb.style.backgroundColor = '#d4edda'; fb.style.color = '#155724'; fb.innerHTML = '✅ إجابة صحيحة!'; correctCount++;
+            } else {
+                fb.style.backgroundColor = '#fee2e2'; fb.style.color = '#b91c1c'; fb.innerHTML = '❌ تحتاج مراجعة.'; weakPoints.push(`C${i+1}`);
+            }
+        });
+
+        // تقييم القسم D (True/False)
+        const keysD = ['True', 'False', 'True', 'True', 'True', 'False', 'True', 'False', 'True', 'True'];
+        keysD.forEach((ans, i) => {
+            let val = document.getElementById('secD_' + (i+1)).value;
+            let fb = document.getElementById('fbD_' + (i+1));
+            fb.style.display = 'block';
+            if(val === ans) {
+                fb.style.backgroundColor = '#d4edda'; fb.style.color = '#155724'; fb.innerHTML = '✅ إجابة صحيحة!'; correctCount++;
+            } else {
+                fb.style.backgroundColor = '#fee2e2'; fb.style.color = '#b91c1c'; fb.innerHTML = '❌ إجابة خاطئة.'; weakPoints.push(`D${i+1}`);
+            }
+        });
+
+        // تقييم القسم E
+        const keysE = ['windpipe', 'oxygen', 'blood', 'less', 'gills'];
+        keysE.forEach((kw, i) => {
+            let val = document.getElementById('secE_' + (i+1)).value.trim().toLowerCase();
+            let fb = document.getElementById('fbE_' + (i+1));
+            fb.style.display = 'block';
+            if(val.includes(kw)) {
+                fb.style.backgroundColor = '#d4edda'; fb.style.color = '#155724'; fb.innerHTML = '✅ إجابة صحيحة!'; correctCount++;
+            } else {
+                fb.style.backgroundColor = '#fee2e2'; fb.style.color = '#b91c1c'; fb.innerHTML = '❌ تحتاج مراجعة.'; weakPoints.push(`E${i+1}`);
+            }
+        });
+
+        // تقييم القسم F (Give Reasons - تقييم مرن بالكلمات المفتاحية)
+        const keysF = [['carbon dioxide', 'use oxygen'], ['comparison', 'baseline'], ['measure', 'detect'], ['gas exchange', 'air and blood'], ['blood', 'heart']];
+        keysF.forEach((kws, i) => {
+            let val = document.getElementById('secF_' + (i+1)).value.trim().toLowerCase();
+            let fb = document.getElementById('fbF_' + (i+1));
+            fb.style.display = 'block';
+            let matched = kws.some(k => val.includes(k));
+            if(val !== "" && matched) {
+                fb.style.backgroundColor = '#d4edda'; fb.style.color = '#155724'; fb.innerHTML = '✅ إجابة مقبولة علمياً!'; correctCount++;
+            } else {
+                fb.style.backgroundColor = '#fee2e2'; fb.style.color = '#b91c1c'; fb.innerHTML = '❌ تحتاج مراجعة الإجابة النموذجية.'; weakPoints.push(`F${i+1}`);
+            }
+        });
+
+        // تقييم القسم G
+        const keysG = ['heart', 'windpipe', 'limewater', 'scissors', 'blood'];
+        keysG.forEach((kw, i) => {
+            let val = document.getElementById('secG_' + (i+1)).value.trim().toLowerCase();
+            let fb = document.getElementById('fbG_' + (i+1));
+            fb.style.display = 'block';
+            if(val.includes(kw)) {
+                fb.style.backgroundColor = '#d4edda'; fb.style.color = '#155724'; fb.innerHTML = '✅ إجابة صحيحة!'; correctCount++;
+            } else {
+                fb.style.backgroundColor = '#fee2e2'; fb.style.color = '#b91c1c'; fb.innerHTML = '❌ تحتاج مراجعة.'; weakPoints.push(`G${i+1}`);
+            }
+        });
+
+        // رسالة الواتساب الشاملة
+        const scoreText = `تقرير امتحان Science الشامل (Chapter 2):\\nالدرجة الكلية: ${correctCount} من ${totalQuestions}\\nالأسئلة التي بها نقاط ضعف وتحتاج مراجعة: ${weakPoints.length > 0 ? weakPoints.join(', ') : 'ممتاز، لا توجد أخطاء!'}`;
+        const phone = "201014365527";
+        const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(scoreText)}`;
         
-        q2_3 = st.radio("3. What is the main role of the blood vessels around the lungs in the chapter?", 
-                        ["a. They make limewater.", "b. They allow gases to pass between the air and the blood.", "c. They carry air directly to the mouth.", "d. They change oxygen into water."], key="sec_b_3")
-        
-        q2_4 = st.radio("4. A learner blows breathed-out air into limewater. What should the learner observe?", 
-                        ["a. The limewater turns milky white.", "b. The limewater turns bright blue.", "c. The limewater disappears.", "d. The limewater becomes solid immediately."], key="sec_b_4")
-        
-        q2_5 = st.radio("5. Why is one bag filled with room air in the investigation?", 
-                        ["a. To provide a comparison with the bag containing breathed-out air.", "b. To remove all the oxygen from the experiment.", "c. To replace the limewater.", "d. To make the plastic bag heavier."], key="sec_b_5")
-        
-        q2_6 = st.radio("6. Which item is not listed as equipment for the investigation?", 
-                        ["a. Safety goggles", "b. A gas sampling pump", "c. A thermometer", "d. Scissors"], key="sec_b_6")
-        
-        q2_7 = st.radio("7. What can gas detector tubes help the learners check?", 
-                        ["a. The colour of the lungs", "b. The amounts of oxygen and carbon dioxide in the bags", "c. The size of the heart", "d. The temperature of the room"], key="sec_b_7")
-        
-        q2_8 = st.radio("8. A learner concludes, 'Breathed-out air contains no oxygen at all.' Which observation most directly challenges this conclusion?", 
-                        ["a. The air passes through the windpipe.", "b. Breathed-out air also contains oxygen.", "c. Fish use gills.", "d. The lungs are in the chest."], key="sec_b_8")
-        
-        q2_9 = st.radio("9. Oxygen taken in by the lungs can eventually reach the fingertips and toes because it is carried by the:", 
-                        ["a. blood", "b. windpipe", "c. limewater", "d. gills"], key="sec_b_9")
-        
-        q2_10 = st.radio("10. Which comparison is most likely to show that breathing changes the air?", 
-                         ["a. Compare two empty bags.", "b. Compare breathed-out air with room air using limewater and gas detector tubes.", "c. Compare a lung with a bone.", "d. Compare the nose with the mouth."], key="sec_b_10")
+        const waBtn = document.getElementById('whatsappLink');
+        waBtn.style.display = 'block';
+        waBtn.href = waUrl;
 
-        st.markdown("---")
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
 
-        # ----------------- SECTION C -----------------
-        st.header("C. Write the Scientific Concept")
-        q3_1 = st.text_input("1. The process of taking in oxygen and releasing carbon dioxide:", key="sec_c_1")
-        q3_2 = st.text_input("2. The tube through which air travels on its way to the lungs:", key="sec_c_2")
-        q3_3 = st.text_input("3. The organs in the chest where the air is exchanged with the blood:", key="sec_c_3")
-        q3_4 = st.text_input("4. The movement of oxygen into the blood and carbon dioxide out of the blood:", key="sec_c_4")
-        q3_5 = st.text_input("5. The small blood pathways around the lungs involved in gas exchange:", key="sec_c_5")
-        q3_6 = st.text_input("6. The liquid that turns milky white when breathed-out air is passed into it:", key="sec_c_6")
-        q3_7 = st.text_input("7. The instrument used in the investigation to check the amounts of oxygen and carbon dioxide:", key="sec_c_7")
-
-        st.markdown("---")
-
-        # ----------------- SECTION D -----------------
-        st.header("D. Put (True / False)")
-        q4_1 = st.selectbox("1. Air enters the body through the nose or the mouth.", ["Select", "True", "False"], key="sec_d_1")
-        q4_2 = st.selectbox("2. The windpipe sends air directly to the heart.", ["Select", "True", "False"], key="sec_d_2")
-        q4_3 = st.selectbox("3. The lungs are located in the chest.", ["Select", "True", "False"], key="sec_d_3")
-        q4_4 = st.selectbox("4. Gas exchange in the chapter occurs between the air and the blood.", ["Select", "True", "False"], key="sec_d_4")
-        q4_5 = st.selectbox("5. Carbon dioxide moves from the blood into the air during gas exchange.", ["Select", "True", "False"], key="sec_d_5")
-        q4_6 = st.selectbox("6. Breathed-out air contains no oxygen.", ["Select", "True", "False"], key="sec_d_6")
-        q4_7 = st.selectbox("7. Breathed-out air can make limewater turn milky white.", ["Select", "True", "False"], key="sec_d_7")
-        q4_8 = st.selectbox("8. Both bags in the investigation receive exactly the same kind of air.", ["Select", "True", "False"], key="sec_d_8")
-        q4_9 = st.selectbox("9. Gas detector tubes are used to check the amounts of oxygen and carbon dioxide.", ["Select", "True", "False"], key="sec_d_9")
-        q4_10 = st.selectbox("10. Blood helps carry oxygen from the lungs to the whole body.", ["Select", "True", "False"], key="sec_d_10")
-
-        st.markdown("---")
-
-        # ----------------- SECTION E -----------------
-        st.header("E. Correct the Underlined Word(s)")
-        q5_1 = st.text_input("1. Air travels from the nose and mouth through the [ esophagus ] to the lungs. (Correct word):", key="sec_e_1")
-        q5_2 = st.text_input("2. During gas exchange, [ nitrogen ] in the air is taken into the blood. (Correct word):", key="sec_e_2")
-        q5_3 = st.text_input("3. The [ lungs ] carry oxygen-rich blood to the whole body. (Correct word):", key="sec_e_3")
-        q5_4 = st.text_input("4. Compared with breathed-in air, breathed-out air contains [ more ] oxygen. (Correct word):", key="sec_e_4")
-        q5_5 = st.text_input("5. Fish let out carbon dioxide through their [ lungs ]. (Correct word):", key="sec_e_5")
-
-        st.markdown("---")
-
-        # ----------------- SECTION F -----------------
-        st.header("F. Give Reasons")
-        q6_1 = st.text_area("1. Why is breathed-out air different from breathed-in air?", key="sec_f_1")
-        q6_2 = st.text_area("2. Why does the investigation use a bag filled with room air as well as a bag filled with breathed-out air?", key="sec_f_2")
-        q6_3 = st.text_area("3. Why are limewater and gas detector tubes useful in the investigation?", key="sec_f_3")
-        q6_4 = st.text_area("4. Why are the blood vessels around the lungs important?", key="sec_f_4")
-        q6_5 = st.text_area("5. How can oxygen taken in by the lungs reach distant parts of the body?", key="sec_f_5")
-
-        st.markdown("---")
-
-        # ----------------- SECTION G -----------------
-        st.header("G. Delete the Odd Word")
-        q7_1 = st.text_input("1. nose, mouth, windpipe, heart", key="sec_g_1")
-        q7_2 = st.text_input("2. oxygen, carbon dioxide, windpipe", key="sec_g_2")
-        q7_3 = st.text_input("3. lungs, blood vessels, limewater", key="sec_g_3")
-        q7_4 = st.text_input("4. plastic bag, limewater, scissors", key="sec_g_4")
-        q7_5 = st.text_input("5. nose, mouth, windpipe, blood", key="sec_g_5")
-
-        # زر إرسال الامتحان
-        submit_button = st.form_submit_button(label="إرسال الإجابات للتقييم والتصحيح الذكي")
-
-        if submit_button:
-            st.success("تم إرسال إجاباتك بنجاح! سيقوم النظام الذكي الآن بمراجعتها وتقييمها.")
-
-run_full_respiration_exam()
+</body>
+</html>
