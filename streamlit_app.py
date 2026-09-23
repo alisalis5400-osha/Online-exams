@@ -20,36 +20,28 @@ app_mode = st.radio("اختر القسم المطلوب:", ["📚 بنك الا�
 st.markdown("---")
 
 if app_mode == "📚 بنك الاختبارات التفاعلية":
-    st.markdown("### 📝 اختر المادة والصف لتأدية الامتحان")
+    st.markdown("### 📝 بنك الاختبارات التفاعلية الشامل")
     
-    subject_name = st.selectbox("اختر المادة", ["عربي", "دراسات", "دين", "Math", "Science", "English", "French"])
-    stage_name = st.radio("اختر المرحلة", ["المرحلة الابتدائية", "المرحلة الإعدادية"])
+    # قائمة بكل الامتحانات المتاحة لدينا على المنصة
+    exams_dict = {
+        "Science - الصف السادس الابتدائي (Chapter 2: Respiration الشامل)": "Science chapter2 g6.html",
+        "Science - الصف السادس الابتدائي (امتحان الفصل الأول والثاني)": "science_g6.html",
+        "Social Studies - الصف السادس الابتدائي": "Social-G6.html",
+        "Social Studies - الصف الرابع الابتدائي": "Social-G4.html",
+        "Arabic - الصف الثاني الإعدادي": "Arabic.prep2.html",
+        "English - الصف الثاني الإعدادي": "engprep2.htm"
+    }
     
-    if stage_name == "المرحلة الابتدائية":
-        grade_name = st.selectbox("اختر الصف", ["الصف الأول الابتدائي", "الصف الثاني الابتدائي", "الصف الثالث الابتدائي", "الصف الرابع الابتدائي", "الصف الخامس الابتدائي", "الصف السادس الابتدائي"])
-    else:
-        grade_name = st.selectbox("اختر الصف", ["الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"])
-        
-    display_name = f"{subject_name} - {grade_name}"
+    selected_exam_title = st.selectbox("اختر الامتحان المطلوب:", list(exams_dict.keys()))
+    file_name = exams_dict[selected_exam_title]
     
-    # ربط مباشر لملف Science الصف السادس بالاسم الموجود عندك تماماً
-    if subject_name == "Science" and grade_name == "الصف السادس الابتدائي":
-        file_name = "Science chapter2 g6.html"
-    else:
-        sub_codes = {"عربي": "arabic", "دراسات": "social", "دين": "religion", "Math": "math", "Science": "science", "English": "english", "French": "french"}
-        grd_codes = {
-            "الصف الأول الابتدائي": "g1", "الصف الثاني الابتدائي": "g2", "الصف الثالث الابتدائي": "g3",
-            "الصف الرابع الابتدائي": "g4", "الصف الخامس الابتدائي": "g5", "الصف السادس الابتدائي": "g6",
-            "الصف الأول الإعدادي": "prep1", "الصف الثاني الإعدادي": "prep2", "الصف الثالث الإعدادي": "prep3"
-        }
-        file_name = f"{sub_codes.get(subject_name, 'science')}_{grd_codes.get(grade_name, 'g6')}.html"
-        
-    st.success(f"مستعد لفتح امتحان ({display_name}) 🚀")
+    st.success(f"مستعد لفتح: ({selected_exam_title}) 🚀")
     exam_url = f"https://alisalis5400-osha.github.io/Online-exams/{file_name}"
+    
     st.markdown(f"""
     <div style="margin-top: 20px; text-align: center;">
         <a href="{exam_url}" target="_blank" style="display: block; background-color: #1b4d3e; color: white; padding: 15px 20px; border-radius: 10px; text-decoration: none; font-size: 18px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            اضغط هنا لبدء امتحان ({display_name}) 🚀<br>
+            اضغط هنا لبدء الامتحان 🚀<br>
             <span style="font-size: 13px; font-weight: normal; color: #e0e0e0;">(سيفتح في تبويب جديد تماماً)</span>
         </a>
     </div>
