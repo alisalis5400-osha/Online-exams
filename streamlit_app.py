@@ -31,16 +31,25 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
         grade_name = st.selectbox("اختر الصف", ["الصف الأول الإعدادي", "الصف الثاني الإعدادي", "الصف الثالث الإعدادي"])
         
     display_name = f"{subject_name} - {grade_name}"
+    file_name = ""
     
-    # تنظيم واختيار الملف الصحيح حسب المادة والصف (مع دعم امتحانات متعددة للصف السادس ساينس)
+    # تحديد الملف الصحيح لكل مادة وصف بدقة
     if subject_name == "Science" and grade_name == "الصف السادس الابتدائي":
-        science_exams = {
-            "Chapter 2: Respiration الشامل": "Science chapter2 g6.html",
-            "امتحان الفصل الأول والثاني (القديم)": "science_g6.html"
-        }
-        selected_sci_exam = st.selectbox("اختر نموذج امتحان الساينس:", list(science_exams.keys()))
-        file_name = science_exams[selected_sci_exams]
-        display_name = f"Science - الصف السادس الابتدائي ({selected_sci_exam})"
+        sci_choice = st.selectbox("اختر نموذج امتحان الساينس:", ["Chapter 2: Respiration الشامل", "امتحان الفصل الأول والثاني (القديم)"])
+        if sci_choice == "Chapter 2: Respiration الشامل":
+            file_name = "Science chapter2 g6.html"
+            display_name = "Science - الصف السادس الابتدائي (Chapter 2)"
+        else:
+            file_name = "science_g6.html"
+            display_name = "Science - الصف السادس الابتدائي (الفصل الأول والثاني)"
+    elif subject_name == "Social Studies" and grade_name == "الصف السادس الابتدائي":
+        file_name = "Social-G6.html"
+    elif subject_name == "Social Studies" and grade_name == "الصف الرابع الابتدائي":
+        file_name = "Social-G4.html"
+    elif subject_name == "Arabic" and grade_name == "الصف الثاني الإعدادي":
+        file_name = "Arabic.prep2.html"
+    elif subject_name == "English" and grade_name == "الصف الثاني الإعدادي":
+        file_name = "engprep2.htm"
     else:
         sub_codes = {"عربي": "arabic", "دراسات": "social", "دين": "religion", "Math": "math", "Science": "science", "English": "english", "French": "french"}
         grd_codes = {
@@ -48,18 +57,7 @@ if app_mode == "📚 بنك الاختبارات التفاعلية":
             "الصف الرابع الابتدائي": "g4", "الصف الخامس الابتدائي": "g5", "الصف السادس الابتدائي": "g6",
             "الصف الأول الإعدادي": "prep1", "الصف الثاني الإعدادي": "prep2", "الصف الثالث الإعدادي": "prep3"
         }
-        
-        # ربط الروابط المخصصة للملفات الموجودة عندك فعلياً
-        if subject_name == "Social Studies" and grade_name == "الصف السادس الابتدائي":
-            file_name = "Social-G6.html"
-        elif subject_name == "Social Studies" and grade_name == "الصف الرابع الابتدائي":
-            file_name = "Social-G4.html"
-        elif subject_name == "Arabic" and grade_name == "الصف الثاني الإعدادي":
-            file_name = "Arabic.prep2.html"
-        elif subject_name == "English" and grade_name == "الصف الثاني الإعدادي":
-            file_name = "engprep2.htm"
-        else:
-            file_name = f"{sub_codes.get(subject_name, 'science')}_{grd_codes.get(grade_name, 'g6')}.html"
+        file_name = f"{sub_codes.get(subject_name, 'science')}_{grd_codes.get(grade_name, 'g6')}.html"
         
     st.success(f"مستعد لفتح: ({display_name}) 🚀")
     exam_url = f"https://alisalis5400-osha.github.io/Online-exams/{file_name}"
